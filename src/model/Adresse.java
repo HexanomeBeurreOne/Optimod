@@ -3,6 +3,10 @@
  */
 package model;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 /**
  * @author Adrien Menella
  *
@@ -15,7 +19,7 @@ public class Adresse {
 	private int id;
 	private int coordX;
 	private int coordY;
-	private Troncon tronconSortant;
+	private List<Troncon> tronconsSortants;
 	
 	/**
 	 * Constructor
@@ -24,6 +28,7 @@ public class Adresse {
 		this.id = id;
 		this.coordX = coordX;
 		this.coordY = coordY;
+		this.tronconsSortants = new ArrayList();
 	}
 	
 	public int getId() {
@@ -50,23 +55,23 @@ public class Adresse {
 		this.coordY = coordY;
 	}
 
-	public Troncon getTronconSortant() {
-		return tronconSortant;
-	}
-
-	public void setTronconSortant(Troncon tronconSortant) {
-		this.tronconSortant = tronconSortant;
-	}
-
 	/**
-	 * Add a new TronconSortant to the current Adresse
+	 * Add a new TronconSortant to the list of tronconsSortants of the current Adresse
 	 * @param newTronconSortant
 	 */
 	public void addTroncon(Troncon newTronconSortant) {
-		this.tronconSortant = newTronconSortant;
+		this.tronconsSortants.add(newTronconSortant);
 	}
 	
-	
+	public void afficheAdresse() {
+		System.out.println("Adresse "+this.id+" | x="+this.coordX+" y="+this.coordY);
+		Iterator tronconsSortantsIterator = this.tronconsSortants.iterator();
+		while(tronconsSortantsIterator.hasNext()) {
+			Troncon currentTroncon = (Troncon) tronconsSortantsIterator.next();
+			System.out.print("      ");
+			currentTroncon.afficheTroncon();
+		}
+	}
 	
 
 }
