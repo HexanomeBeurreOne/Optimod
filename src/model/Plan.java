@@ -81,5 +81,16 @@ public class Plan {
 		}
 		return null;
 	}
+	
+	public void affichePlan() {
+		System.out.println("Plan : "+this.nom);
+		System.out.println("Liste adresses : ");
+		Iterator adressesIterator = this.adresses.iterator();
+		while(adressesIterator.hasNext()) {
+			Adresse currentAdresse = (Adresse) adressesIterator.next();
+			System.out.print("   ");
+			currentAdresse.afficheAdresse();
+		}
+	}
 
 }

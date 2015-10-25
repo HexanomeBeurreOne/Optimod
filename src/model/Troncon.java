@@ -33,4 +33,7 @@ public class Troncon {
 		return this.tempsTroncon;
 	}
 
+	public void afficheTroncon() {
+		System.out.println("TronconSortant : nomRue : "+this.nomRue+" vitesseMoyenne="+this.vitesseMoyenne+" longueur="+this.longueur+" idDestination : "+this.destination.getId());
+	}
 }
