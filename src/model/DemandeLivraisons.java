@@ -3,6 +3,10 @@
  */
 package model;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 /**
  * @author Adrien Menella
  *
@@ -10,10 +14,90 @@ package model;
 public class DemandeLivraisons {
 
 	/**
-	 * 
+	 * Attributes
 	 */
-	public DemandeLivraisons() {
-		// TODO Auto-generated constructor stub
+	private Plan plan;
+	private int idEntrepot;
+	private List<FenetreLivraison> fenetresLivraisons;
+	
+	
+	/**
+	 * Constructor
+	 */
+	public DemandeLivraisons(Plan plan) {
+		this.plan = plan;
+		this.idEntrepot = 0;
+		this.fenetresLivraisons = new ArrayList();
+	}
+	
+	/**
+	 * Return the FenetreLivraison object which heureDebut corresponds with the given parameter
+	 * Return null otherwise
+	 * @param heureDebut
+	 * @return
+	 */
+	public FenetreLivraison getFenetreLivraison(double heureDebut) {
+		Iterator fenetresLivraisonsIterator = this.fenetresLivraisons.iterator();
+		while(fenetresLivraisonsIterator.hasNext()) {
+			FenetreLivraison currentFenetreLivraison = (FenetreLivraison) fenetresLivraisonsIterator.next();
+			if(currentFenetreLivraison.getHeureDebut()==heureDebut) return currentFenetreLivraison;
+		}
+		return null;
+	}
+	
+	/**
+	 * Add a new Livraison to the specified fenetreLivraison passed in parameters
+	 * @param newLivraison
+	 * @param fenetreLivraison
+	 */
+	public void addLivraison(Livraison newLivraison, FenetreLivraison fenetreLivraison) {
+		if (this.fenetresLivraisons.contains(fenetreLivraison)) {
+			FenetreLivraison fenetreLivraisonFounded = this.fenetresLivraisons.get(this.fenetresLivraisons.indexOf(fenetreLivraison));
+			fenetreLivraisonFounded.addLivraison(newLivraison);
+		}
+	}
+	
+	/**
+	 * add a new FenetreLivraison to the list fenetresLivraisons
+	 * @param newFenetreLivraison
+	 */
+	public void addFenetreLivraison(FenetreLivraison newFenetreLivraison) {
+		this.fenetresLivraisons.add(newFenetreLivraison);
 	}
 
+	public Plan getPlan() {
+		return plan;
+	}
+
+	public void setPlan(Plan plan) {
+		this.plan = plan;
+	}
+
+	public int getIdEntrepot() {
+		return idEntrepot;
+	}
+
+	public void setIdEntrepot(int idEntrepot) {
+		this.idEntrepot = idEntrepot;
+	}
+
+	public List<FenetreLivraison> getFenetresLivraisons() {
+		return fenetresLivraisons;
+	}
+
+	public void setFenetresLivraisons(List<FenetreLivraison> fenetresLivraisons) {
+		this.fenetresLivraisons = fenetresLivraisons;
+	}
+
+	public void afficheDemandeLivraisons() {
+		System.out.println("DemandeLivraison : idEntrepot="+this.idEntrepot);
+		System.out.println("Liste livraisons : ");
+		Iterator fenetresLivraisonsIterator = this.fenetresLivraisons.iterator();
+		while(fenetresLivraisonsIterator.hasNext()) {
+			FenetreLivraison currentFenetreLivraison = (FenetreLivraison) fenetresLivraisonsIterator.next();
+			System.out.print("   ");
+			currentFenetreLivraison.afficheFenetreLivraison();
+		}
+	}
+	
 }

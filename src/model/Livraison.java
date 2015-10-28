@@ -49,5 +49,8 @@ public class Livraison {
 		this.fenetreLivraison = fenetreLivraison;
 	}
 
+	public void afficheLivraison() {
+		System.out.println("Livraison : client : "+this.client);
+	}
 	
 }
