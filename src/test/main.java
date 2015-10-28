@@ -12,6 +12,10 @@ public class main {
 		Plan plan = factoryPlan.getPlan("plan20x20.xml");
 		plan.affichePlan();
 		
+		FactoryDemandeLivraisons factoryDemandeLivraisons = new FactoryDemandeLivraisons();
+		
+		DemandeLivraisons demandeLivraisons = factoryDemandeLivraisons.getDemandeLivraisons("livraison20x20-1.xml", plan);
+		demandeLivraisons.afficheDemandeLivraisons();
 	}
 
 }
