@@ -1,4 +1,5 @@
-package controller;
+package controller.commands;
+
 
 public class SupprimerLivraison implements Commande 
 {

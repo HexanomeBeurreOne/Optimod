@@ -2,6 +2,8 @@ package controller;
 
 import java.util.Stack;
 
+import controller.commands.Commande;
+
 public class PilesEtats 
 {
 //------------------------------------------------- ATTRIBUTES	
