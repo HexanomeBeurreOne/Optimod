@@ -58,6 +58,18 @@ public class DemandeLivraisons {
 	}
 	
 	/**
+	 * Remove a Livraison from the specified fenetreLivraison passed in parameters
+	 * @param oldLivraison
+	 * @param fenetreLivraison
+	 */
+	public void removeLivraison(Livraison oldLivraison, FenetreLivraison fenetreLivraison) {
+		if (this.fenetresLivraisons.contains(fenetreLivraison)) {
+			FenetreLivraison fenetreLivraisonFounded = this.fenetresLivraisons.get(this.fenetresLivraisons.indexOf(fenetreLivraison));
+			fenetreLivraisonFounded.removeLivraison(oldLivraison);
+		}
+	}
+	
+	/**
 	 * add a new FenetreLivraison to the list fenetresLivraisons
 	 * @param newFenetreLivraison
 	 */

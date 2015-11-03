@@ -36,6 +36,14 @@ public class FenetreLivraison {
 	public void addLivraison(Livraison newLivraison) {
 		this.livraisons.add(newLivraison);
 	}
+	
+	/**
+	 * remove a Livraison object from the arrayList livraisons
+	 * @param oldLivraison
+	 */
+	public void removeLivraison(Livraison oldLivraison) {
+		this.livraisons.remove(oldLivraison);
+	}
 
 	public double getHeureDebut() {
 		return heureDebut;
