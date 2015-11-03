@@ -32,10 +32,13 @@ public class AjouterLivraison implements Commande
 		demande.addLivraison(livraison, fenetre);
 	}
 
+	/**
+	 * Supprime une livraison d'une fenetre de livraison pour une demande
+	 */
 	@Override
 	public void unExecute() 
 	{
-		//demande.removeLivraison(livraison, fenetre);
+		demande.removeLivraison(livraison, fenetre);
 	}
 	
 }
