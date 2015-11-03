@@ -23,6 +23,7 @@ public class VuePlan extends JPanel implements Observer {
         super();
         //plan.addObserver(this);
         this.plan = plan;
+        this.echelle=echelle;
 
     }
 
@@ -52,8 +53,8 @@ public class VuePlan extends JPanel implements Observer {
 
     private void drawAdresse(Graphics2D g2, Adresse adresse) {
         adresse.afficheAdresse();
-        int x = adresse.getCoordX();
-        int y = adresse.getCoordY();
+        int x = scaleIt(adresse.getCoordX());
+        int y = scaleIt(adresse.getCoordY());
         g2.drawLine(x, y, x, y);
     }
 
@@ -61,11 +62,15 @@ public class VuePlan extends JPanel implements Observer {
         troncon.afficheTroncon();
         Adresse origine = troncon.getOrigine();
         Adresse destination = troncon.getDestination();
-        int xOrigine = origine.getCoordX();
-        int yOrigine = origine.getCoordY();
-        int xDestination = destination.getCoordX();
-        int yDestination = destination.getCoordY();
+        int xOrigine = scaleIt(origine.getCoordX());
+        int yOrigine = scaleIt(origine.getCoordY());
+        int xDestination = scaleIt(destination.getCoordX());
+        int yDestination = scaleIt(destination.getCoordY());
         g2.drawLine(xOrigine, yOrigine, xDestination, yDestination);
+    }
+
+    private int scaleIt(int coordonnee) {
+        return (coordonnee*this.echelle);
     }
 
     @Override
