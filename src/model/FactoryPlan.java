@@ -41,10 +41,13 @@ public class FactoryPlan implements FactoryBase {
 		return null;
 	}
 	
-	public Troncon getTroncon(String nomRue, double vitesseMoyenne, double longueur, int idDestination){
+	public Troncon getTroncon(String nomRue, double vitesseMoyenne, double longueur, int idDestination, int idOrigine){
 		// check parameters and if destination exists in in the adresses list
-		if(nomRue.length()!=0 && vitesseMoyenne>0 && longueur>0 && this.plan.getAdresseById(idDestination)!=null){
-			return new Troncon(nomRue, vitesseMoyenne, longueur, this.plan.getAdresseById(idDestination));
+		Adresse origine = this.plan.getAdresseById(idOrigine);
+		Adresse destination = this.plan.getAdresseById(idDestination);
+
+		if(nomRue.length()!=0 && vitesseMoyenne>0 && longueur>0 && origine!=null && destination!=null){
+			return new Troncon(nomRue, vitesseMoyenne, longueur, origine, destination);
 		}
 		return null;
 	}
@@ -78,7 +81,12 @@ public class FactoryPlan implements FactoryBase {
 				
 			    for(int j = 0; j<nbTronconsSortants; j++) {
 			        final Element tronconSortant = (Element) tronconsSortantsListe.item(j);
-			        Troncon newTroncon = this.getTroncon(tronconSortant.getAttribute("nomRue"), Double.parseDouble(tronconSortant.getAttribute("vitesse").replace(',', '.')), Double.parseDouble(tronconSortant.getAttribute("longueur").replace(',', '.')), Integer.parseInt(tronconSortant.getAttribute("idNoeudDestination")));
+					String nomRue = tronconSortant.getAttribute("nomRue");
+					Double vitesse = Double.parseDouble(tronconSortant.getAttribute("vitesse").replace(',', '.'));
+					Double longueur = Double.parseDouble(tronconSortant.getAttribute("longueur").replace(',', '.'));
+					int idDestination = Integer.parseInt(tronconSortant.getAttribute("idNoeudDestination"));
+					int idOrigine = currentAdresse.getId();
+			        Troncon newTroncon = this.getTroncon(nomRue, vitesse, longueur, idOrigine, idDestination);
 	                this.plan.addTroncon(newTroncon);
 	                currentAdresse.addTroncon(newTroncon);
 			    }
