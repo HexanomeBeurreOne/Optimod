@@ -8,7 +8,10 @@ public class SupprimerLivraison implements Commande
 	
 //------------------------------------------------- CONSTRUCTORS
 	
-	
+	public SupprimerLivraison()
+	{
+		
+	}
 	
 //------------------------------------------------- METHODS
 	
