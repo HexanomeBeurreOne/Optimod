@@ -20,7 +20,7 @@ public class SupprimerLivraison implements Commande
 	}
 
 	@Override
-	public void unexecute() 
+	public void unExecute() 
 	{
 		// TODO Auto-generated method stub
 		
