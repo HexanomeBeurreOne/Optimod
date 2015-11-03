@@ -16,8 +16,8 @@ public class Fenetre extends JFrame implements Observer {
 
         //Définit un titre pour notre fenêtre
         this.setTitle("Optimod");
-        //Définit sa taille : 400 pixels de large et 100 pixels de haut
-        this.setSize(1200, 800);
+        //Définit sa taille : plein ecran
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         //Nous demandons maintenant à notre objet de se positionner au centre
         this.setLocationRelativeTo(null);
         //Termine le processus lorsqu'on clique sur la croix rouge
