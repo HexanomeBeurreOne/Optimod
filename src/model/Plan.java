@@ -19,6 +19,7 @@ public class Plan {
 	private String nom;
 	private List<Adresse> adresses;
 	private List<Troncon> troncons;
+	private DemandeLivraisons demandeLivraisons;
 	
 	/**
 	 * Constructor
@@ -26,9 +27,52 @@ public class Plan {
 	public Plan() {
 		this.nom = "";
 		this.adresses = new ArrayList();
-		this.troncons = new ArrayList();		
+		this.troncons = new ArrayList();
+		this.demandeLivraisons = new DemandeLivraisons();
 	}
 	
+	public DemandeLivraisons getDemandeLivraisons() {
+		return demandeLivraisons;
+	}
+
+	public void setDemandeLivraisons(DemandeLivraisons demandeLivraisons) {
+		this.demandeLivraisons = demandeLivraisons;
+	}
+	
+	/**
+	 * Add a new Livraison to the specified fenetreLivraison passed in parameters
+	 * @param newLivraison
+	 * @param fenetreLivraison
+	 */
+	public void addLivraison(Livraison newLivraison, FenetreLivraison fenetreLivraison) {
+		List<FenetreLivraison> fenetresLivraisonsList = this.demandeLivraisons.getFenetresLivraisons();
+		if (fenetresLivraisonsList.contains(fenetreLivraison)) {
+			FenetreLivraison fenetreLivraisonFounded = fenetresLivraisonsList.get(fenetresLivraisonsList.indexOf(fenetreLivraison));
+			fenetreLivraisonFounded.addLivraison(newLivraison);
+		}
+	}
+	
+	/**
+	 * Remove a Livraison from the specified fenetreLivraison passed in parameters
+	 * @param oldLivraison
+	 * @param fenetreLivraison
+	 */
+	public void removeLivraison(Livraison oldLivraison, FenetreLivraison fenetreLivraison) {
+		List<FenetreLivraison> fenetresLivraisonsList = this.demandeLivraisons.getFenetresLivraisons();
+		if (fenetresLivraisonsList.contains(fenetreLivraison)) {
+			FenetreLivraison fenetreLivraisonFounded = fenetresLivraisonsList.get(fenetresLivraisonsList.indexOf(fenetreLivraison));
+			fenetreLivraisonFounded.removeLivraison(oldLivraison);
+		}
+	}
+	
+	/**
+	 * add a new FenetreLivraison to the list fenetresLivraisons
+	 * @param newFenetreLivraison
+	 */
+	public void addFenetreLivraison(FenetreLivraison newFenetreLivraison) {
+		this.demandeLivraisons.getFenetresLivraisons().add(newFenetreLivraison);
+	}
+
 	public String getNom() {
 		return nom;
 	}

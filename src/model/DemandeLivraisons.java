@@ -16,16 +16,13 @@ public class DemandeLivraisons {
 	/**
 	 * Attributes
 	 */
-	private Plan plan;
 	private int idEntrepot;
 	private List<FenetreLivraison> fenetresLivraisons;
-	
 	
 	/**
 	 * Constructor
 	 */
-	public DemandeLivraisons(Plan plan) {
-		this.plan = plan;
+	public DemandeLivraisons() {
 		this.idEntrepot = 0;
 		this.fenetresLivraisons = new ArrayList();
 	}
@@ -75,14 +72,6 @@ public class DemandeLivraisons {
 	 */
 	public void addFenetreLivraison(FenetreLivraison newFenetreLivraison) {
 		this.fenetresLivraisons.add(newFenetreLivraison);
-	}
-
-	public Plan getPlan() {
-		return plan;
-	}
-
-	public void setPlan(Plan plan) {
-		this.plan = plan;
 	}
 
 	public int getIdEntrepot() {
