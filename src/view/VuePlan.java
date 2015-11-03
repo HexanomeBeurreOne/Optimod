@@ -59,9 +59,13 @@ public class VuePlan extends JPanel implements Observer {
 
     private void drawTroncon(Graphics2D g2, Troncon troncon) {
         troncon.afficheTroncon();
-        int x = troncon.
-        int y = adresse.getCoordY();
-        g2.drawLine(x, y, x, y);
+        Adresse origine = troncon.getOrigine();
+        Adresse destination = troncon.getDestination();
+        int xOrigine = origine.getCoordX();
+        int yOrigine = origine.getCoordY();
+        int xDestination = destination.getCoordX();
+        int yDestination = destination.getCoordY();
+        g2.drawLine(xOrigine, yOrigine, xDestination, yDestination);
     }
 
     @Override
