@@ -12,7 +12,7 @@ import java.util.Observer;
  */
 public class Fenetre extends JFrame implements Observer {
 
-    public Fenetre(Plan plan, int echelle) throws HeadlessException {
+    public Fenetre(Plan plan, double echelle) throws HeadlessException {
 
         //Définit un titre pour notre fenêtre
         this.setTitle("Optimod");
