@@ -26,42 +26,37 @@ public class VuePlan extends JPanel implements Observer {
         //plan.addObserver(this);
         this.plan = plan;
         this.echelle=echelle;
-
     }
 
     public void paint(Graphics g) {
         Graphics2D g2 = (Graphics2D)g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
-
-        // Récupérer adresses du plan
-        List<Adresse>  adressesPlan = plan.getAdresses();
-        Iterator<Adresse> itAdresses = adressesPlan.iterator();
-        while (itAdresses.hasNext()){
-            drawAdresse(g2, itAdresses.next());
-        }
+        
         // Récupérer adresses du plan
         List<Troncon>  tronconsPlan = plan.getTroncons();
         Iterator<Troncon> itTroncons = tronconsPlan.iterator();
+        g2.setColor(Color.LIGHT_GRAY);
         while (itTroncons.hasNext()){
             drawTroncon(g2, itTroncons.next());
         }
-
-        //Font font = new Font("Serif", Font.PLAIN, 96);
-        //g2.drawString("Text", 40, 120);
-        //g2.setFont(font);
-        //g2.drawLine(14, 14, 45, 45);
+        
+        // Récupérer adresses du plan
+        List<Adresse>  adressesPlan = plan.getAdresses();
+        Iterator<Adresse> itAdresses = adressesPlan.iterator();
+        g2.setColor(Color.GRAY);
+        while (itAdresses.hasNext()){
+            drawAdresse(g2, itAdresses.next());
+        }
     }
 
     private void drawAdresse(Graphics2D g2, Adresse adresse) {
-        adresse.afficheAdresse();
         int x = scaleIt(adresse.getCoordX());
         int y = scaleIt(adresse.getCoordY());
         g2.fillOval(x - 3, y - 3, 6, 6);
     }
 
     private void drawTroncon(Graphics2D g2, Troncon troncon) {
-        troncon.afficheTroncon();
         Adresse origine = troncon.getOrigine();
         Adresse destination = troncon.getDestination();
         int xOrigine = scaleIt(origine.getCoordX());

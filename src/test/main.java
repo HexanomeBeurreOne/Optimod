@@ -18,7 +18,7 @@ public class main {
 		DemandeLivraisons demandeLivraisons = factoryDemandeLivraisons.getDemandeLivraisons("livraison20x20-1.xml", plan);
 		//demandeLivraisons.afficheDemandeLivraisons();
 
-		Fenetre fenetre = new Fenetre(plan, 1.3);
+		Fenetre fenetre = new Fenetre(plan, 1);
 	}
 
 }
