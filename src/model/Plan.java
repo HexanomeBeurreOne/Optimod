@@ -4,6 +4,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 
@@ -20,6 +21,7 @@ public class Plan {
 	private List<Adresse> adresses;
 	private List<Troncon> troncons;
 	private DemandeLivraisons demandeLivraisons;
+	private Hashtable<Integer,Hashtable<Integer,Object>> plusCourtsChemin;
 	
 	/**
 	 * Constructor
@@ -110,6 +112,54 @@ public class Plan {
 	  */
 	public void addTroncon(Troncon newTroncon) {
 		this.troncons.add(newTroncon);
+	}
+	
+	public void calculTournee()	{
+		calculPlusCourtsChemins();
+	}
+	
+	/**
+	 * Calculate the shortest paths between the delivery points
+	 */
+	
+	private void calculPlusCourtsChemins()	{
+		//The list is ordered
+		List<FenetreLivraison> fenetres = demandeLivraisons.getFenetresLivraisons();
+		
+		//Get entrepot
+		Adresse entrepot = getAdresseById(demandeLivraisons.getIdEntrepot());
+		//Liste des départs
+		List<Adresse> departs = new ArrayList<Adresse>(); 
+		departs.add(entrepot);
+		///Liste des listes des Adresses de livraison de la fenetre
+		List<List<Adresse>> adressesFenList = new ArrayList<List<Adresse>>();
+		adressesFenList.add(departs);
+		for(FenetreLivraison fen : fenetres)
+		{
+			List<Adresse> adressesFen = new ArrayList<Adresse>();
+			for(Livraison liv:fen.getLivraisons()){
+				adressesFen.add(liv.getAdresse());
+			}
+			adressesFenList.add(adressesFen);
+		}
+		adressesFenList.add(departs);
+		
+		//TODO : put it in dispatcher #multithread
+		for(int i=1; i < adressesFenList.size(); i++)	{
+			for(int j=0; j< adressesFenList.get(i-1).size(); j++)
+			{
+				List<Adresse> cibles = new ArrayList<Adresse>(adressesFenList.get(i));
+				cibles.addAll(adressesFenList.get(i-1));
+				Adresse depart = adressesFenList.get(i-1).get(j);
+				cibles.remove(depart);
+				//plusCourtsChemin.put(depart.getId(), dijkstra(depart, cibles));
+			}
+		}	
+	}
+
+	private Hashtable<Integer, Chemin> dijkstra(Adresse depart, List<Adresse> cibles)	{
+		Hashtable<Integer, Chemin> result = new Hashtable<Integer, Adresse>();  
+		return result;
 	}
 	
 	/**
