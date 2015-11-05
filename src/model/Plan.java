@@ -19,16 +19,60 @@ public class Plan {
 	private String nom;
 	private List<Adresse> adresses;
 	private List<Troncon> troncons;
+	private DemandeLivraisons demandeLivraisons;
 	
 	/**
 	 * Constructor
 	 */
 	public Plan() {
 		this.nom = "";
-		this.adresses = new ArrayList();
-		this.troncons = new ArrayList();		
+		this.adresses = new ArrayList<Adresse>();
+		this.troncons = new ArrayList<Troncon>();
+		this.demandeLivraisons = new DemandeLivraisons();
 	}
 	
+	public DemandeLivraisons getDemandeLivraisons() {
+		return demandeLivraisons;
+	}
+
+	public void setDemandeLivraisons(DemandeLivraisons demandeLivraisons) {
+		this.demandeLivraisons = demandeLivraisons;
+	}
+	
+	/**
+	 * Add a new Livraison to the specified fenetreLivraison passed in parameters
+	 * @param newLivraison
+	 * @param fenetreLivraison
+	 */
+	public void addLivraison(Livraison newLivraison, FenetreLivraison fenetreLivraison) {
+		List<FenetreLivraison> fenetresLivraisonsList = this.demandeLivraisons.getFenetresLivraisons();
+		if (fenetresLivraisonsList.contains(fenetreLivraison)) {
+			FenetreLivraison fenetreLivraisonFounded = fenetresLivraisonsList.get(fenetresLivraisonsList.indexOf(fenetreLivraison));
+			fenetreLivraisonFounded.addLivraison(newLivraison);
+		}
+	}
+	
+	/**
+	 * Remove a Livraison from the specified fenetreLivraison passed in parameters
+	 * @param oldLivraison
+	 * @param fenetreLivraison
+	 */
+	public void removeLivraison(Livraison oldLivraison, FenetreLivraison fenetreLivraison) {
+		List<FenetreLivraison> fenetresLivraisonsList = this.demandeLivraisons.getFenetresLivraisons();
+		if (fenetresLivraisonsList.contains(fenetreLivraison)) {
+			FenetreLivraison fenetreLivraisonFounded = fenetresLivraisonsList.get(fenetresLivraisonsList.indexOf(fenetreLivraison));
+			fenetreLivraisonFounded.removeLivraison(oldLivraison);
+		}
+	}
+	
+	/**
+	 * add a new FenetreLivraison to the list fenetresLivraisons
+	 * @param newFenetreLivraison
+	 */
+	public void addFenetreLivraison(FenetreLivraison newFenetreLivraison) {
+		this.demandeLivraisons.getFenetresLivraisons().add(newFenetreLivraison);
+	}
+
 	public String getNom() {
 		return nom;
 	}
@@ -74,7 +118,7 @@ public class Plan {
 	 * @return
 	 */
 	public Adresse getAdresseById(int id) {
-		Iterator adressesIterator = this.adresses.iterator();
+		Iterator<Adresse> adressesIterator = this.adresses.iterator();
 		while(adressesIterator.hasNext()) {
 			Adresse currentAdresse = (Adresse) adressesIterator.next();
 			if(currentAdresse.getId()==id) return currentAdresse;
@@ -85,7 +129,7 @@ public class Plan {
 	public void affichePlan() {
 		System.out.println("Plan : "+this.nom);
 		System.out.println("Liste adresses : ");
-		Iterator adressesIterator = this.adresses.iterator();
+		Iterator<Adresse> adressesIterator = this.adresses.iterator();
 		while(adressesIterator.hasNext()) {
 			Adresse currentAdresse = (Adresse) adressesIterator.next();
 			System.out.print("   ");
