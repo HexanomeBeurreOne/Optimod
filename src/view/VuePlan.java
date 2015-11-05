@@ -8,35 +8,60 @@ import java.awt.geom.Point2D;
 import java.util.*;
 
 import java.util.List;
+
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.border.CompoundBorder;
 /**
  * Created by cyrilcanete on 03/11/15.
  */
 public class VuePlan extends JPanel implements Observer {
 
     private double echelle;
-    private int hauteurVue;
-    private int largeurVue;
+    private int hauteurVuePlan;
+    private int largeurVuePlan;
     private Plan plan;
+    
 
 
-    public VuePlan(Plan plan, double echelle) {
+    public VuePlan(Plan plan, double echelle, Fenetre fenetre) {
         super();
         //plan.addObserver(this);
+        setLayout(null);
+        
+        hauteurVuePlan = fenetre.getHauteurFenetre()-70;
+        largeurVuePlan = 2*fenetre.getLargeurFenetre()/3;
+        
+        //Taille du plan
+        setSize(largeurVuePlan, hauteurVuePlan);
+        
+        this.setBackground(Color.LIGHT_GRAY);
+        
+        //Couleur des bordures
+        this.setBorder(new CompoundBorder(
+        	    BorderFactory.createMatteBorder(1, 1, 1, 1, Color.DARK_GRAY), 
+        	    BorderFactory.createMatteBorder(1, 1, 1, 1, Color.DARK_GRAY)));
+        
+        // Position du plan
+        setLocation(5, 40);
+        
+        fenetre.getContentPane().add(this);
         this.plan = plan;
         this.echelle=echelle;
     }
 
-    public void paint(Graphics g) {
+    @Override
+    public void paintComponent(Graphics g) {
+    	super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
         
-        // Récupérer adresses du plan
+        // Récupérer troncons du plan
         List<Troncon>  tronconsPlan = plan.getTroncons();
         Iterator<Troncon> itTroncons = tronconsPlan.iterator();
-        g2.setColor(Color.LIGHT_GRAY);
+        g2.setColor(Color.WHITE);
         while (itTroncons.hasNext()){
             drawTroncon(g2, itTroncons.next());
         }
@@ -44,16 +69,18 @@ public class VuePlan extends JPanel implements Observer {
         // Récupérer adresses du plan
         List<Adresse>  adressesPlan = plan.getAdresses();
         Iterator<Adresse> itAdresses = adressesPlan.iterator();
-        g2.setColor(Color.GRAY);
+        g2.setColor(Color.WHITE);
         while (itAdresses.hasNext()){
             drawAdresse(g2, itAdresses.next());
         }
     }
 
     private void drawAdresse(Graphics2D g2, Adresse adresse) {
+    	
+    	
         int x = scaleIt(adresse.getCoordX());
         int y = scaleIt(adresse.getCoordY());
-        g2.fillOval(x - 3, y - 3, 6, 6);
+        g2.fillOval(x - 4, y - 4, 8, 8);
     }
 
     private void drawTroncon(Graphics2D g2, Troncon troncon) {
@@ -63,6 +90,7 @@ public class VuePlan extends JPanel implements Observer {
         int yOrigine = scaleIt(origine.getCoordY());
         int xDestination = scaleIt(destination.getCoordX());
         int yDestination = scaleIt(destination.getCoordY());
+        g2.setStroke(new BasicStroke(3));
         g2.drawLine(xOrigine, yOrigine, xDestination, yDestination);
     }
 

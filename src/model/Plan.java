@@ -19,6 +19,10 @@ public class Plan {
 	private String nom;
 	private List<Adresse> adresses;
 	private List<Troncon> troncons;
+	private int xMin;
+	private int xMax;
+	private int yMin;
+	private int yMax;
 	
 	/**
 	 * Constructor
@@ -26,7 +30,7 @@ public class Plan {
 	public Plan() {
 		this.nom = "";
 		this.adresses = new ArrayList();
-		this.troncons = new ArrayList();		
+		this.troncons = new ArrayList();
 	}
 	
 	public String getNom() {

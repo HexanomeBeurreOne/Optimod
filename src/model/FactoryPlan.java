@@ -62,6 +62,7 @@ public class FactoryPlan implements FactoryBase {
 		this.plan = new Plan();
 		
 	    // first reading, instantiate all addresses
+		boolean premiereFois = true;
 	    for (int i = 0; i<nbAdresses; i++) {
 	        if(adressesListe.item(i).getNodeType() == Node.ELEMENT_NODE) {
 	            final Element adresse = (Element) adressesListe.item(i);

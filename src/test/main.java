@@ -1,5 +1,6 @@
 package test;
 
+import controller.ControlleurApplication;
 import model.*;
 import view.*;
 
@@ -17,8 +18,10 @@ public class main {
 		
 		DemandeLivraisons demandeLivraisons = factoryDemandeLivraisons.getDemandeLivraisons("livraison20x20-1.xml", plan);
 		//demandeLivraisons.afficheDemandeLivraisons();
-
-		Fenetre fenetre = new Fenetre(plan, 1);
+		
+		
+		ControlleurApplication controller = new ControlleurApplication();
+		Fenetre fenetre = new Fenetre(plan, 0.83, controller);
 	}
 
 }
