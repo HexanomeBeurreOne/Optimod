@@ -26,8 +26,8 @@ public class Plan {
 	 */
 	public Plan() {
 		this.nom = "";
-		this.adresses = new ArrayList();
-		this.troncons = new ArrayList();
+		this.adresses = new ArrayList<Adresse>();
+		this.troncons = new ArrayList<Troncon>();
 		this.demandeLivraisons = new DemandeLivraisons();
 	}
 	
@@ -118,7 +118,7 @@ public class Plan {
 	 * @return
 	 */
 	public Adresse getAdresseById(int id) {
-		Iterator adressesIterator = this.adresses.iterator();
+		Iterator<Adresse> adressesIterator = this.adresses.iterator();
 		while(adressesIterator.hasNext()) {
 			Adresse currentAdresse = (Adresse) adressesIterator.next();
 			if(currentAdresse.getId()==id) return currentAdresse;
@@ -129,7 +129,7 @@ public class Plan {
 	public void affichePlan() {
 		System.out.println("Plan : "+this.nom);
 		System.out.println("Liste adresses : ");
-		Iterator adressesIterator = this.adresses.iterator();
+		Iterator<Adresse> adressesIterator = this.adresses.iterator();
 		while(adressesIterator.hasNext()) {
 			Adresse currentAdresse = (Adresse) adressesIterator.next();
 			System.out.print("   ");
