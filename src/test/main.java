@@ -6,6 +6,7 @@ public class main {
 
 	public static void main(String[] args) {
 		
+		/*
 		FactoryPlan factoryPlan = new FactoryPlan();
 		
 		// le fichier passé en paramètre doit se trouver dans le dossier principal du projet
@@ -23,6 +24,7 @@ public class main {
 		plan.addLivraison(newLivraison, demandeLivraisons.getFenetreLivraison(30600));
 		
 		plan.getDemandeLivraisons().afficheDemandeLivraisons();
+		*/
 	}
 
 }

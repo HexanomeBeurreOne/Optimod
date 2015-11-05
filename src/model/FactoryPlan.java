@@ -21,6 +21,10 @@ public class FactoryPlan implements FactoryBase {
 	
 	private Plan plan = null;
 	
+	
+	/**
+	 * parse a xml file and return its domTree, return null otherwise 
+	 */
 	public Document getDomTree(String uriXml) {
 		final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		try {
@@ -28,19 +32,36 @@ public class FactoryPlan implements FactoryBase {
 		    final Document domTree= builder.parse(new File(uriXml));
 		    return domTree;
 		} catch(Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		return null;
 	}
 	
+	/**
+	 * Return a new Adresse object with given parameters if it has not already been instantiated and added to the adresseList of plan
+	 * return null otherwise
+	 * @param id
+	 * @param coordX
+	 * @param coordY
+	 * @return
+	 */
 	public Adresse getAdresse(int id, int coordX, int coordY){
-		// check if the given id already exists in the adresses list
+		// check if the given id does not exist in the adresses list and if coords are positive
 		if(this.plan.getAdresseById(id)==null && coordX>=0 && coordY>=0){
 			return new Adresse(id, coordX, coordY);
 		}
 		return null;
 	}
 	
+	/**
+	 * Return a new Troncon object with given parameters if its destination adresse has been added to the list of plan
+	 * return null otherwise
+	 * @param nomRue
+	 * @param vitesseMoyenne
+	 * @param longueur
+	 * @param idDestination
+	 * @return
+	 */
 	public Troncon getTroncon(String nomRue, double vitesseMoyenne, double longueur, int idDestination){
 		// check parameters and if destination exists in in the adresses list
 		if(nomRue.length()!=0 && vitesseMoyenne>0 && longueur>0 && this.plan.getAdresseById(idDestination)!=null){
@@ -49,41 +70,102 @@ public class FactoryPlan implements FactoryBase {
 		return null;
 	}
 	
+	/**
+	 * Instantiate and return a Plan object basing to the XML file passed in parameters
+	 * @param uriXml
+	 * @return
+	 */
 	public Plan getPlan(String uriXml) {
-		final Document domTree = this.getDomTree(uriXml);
-		final Element racine = domTree.getDocumentElement();
 		
-		final NodeList adressesListe = racine.getChildNodes();
-		final int nbAdresses = adressesListe.getLength();
-		
-		this.plan = new Plan();
-		
-	    // first reading, instantiate all addresses
-	    for (int i = 0; i<nbAdresses; i++) {
-	        if(adressesListe.item(i).getNodeType() == Node.ELEMENT_NODE) {
-	            final Element adresse = (Element) adressesListe.item(i);
-	            Adresse newAdresse = this.getAdresse(Integer.parseInt(adresse.getAttribute("id")), Integer.parseInt(adresse.getAttribute("x")), Integer.parseInt(adresse.getAttribute("y")));
-	            this.plan.addAdresse(newAdresse);
-	        }
-	    }
-	    
-	    // second reading, instantiate all troncon and add tronconSortant to adresse
-	    for (int i = 0; i<nbAdresses; i++) {
-	        if(adressesListe.item(i).getNodeType() == Node.ELEMENT_NODE) {
-	            final Element adresse = (Element) adressesListe.item(i);
-	            final Adresse currentAdresse = this.plan.getAdresseById(Integer.parseInt(adresse.getAttribute("id")));
-	            
-	            final NodeList tronconsSortantsListe = adresse.getElementsByTagName("LeTronconSortant");
-			    final int nbTronconsSortants = tronconsSortantsListe.getLength();
+		try {
+			// get the domTree of the XML file
+			final Document domTree = this.getDomTree(uriXml);
+			final Element racine = domTree.getDocumentElement();
+			
+			// instantiate the plan to a new Plan
+			this.plan = new Plan();
+					
+			// get all Noeud tag from the xml file to instantiate the Adresse objects
+			final NodeList adressesListe = racine.getChildNodes();
+			final int nbAdresses = adressesListe.getLength();
+			
+		    // first reading, instantiate all addresses
+		    for (int i = 0; i<nbAdresses; i++) {
+		    	
+		    	// check if the current tag is a NODE and if it is called Noeud (ignoring the case)
+		        if(adressesListe.item(i).getNodeType() == Node.ELEMENT_NODE && adressesListe.item(i).getNodeName().equalsIgnoreCase("Noeud")) {
+		            final Element adresse = (Element) adressesListe.item(i);
+		            
+		            try {
+		            int idAdresse = Integer.parseInt(adresse.getAttribute("id"));
+		            int coordX = Integer.parseInt(adresse.getAttribute("x"));
+		            int coordY = Integer.parseInt(adresse.getAttribute("y"));
+		            
+		            // instantiate a new Adresse object with attributes given in the xml tag
+	            	Adresse newAdresse = this.getAdresse(idAdresse, coordX, coordY);
+	            	// add the adresse to the list of the plan if it is not null
+		             if( newAdresse != null )this.plan.addAdresse(newAdresse);
+		            } catch (Exception e) {
+		            	
+		            	// s'il manque des paramètres pour créer une adresse dans le fichier xml on stoppe l'instanciation du plan
+		            	System.err.println("Missing parameters for Noeud tag #"+(Math.ceil(i/2))+" in the file "+uriXml);
+		            	return null;
+		            }
+		            
+		            
+		        }
+		    }
+		    
+		    // second reading, instantiate all Troncon and add tronconSortant to Adresse
+		    for (int i = 0; i<nbAdresses; i++) {
+		    	
+		    	// check if the current tag is a NODE and if it is called Noeud (ignoring the case)
+		        if(adressesListe.item(i).getNodeType() == Node.ELEMENT_NODE && adressesListe.item(i).getNodeName().equalsIgnoreCase("Noeud")) {
+		            final Element adresse = (Element) adressesListe.item(i);
+		            
+		            // get the Adresse from the Adresse list of Plan by its Id
+		            final Adresse currentAdresse = this.plan.getAdresseById(Integer.parseInt(adresse.getAttribute("id")));
+		            
+		            if( currentAdresse != null ) {
+		            	
+		            	// get all LeTronconSortant tag from the xml file to instantiate the Troncon objects
+			            final NodeList tronconsSortantsListe = adresse.getElementsByTagName("LeTronconSortant");
+					    final int nbTronconsSortants = tronconsSortantsListe.getLength();
+						
+					    for(int j = 0; j<nbTronconsSortants; j++) {
+					    	
+					    	// check if the current tag is a NODE and if it is called LeTronconSortant (ignoring the case)
+					    	if(tronconsSortantsListe.item(j).getNodeType() == Node.ELEMENT_NODE) {
+					    		final Element tronconSortant = (Element) tronconsSortantsListe.item(j);
+					    		
+					    		try {
+						    		String nomRue = tronconSortant.getAttribute("nomRue");
+						    		double vitesse = Double.parseDouble(tronconSortant.getAttribute("vitesse").replace(',', '.'));
+						    		double longueur = Double.parseDouble(tronconSortant.getAttribute("longueur").replace(',', '.'));
+						    		int idAdresseDestination = Integer.parseInt(tronconSortant.getAttribute("idNoeudDestination"));
+						    		
+							        Troncon newTroncon = this.getTroncon(nomRue, vitesse, longueur, idAdresseDestination);
+							        
+							        // add the Troncon to the list of the Plan and to the TronconsSortants list of the current Adresse if it is not null
+					                if( newTroncon != null ) {
+					                	this.plan.addTroncon(newTroncon);
+						                currentAdresse.addTroncon(newTroncon);
+					                }
+					    		} catch(Exception e) {
+					    			System.err.println("Missing parameters for LeTronconSortant tag #"+j+" of Noeud tag #"+(Math.ceil(i/2))+" in the file "+uriXml);
+					    		}
+						        
+					    	}
+					    }
+		            }
+		        }
+		    }
+		}catch(Exception e) {
 				
-			    for(int j = 0; j<nbTronconsSortants; j++) {
-			        final Element tronconSortant = (Element) tronconsSortantsListe.item(j);
-			        Troncon newTroncon = this.getTroncon(tronconSortant.getAttribute("nomRue"), Double.parseDouble(tronconSortant.getAttribute("vitesse").replace(',', '.')), Double.parseDouble(tronconSortant.getAttribute("longueur").replace(',', '.')), Integer.parseInt(tronconSortant.getAttribute("idNoeudDestination")));
-	                this.plan.addTroncon(newTroncon);
-	                currentAdresse.addTroncon(newTroncon);
-			    }
-	        }
-	    }
+		// si le fichier n'est pas bien formé on ne stoppe l'instanciation de la demande de livraisons
+		System.err.println("The file "+uriXml+" is not well formed");
+		return null;
+	}
 	    
 	    return this.plan;
 	    
