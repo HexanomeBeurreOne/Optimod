@@ -56,7 +56,7 @@ public class Adresse {
 	}
 
 	/**
-	 * Add a new TronconSortant to the list of tronconsSortants of the current Adresse
+	 * Add a new TronconSortant to the list tronconsSortants of the current Adresse
 	 * @param newTronconSortant
 	 */
 	public void addTroncon(Troncon newTronconSortant) {
@@ -73,5 +73,5 @@ public class Adresse {
 		}
 	}
 	
-
+	
 }

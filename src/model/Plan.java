@@ -113,7 +113,7 @@ public class Plan {
 	}
 	
 	/**
-	 * Get the Adresse which id is corresponding, return null if it does not contain
+	 * Get the Adresse which id is corresponding to the given parameter, return null if it does not contain
 	 * @param id
 	 * @return
 	 */
@@ -136,5 +136,6 @@ public class Plan {
 			currentAdresse.afficheAdresse();
 		}
 	}
+
 
 }
