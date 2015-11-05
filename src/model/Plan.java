@@ -158,7 +158,10 @@ public class Plan {
 	}
 
 	private Hashtable<Integer, Chemin> dijkstra(Adresse depart, List<Adresse> cibles)	{
-		Hashtable<Integer, Chemin> result = new Hashtable<Integer, Chemin>();  
+		Hashtable<Integer, Chemin> result = new Hashtable<Integer, Chemin>();
+		
+		//TODO:Implémenter Dijkstra
+		
 		return result;
 	}
 	
