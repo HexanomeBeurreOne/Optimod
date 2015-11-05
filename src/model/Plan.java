@@ -158,7 +158,7 @@ public class Plan {
 	}
 
 	private Hashtable<Integer, Chemin> dijkstra(Adresse depart, List<Adresse> cibles)	{
-		Hashtable<Integer, Chemin> result = new Hashtable<Integer, Adresse>();  
+		Hashtable<Integer, Chemin> result = new Hashtable<Integer, Chemin>();  
 		return result;
 	}
 	
