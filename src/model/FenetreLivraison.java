@@ -26,7 +26,7 @@ public class FenetreLivraison {
 	public FenetreLivraison(double heureDebut, double heureFin) {
 		this.heureDebut = heureDebut;
 		this.heureFin = heureFin;
-		this.livraisons = new ArrayList();
+		this.livraisons = new ArrayList<Livraison>();
 	}
 	
 	/**
@@ -71,7 +71,7 @@ public class FenetreLivraison {
 
 	public void afficheFenetreLivraison() {
 		System.out.println("FenetreLivraison : heureDebut="+this.heureDebut+" heureFin="+this.heureFin);
-		Iterator livraisonsIterator = this.livraisons.iterator();
+		Iterator<Livraison> livraisonsIterator = this.livraisons.iterator();
 		while(livraisonsIterator.hasNext()) {
 			Livraison currentLivraison = (Livraison) livraisonsIterator.next();
 			System.out.print("      ");

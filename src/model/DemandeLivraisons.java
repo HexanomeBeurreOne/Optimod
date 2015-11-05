@@ -24,7 +24,7 @@ public class DemandeLivraisons {
 	 */
 	public DemandeLivraisons() {
 		this.idEntrepot = 0;
-		this.fenetresLivraisons = new ArrayList();
+		this.fenetresLivraisons = new ArrayList<FenetreLivraison>();
 	}
 	
 	/**
@@ -34,7 +34,7 @@ public class DemandeLivraisons {
 	 * @return
 	 */
 	public FenetreLivraison getFenetreLivraison(double heureDebut) {
-		Iterator fenetresLivraisonsIterator = this.fenetresLivraisons.iterator();
+		Iterator<FenetreLivraison> fenetresLivraisonsIterator = this.fenetresLivraisons.iterator();
 		while(fenetresLivraisonsIterator.hasNext()) {
 			FenetreLivraison currentFenetreLivraison = (FenetreLivraison) fenetresLivraisonsIterator.next();
 			if(currentFenetreLivraison.getHeureDebut()==heureDebut) return currentFenetreLivraison;
@@ -93,7 +93,7 @@ public class DemandeLivraisons {
 	public void afficheDemandeLivraisons() {
 		System.out.println("DemandeLivraison : idEntrepot="+this.idEntrepot);
 		System.out.println("Liste livraisons : ");
-		Iterator fenetresLivraisonsIterator = this.fenetresLivraisons.iterator();
+		Iterator<FenetreLivraison> fenetresLivraisonsIterator = this.fenetresLivraisons.iterator();
 		while(fenetresLivraisonsIterator.hasNext()) {
 			FenetreLivraison currentFenetreLivraison = (FenetreLivraison) fenetresLivraisonsIterator.next();
 			System.out.print("   ");

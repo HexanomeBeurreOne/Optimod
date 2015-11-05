@@ -1,4 +1,4 @@
-package tsp;
+package model.tsp;
 
 public interface Graphe {
 

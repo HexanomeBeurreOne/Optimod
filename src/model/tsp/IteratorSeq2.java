@@ -1,4 +1,4 @@
-package tsp;
+package model.tsp;
 
 import java.util.Arrays;
 import java.util.Collection;
