@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.TreeMap;
 
 /**
  * @author Adrien Menella
@@ -21,7 +24,10 @@ public class Plan {
 	private List<Adresse> adresses;
 	private List<Troncon> troncons;
 	private DemandeLivraisons demandeLivraisons;
-	private Hashtable<Integer,Hashtable<Integer,Object>> plusCourtsChemin;
+	// Hashmap better than Hashtable in single threaded environment.
+	// The Key of the outer Hashtable is the id of the starting Adresse, 
+	// The Key of the inner Hashtable is the id of the ending Adresse, 
+	private Hashtable<Integer,Hashtable<Integer,Chemin>> plusCourtsChemin;
 	
 	/**
 	 * Constructor
@@ -121,19 +127,18 @@ public class Plan {
 	/**
 	 * Calculate the shortest paths between the delivery points
 	 */
-	
 	private void calculPlusCourtsChemins()	{
 		//The list is ordered
 		List<FenetreLivraison> fenetres = demandeLivraisons.getFenetresLivraisons();
 		
 		//Get entrepot
 		Adresse entrepot = getAdresseById(demandeLivraisons.getIdEntrepot());
-		//Liste des dÃ©parts
-		List<Adresse> departs = new ArrayList<Adresse>(); 
-		departs.add(entrepot);
+		//Liste contenant l'entrepot, qui est le départ et l'arrivée
+		List<Adresse> entrepotList = new ArrayList<Adresse>(); 
+		entrepotList.add(entrepot);
 		///Liste des listes des Adresses de livraison de la fenetre
 		List<List<Adresse>> adressesFenList = new ArrayList<List<Adresse>>();
-		adressesFenList.add(departs);
+		adressesFenList.add(entrepotList);
 		for(FenetreLivraison fen : fenetres)
 		{
 			List<Adresse> adressesFen = new ArrayList<Adresse>();
@@ -142,10 +147,11 @@ public class Plan {
 			}
 			adressesFenList.add(adressesFen);
 		}
-		adressesFenList.add(departs);
+		adressesFenList.add(entrepotList);
 		
 		//TODO : put it in dispatcher #multithread
-		for(int i=1; i < adressesFenList.size(); i++)	{
+		for(int i=1; i < adressesFenList.size(); i++)
+		{
 			for(int j=0; j< adressesFenList.get(i-1).size(); j++)
 			{
 				List<Adresse> cibles = new ArrayList<Adresse>(adressesFenList.get(i));
@@ -157,10 +163,24 @@ public class Plan {
 		}	
 	}
 
-	private Hashtable<Integer, Chemin> dijkstra(Adresse depart, List<Adresse> cibles)	{
+	private Hashtable<Integer, Chemin> dijkstra(Adresse depart, List<Adresse> cibles)
+	{
 		Hashtable<Integer, Chemin> result = new Hashtable<Integer, Chemin>();
-		
-		//TODO:ImplÃ©menter Dijkstra
+		// Map containing the discovered Adresses, the Key is the shortest time to go to this address at the moment
+		TreeMap<Integer, Adresse> adressesEnAttentes = new TreeMap<Integer, Adresse>();
+		adressesEnAttentes.put(0, depart);
+		// While we haven't reach all the targeted Adresses
+		while(cibles.size() > 0)
+		{
+			Entry<Integer, Adresse> adresse = adressesEnAttentes.firstEntry();
+			adressesEnAttentes.remove(adresse.getKey());
+			for(Troncon troncon : adresse.getValue().getTroncons())
+			{
+				adressesEnAttentes.put((int) (adresse.getKey() + troncon.getTempsTroncon()), troncon.getDestination());
+				//TODO: Sauver la précédence dans une map ou je sais pas quoi
+			}
+			cibles.remove(adresse);
+		}
 		
 		return result;
 	}

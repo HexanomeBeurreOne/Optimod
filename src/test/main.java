@@ -1,5 +1,7 @@
 package test;
 
+import java.util.TreeMap;
+
 import model.*;
 import view.*;
 
@@ -20,15 +22,13 @@ public class main {
 		plan.setDemandeLivraisons(demandeLivraisons);
 		plan.getDemandeLivraisons().afficheDemandeLivraisons();
 		
-		
+		/*
 		Livraison newLivraison = new Livraison(666, plan.getAdresseById(399), demandeLivraisons.getFenetreLivraison(30600));
 		plan.addLivraison(newLivraison, demandeLivraisons.getFenetreLivraison(30600));
 		
 		plan.getDemandeLivraisons().afficheDemandeLivraisons();
 
-		//demandeLivraisons.afficheDemandeLivraisons();
-
-		Fenetre fenetre = new Fenetre(plan, 1);
+		Fenetre fenetre = new Fenetre(plan, 1);*/
 	}
 
 }
