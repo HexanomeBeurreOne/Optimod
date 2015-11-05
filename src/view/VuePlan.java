@@ -36,7 +36,7 @@ public class VuePlan extends JPanel implements Observer {
         //Taille du plan
         setSize(largeurVuePlan, hauteurVuePlan);
         
-        this.setBackground(Color.LIGHT_GRAY);
+        this.setBackground(Color.WHITE);
         
         //Couleur des bordures
         this.setBorder(new CompoundBorder(
@@ -61,7 +61,7 @@ public class VuePlan extends JPanel implements Observer {
         // Récupérer troncons du plan
         List<Troncon>  tronconsPlan = plan.getTroncons();
         Iterator<Troncon> itTroncons = tronconsPlan.iterator();
-        g2.setColor(Color.WHITE);
+        g2.setColor(Color.LIGHT_GRAY);
         while (itTroncons.hasNext()){
             drawTroncon(g2, itTroncons.next());
         }
@@ -69,7 +69,7 @@ public class VuePlan extends JPanel implements Observer {
         // Récupérer adresses du plan
         List<Adresse>  adressesPlan = plan.getAdresses();
         Iterator<Adresse> itAdresses = adressesPlan.iterator();
-        g2.setColor(Color.WHITE);
+        g2.setColor(Color.GRAY);
         while (itAdresses.hasNext()){
             drawAdresse(g2, itAdresses.next());
         }
@@ -80,7 +80,7 @@ public class VuePlan extends JPanel implements Observer {
     	
         int x = scaleIt(adresse.getCoordX());
         int y = scaleIt(adresse.getCoordY());
-        g2.fillOval(x - 4, y - 4, 8, 8);
+        g2.fillOval(x - 3, y - 3, 6, 6);
     }
 
     private void drawTroncon(Graphics2D g2, Troncon troncon) {
@@ -90,7 +90,6 @@ public class VuePlan extends JPanel implements Observer {
         int yOrigine = scaleIt(origine.getCoordY());
         int xDestination = scaleIt(destination.getCoordX());
         int yDestination = scaleIt(destination.getCoordY());
-        g2.setStroke(new BasicStroke(3));
         g2.drawLine(xOrigine, yOrigine, xDestination, yDestination);
     }
 
