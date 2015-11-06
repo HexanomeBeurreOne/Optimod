@@ -20,6 +20,7 @@ import org.w3c.dom.NodeList;
 public class FactoryDemandeLivraisons implements FactoryBase {
 
 	private DemandeLivraisons demandeLivraisons = null;
+	private Plan plan = null;
 	
 	@Override
 	public Document getDomTree(String uriXml) {
@@ -35,8 +36,8 @@ public class FactoryDemandeLivraisons implements FactoryBase {
 	}
 	
 	public Livraison getLivraison(int client, int idAdresse, FenetreLivraison fenetreLivraison) {
-		if(client>0 && this.demandeLivraisons.getPlan().getAdresseById(idAdresse)!=null && this.demandeLivraisons.getFenetresLivraisons().contains(fenetreLivraison)) {
-			return new Livraison(client, this.demandeLivraisons.getPlan().getAdresseById(idAdresse), fenetreLivraison);	
+		if(client>0 && this.plan.getAdresseById(idAdresse)!=null && this.demandeLivraisons.getFenetresLivraisons().contains(fenetreLivraison)) {
+			return new Livraison(client, this.plan.getAdresseById(idAdresse), fenetreLivraison);	
 		}
 		return null;
 	}
@@ -58,10 +59,14 @@ public class FactoryDemandeLivraisons implements FactoryBase {
 	}
 	
 	public DemandeLivraisons getDemandeLivraisons(String uriXml, Plan plan) {
+		
+		// on passe le plan en paramètre pour pouvoir aller récupérer les adresses à partir de leur id
+		this.plan = plan;
+		
 		final Document domTree = this.getDomTree(uriXml);
 		final Element racine = domTree.getDocumentElement();
 		
-		this.demandeLivraisons = new DemandeLivraisons(plan);
+		this.demandeLivraisons = new DemandeLivraisons();
 		
 		final NodeList childrenNodes = racine.getChildNodes();
 		
@@ -75,7 +80,10 @@ public class FactoryDemandeLivraisons implements FactoryBase {
 	        if(fenetreLivraisonListe.item(i).getNodeType() == Node.ELEMENT_NODE) {
 	            final Element fenetreLivraison = (Element) fenetreLivraisonListe.item(i);
 	            
-	            FenetreLivraison newFenetreLivraison = this.getFenetreLivraison(this.convertTimeToSeconds(fenetreLivraison.getAttribute("heureDebut")), this.convertTimeToSeconds(fenetreLivraison.getAttribute("heureFin")));
+	            FenetreLivraison newFenetreLivraison = this.getFenetreLivraison(
+	            		this.convertTimeToSeconds(fenetreLivraison.getAttribute("heureDebut")),
+	            		this.convertTimeToSeconds(fenetreLivraison.getAttribute("heureFin"))
+	            		);
 	            
 	            this.demandeLivraisons.addFenetreLivraison(newFenetreLivraison);
 	            
@@ -85,7 +93,11 @@ public class FactoryDemandeLivraisons implements FactoryBase {
 				
 			    for(int j = 0; j<nbLivraison; j++) {
 			        final Element livraison = (Element) LivraisonListe.item(j);
-			        Livraison newLivraison = this.getLivraison(Integer.parseInt(livraison.getAttribute("client")), Integer.parseInt(livraison.getAttribute("adresse")), newFenetreLivraison);
+			        Livraison newLivraison = this.getLivraison(
+			        		Integer.parseInt(livraison.getAttribute("client")),
+			        		Integer.parseInt(livraison.getAttribute("adresse")),
+			        		newFenetreLivraison
+			        		);
 			        this.demandeLivraisons.addLivraison(newLivraison, newFenetreLivraison);
 			    }
 	        }

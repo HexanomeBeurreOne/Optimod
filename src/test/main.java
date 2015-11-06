@@ -17,11 +17,22 @@ public class main {
 		FactoryDemandeLivraisons factoryDemandeLivraisons = new FactoryDemandeLivraisons();
 		
 		DemandeLivraisons demandeLivraisons = factoryDemandeLivraisons.getDemandeLivraisons("livraison20x20-1.xml", plan);
+
 		//demandeLivraisons.afficheDemandeLivraisons();
 		
 		
 		ControlleurApplication controller = new ControlleurApplication();
 		Fenetre fenetre = new Fenetre(plan, 0.83, controller);
+		/*
+		plan.setDemandeLivraisons(demandeLivraisons);
+		plan.getDemandeLivraisons().afficheDemandeLivraisons();
+		
+		
+		Livraison newLivraison = new Livraison(666, plan.getAdresseById(399), demandeLivraisons.getFenetreLivraison(30600));
+		plan.addLivraison(newLivraison, demandeLivraisons.getFenetreLivraison(30600));
+		
+		plan.getDemandeLivraisons().afficheDemandeLivraisons();
+		*/
 	}
 
 }

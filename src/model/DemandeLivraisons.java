@@ -16,18 +16,15 @@ public class DemandeLivraisons {
 	/**
 	 * Attributes
 	 */
-	private Plan plan;
 	private int idEntrepot;
 	private List<FenetreLivraison> fenetresLivraisons;
-	
 	
 	/**
 	 * Constructor
 	 */
-	public DemandeLivraisons(Plan plan) {
-		this.plan = plan;
+	public DemandeLivraisons() {
 		this.idEntrepot = 0;
-		this.fenetresLivraisons = new ArrayList();
+		this.fenetresLivraisons = new ArrayList<FenetreLivraison>();
 	}
 	
 	/**
@@ -37,7 +34,7 @@ public class DemandeLivraisons {
 	 * @return
 	 */
 	public FenetreLivraison getFenetreLivraison(double heureDebut) {
-		Iterator fenetresLivraisonsIterator = this.fenetresLivraisons.iterator();
+		Iterator<FenetreLivraison> fenetresLivraisonsIterator = this.fenetresLivraisons.iterator();
 		while(fenetresLivraisonsIterator.hasNext()) {
 			FenetreLivraison currentFenetreLivraison = (FenetreLivraison) fenetresLivraisonsIterator.next();
 			if(currentFenetreLivraison.getHeureDebut()==heureDebut) return currentFenetreLivraison;
@@ -77,14 +74,6 @@ public class DemandeLivraisons {
 		this.fenetresLivraisons.add(newFenetreLivraison);
 	}
 
-	public Plan getPlan() {
-		return plan;
-	}
-
-	public void setPlan(Plan plan) {
-		this.plan = plan;
-	}
-
 	public int getIdEntrepot() {
 		return idEntrepot;
 	}
@@ -104,7 +93,7 @@ public class DemandeLivraisons {
 	public void afficheDemandeLivraisons() {
 		System.out.println("DemandeLivraison : idEntrepot="+this.idEntrepot);
 		System.out.println("Liste livraisons : ");
-		Iterator fenetresLivraisonsIterator = this.fenetresLivraisons.iterator();
+		Iterator<FenetreLivraison> fenetresLivraisonsIterator = this.fenetresLivraisons.iterator();
 		while(fenetresLivraisonsIterator.hasNext()) {
 			FenetreLivraison currentFenetreLivraison = (FenetreLivraison) fenetresLivraisonsIterator.next();
 			System.out.print("   ");
