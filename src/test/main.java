@@ -1,6 +1,6 @@
 package test;
 
-import controller.ControlleurApplication;
+import controller.ControleurApplication;
 import model.*;
 import view.*;
 
@@ -21,7 +21,7 @@ public class main {
 		//demandeLivraisons.afficheDemandeLivraisons();
 		
 		
-		ControlleurApplication controller = new ControlleurApplication();
+		ControleurApplication controller = new ControleurApplication(plan);
 		Fenetre fenetre = new Fenetre(plan, 0.83, controller);
 		/*
 		plan.setDemandeLivraisons(demandeLivraisons);
