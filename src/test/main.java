@@ -21,7 +21,7 @@ public class main {
 		//demandeLivraisons.afficheDemandeLivraisons();
 		
 		
-		ControlleurApplication controller = new ControlleurApplication();
+		ControlleurApplication controller = new ControlleurApplication(plan);
 		Fenetre fenetre = new Fenetre(plan, 0.83, controller);
 		/*
 		plan.setDemandeLivraisons(demandeLivraisons);

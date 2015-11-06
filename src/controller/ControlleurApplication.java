@@ -37,10 +37,21 @@ public class ControlleurApplication
 		undoRedo.redo();
 	}
 	
+	/**
+	 * Créé une livraison à une adresse
+	 */
 	public void addLivraison()
 	{
-		AjouterLivraison ajout = new AjouterLivraison(livraison, fenetre, demande);
+		AjouterLivraison ajout = new AjouterLivraison(plan, livraison, fenetre);
 		undoRedo.addCommand(ajout);
 	}
 	
+	/**
+	 * Supprime une livraison de la tournee
+	 */
+	public void removeLivraison()
+	{
+		SupprimerLivraison suppression = new SupprimerLivraison(plan, livraison, fenetre);
+		undoRedo.addCommand(suppression);
+	}
 }

@@ -1,6 +1,6 @@
 package controller.commands;
 
-import model.DemandeLivraisons;
+import model.Plan;
 import model.FenetreLivraison;
 import model.Livraison;
 
@@ -11,15 +11,15 @@ public class SupprimerLivraison implements Commande
 
 	protected Livraison livraison;
 	protected FenetreLivraison fenetre;
-	protected DemandeLivraisons demande;
+	protected Plan plan;
 	
 //------------------------------------------------- CONSTRUCTORS
 	
-	public SupprimerLivraison(Livraison l, FenetreLivraison f, DemandeLivraisons d)
+	public SupprimerLivraison(Plan p, Livraison l, FenetreLivraison f)
 	{
+		plan = p;
 		livraison = l;
 		fenetre = f;
-		demande = d;
 	}
 	
 //------------------------------------------------- METHODS
@@ -29,7 +29,7 @@ public class SupprimerLivraison implements Commande
 	@Override
 	public void execute() 
 	{
-		demande.removeLivraison(livraison, fenetre);
+		plan.removeLivraison(livraison, fenetre);
 	}
 
 	/**
@@ -38,7 +38,7 @@ public class SupprimerLivraison implements Commande
 	@Override
 	public void unExecute() 
 	{
-		demande.addLivraison(livraison, fenetre);
+		plan.addLivraison(livraison, fenetre);
 	}
 	
 }
