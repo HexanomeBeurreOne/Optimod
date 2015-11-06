@@ -28,7 +28,7 @@ public class Adresse {
 		this.id = id;
 		this.coordX = coordX;
 		this.coordY = coordY;
-		this.tronconsSortants = new ArrayList();
+		this.tronconsSortants = new ArrayList<Troncon>();
 	}
 	
 	public int getId() {
@@ -56,7 +56,7 @@ public class Adresse {
 	}
 
 	/**
-	 * Add a new TronconSortant to the list of tronconsSortants of the current Adresse
+	 * Add a new TronconSortant to the list tronconsSortants of the current Adresse
 	 * @param newTronconSortant
 	 */
 	public void addTroncon(Troncon newTronconSortant) {
@@ -65,7 +65,7 @@ public class Adresse {
 	
 	public void afficheAdresse() {
 		System.out.println("Adresse "+this.id+" | x="+this.coordX+" y="+this.coordY);
-		Iterator tronconsSortantsIterator = this.tronconsSortants.iterator();
+		Iterator<Troncon> tronconsSortantsIterator = this.tronconsSortants.iterator();
 		while(tronconsSortantsIterator.hasNext()) {
 			Troncon currentTroncon = (Troncon) tronconsSortantsIterator.next();
 			System.out.print("      ");
@@ -73,5 +73,5 @@ public class Adresse {
 		}
 	}
 	
-
+	
 }
