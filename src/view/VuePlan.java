@@ -40,8 +40,8 @@ public class VuePlan extends JPanel implements Observer {
         
         //Couleur des bordures
         this.setBorder(new CompoundBorder(
-        	    BorderFactory.createMatteBorder(1, 1, 1, 1, Color.DARK_GRAY), 
-        	    BorderFactory.createMatteBorder(1, 1, 1, 1, Color.DARK_GRAY)));
+        	    BorderFactory.createMatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY), 
+        	    BorderFactory.createMatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY)));
         
         // Position du plan
         setLocation(5, 40);
@@ -76,9 +76,7 @@ public class VuePlan extends JPanel implements Observer {
     }
 
     private void drawAdresse(Graphics2D g2, Adresse adresse) {
-    	
-    	
-        int x = scaleIt(adresse.getCoordX());
+    	int x = scaleIt(adresse.getCoordX());
         int y = scaleIt(adresse.getCoordY());
         g2.fillOval(x - 3, y - 3, 6, 6);
     }
