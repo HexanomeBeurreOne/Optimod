@@ -17,7 +17,7 @@ public class Troncon {
 	private double longueur;
 	private Adresse origine;
 	private Adresse destination;
-	private double tempsTroncon = 0; // null does not exists for double
+	private Double tempsTroncon;
 	
 	/**
 	 * Constructor
@@ -28,6 +28,7 @@ public class Troncon {
 		this.longueur = longueur;
 		this.destination = destination;
 		this.origine = origine;
+		this.tempsTroncon = 0.;
 	}
 
 	public Adresse getOrigine() {
@@ -39,11 +40,19 @@ public class Troncon {
 	}
 
 	public double getTempsTroncon() {
-		if(this.tempsTroncon == 0) this.tempsTroncon = this.vitesseMoyenne * this.longueur;
+		if(this.tempsTroncon == 0.) this.tempsTroncon = this.longueur /this.vitesseMoyenne;
 		return this.tempsTroncon;
 	}
 
 	public void afficheTroncon() {
 		System.out.println("TronconSortant : nomRue : "+this.nomRue+" vitesseMoyenne="+this.vitesseMoyenne+" longueur="+this.longueur+" idOrigine : "+this.origine.getId()+" idDestination : "+this.destination.getId());
+	}
+
+	@Override
+	public String toString() {
+		return "Troncon [nomRue=" + nomRue + ", vitesseMoyenne="
+				+ vitesseMoyenne + ", longueur=" + longueur + ", origine="
+				+ origine + ", destination=" + destination + ", tempsTroncon="
+				+ tempsTroncon + "]\n";
 	}
 }

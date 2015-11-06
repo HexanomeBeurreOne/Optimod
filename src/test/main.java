@@ -1,5 +1,7 @@
 package test;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.TreeMap;
 
 import model.*;
@@ -22,6 +24,12 @@ public class main {
 		plan.setDemandeLivraisons(demandeLivraisons);
 		plan.getDemandeLivraisons().afficheDemandeLivraisons();
 		
+		Adresse depart = plan.getAdresseById(1);
+		Adresse cible1 = plan.getAdresseById(350);
+		List<Adresse> cibles = new ArrayList<Adresse>();
+		cibles.add(cible1);
+		plan.calculTournee();
+		
 		/*
 		Livraison newLivraison = new Livraison(666, plan.getAdresseById(399), demandeLivraisons.getFenetreLivraison(30600));
 		plan.addLivraison(newLivraison, demandeLivraisons.getFenetreLivraison(30600));
@@ -30,5 +38,4 @@ public class main {
 
 		Fenetre fenetre = new Fenetre(plan, 1);*/
 	}
-
 }

@@ -41,7 +41,7 @@ public class FactoryPlan implements FactoryBase {
 		return null;
 	}
 	
-	public Troncon getTroncon(String nomRue, double vitesseMoyenne, double longueur, int idDestination, int idOrigine){
+	public Troncon getTroncon(String nomRue, double vitesseMoyenne, double longueur, int idOrigine, int idDestination){
 		// check parameters and if destination exists in in the adresses list
 		Adresse origine = this.plan.getAdresseById(idOrigine);
 		Adresse destination = this.plan.getAdresseById(idDestination);

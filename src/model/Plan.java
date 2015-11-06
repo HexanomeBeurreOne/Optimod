@@ -4,11 +4,14 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.TreeMap;
 
 /**
@@ -122,6 +125,7 @@ public class Plan {
 	
 	public void calculTournee()	{
 		calculPlusCourtsChemins();
+		//Create graph with TSP
 	}
 	
 	/**
@@ -133,7 +137,7 @@ public class Plan {
 		
 		//Get entrepot
 		Adresse entrepot = getAdresseById(demandeLivraisons.getIdEntrepot());
-		//Liste contenant l'entrepot, qui est le départ et l'arrivée
+		//Liste contenant l'entrepot, qui est le dï¿½part et l'arrivï¿½e
 		List<Adresse> entrepotList = new ArrayList<Adresse>(); 
 		entrepotList.add(entrepot);
 		///Liste des listes des Adresses de livraison de la fenetre
@@ -158,32 +162,121 @@ public class Plan {
 				cibles.addAll(adressesFenList.get(i-1));
 				Adresse depart = adressesFenList.get(i-1).get(j);
 				cibles.remove(depart);
-				//plusCourtsChemin.put(depart.getId(), dijkstra(depart, cibles));
+				plusCourtsChemin.put(depart.getId(), dijkstra(depart, cibles));
 			}
 		}	
 	}
-
-	private Hashtable<Integer, Chemin> dijkstra(Adresse depart, List<Adresse> cibles)
-	{
-		Hashtable<Integer, Chemin> result = new Hashtable<Integer, Chemin>();
-		// Map containing the discovered Adresses, the Key is the shortest time to go to this address at the moment
-		TreeMap<Integer, Adresse> adressesEnAttentes = new TreeMap<Integer, Adresse>();
-		adressesEnAttentes.put(0, depart);
-		// While we haven't reach all the targeted Adresses
-		while(cibles.size() > 0)
-		{
-			Entry<Integer, Adresse> adresse = adressesEnAttentes.firstEntry();
-			adressesEnAttentes.remove(adresse.getKey());
-			for(Troncon troncon : adresse.getValue().getTroncons())
-			{
-				adressesEnAttentes.put((int) (adresse.getKey() + troncon.getTempsTroncon()), troncon.getDestination());
-				//TODO: Sauver la précédence dans une map ou je sais pas quoi
-			}
-			cibles.remove(adresse);
+	
+	private HashSet<Adresse> settledNodes;
+	private HashSet<Adresse> unSettledNodes;
+	private HashMap<Adresse, Double> distance;
+	private HashMap<Adresse, Adresse> predecessors;
+	
+	public Hashtable<Integer, Chemin> dijkstra(Adresse depart, List<Adresse> cibles) {
+		settledNodes = new HashSet<Adresse>();
+		unSettledNodes = new HashSet<Adresse>();
+		distance = new HashMap<Adresse, Double>();
+		predecessors = new HashMap<Adresse, Adresse>();
+	    distance.put(depart, 0.);
+	    unSettledNodes.add(depart);
+	    while (unSettledNodes.size() > 0) {
+	      Adresse node = getMinimum(unSettledNodes);
+	      settledNodes.add(node);
+	      unSettledNodes.remove(node);
+	      findMinimalDistances(node);
+	    }
+	    
+	    Hashtable<Integer, Chemin> result = new Hashtable<Integer, Chemin>();
+	    if(settledNodes.containsAll(cibles))	{
+		    for(int i=0; i < cibles.size(); i++)	{
+		    	Adresse precede = cibles.get(i);
+		    	Integer id = precede.getId();
+		    	Chemin chemin = new Chemin();
+		    	chemin.setTempsDeParcours(distance.get(cibles.get(i)));
+		    	//Iterate to get each troncon from cibles[i] to depart
+		    	while(precede.getId() != depart.getId())	{
+		    		Adresse adressePrec = predecessors.get(precede);
+		    		List<Troncon> tronconsSortants = adressePrec.getTroncons();
+		    		for(int j=0; j < tronconsSortants.size(); j++)	{
+		    			if(tronconsSortants.get(j).getDestination().getId() == precede.getId()) {
+		    				chemin.addTroncon(tronconsSortants.get(j));
+		    				break;
+		    			}
+		    		}
+		    		precede = adressePrec;
+		    	}
+		    	result.put(id, chemin);
+		    }
+		    System.out.println(result);
+		    
+		    return result;
+		} else {
+			System.out.println("This is not a connex graph !");
+			return null;
 		}
-		
-		return result;
-	}
+	  }
+	
+	private void findMinimalDistances(Adresse node) {
+	    List<Adresse> adjacentNodes = getNeighbors(node);
+	    for (Adresse target : adjacentNodes) {
+	      if (getShortestTime(target) > getShortestTime(node)
+	          + getTime(node, target)) {
+	        distance.put(target, getShortestTime(node)
+	            + getTime(node, target));
+	        predecessors.put(target, node);
+	        unSettledNodes.add(target);
+	      }
+	    }
+
+	  }
+
+	  private double getTime(Adresse node, Adresse target) {
+	    for (Troncon edge : troncons) {
+	      if (edge.getOrigine().equals(node)
+	          && edge.getDestination().equals(target)) {
+	        return edge.getTempsTroncon();
+	      }
+	    }
+	    throw new RuntimeException("Should not happen");
+	  }
+	  
+	  private List<Adresse> getNeighbors(Adresse node) {
+		    List<Adresse> neighbors = new ArrayList<Adresse>();
+		    for (Troncon edge : troncons) {
+		      if (edge.getOrigine().equals(node)
+		          && !isSettled(edge.getDestination())) {
+		        neighbors.add(edge.getDestination());
+		      }
+		    }
+		    return neighbors;
+		  }
+	  
+	  private boolean isSettled(Adresse node) {
+		    return settledNodes.contains(node);
+	  }
+	  
+	  private Adresse getMinimum(Set<Adresse> adresseSet) {
+	    Adresse minimum = null;
+	    for (Adresse ad : adresseSet) {
+	      if (minimum == null) {
+	        minimum = ad;
+	      } else {
+	        if (getShortestTime(ad) < getShortestTime(minimum)) {
+	          minimum = ad;
+	        }
+	      }
+	    }
+	    return minimum;
+	  }
+
+	  private Double getShortestTime(Adresse destination) {
+	    Double d = (Double) distance.get(destination);
+	    if (d == null) {
+	      return Double.MAX_VALUE;
+	    } else {
+	      return d;
+	    }
+	  }
 	
 	/**
 	 * Get the Adresse which id is corresponding, return null if it does not contain

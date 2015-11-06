@@ -8,13 +8,14 @@ public class Chemin {
 	/**
 	 * Attributes
 	 */
-	Integer tempsDeParcours;
+	Double tempsDeParcours;
 	List<Troncon> troncons;
 	
 	/**
 	 * Constructor
 	 */
 	public Chemin() {
+		tempsDeParcours = 0.;
 		troncons = new ArrayList<Troncon>();
 	}
 	
@@ -28,10 +29,12 @@ public class Chemin {
 	
 	public void setTroncons(List<Troncon> troncons)	{
 		this.troncons = new ArrayList<Troncon>(troncons);
+		
 	}
 	
 	public void addTroncon(Troncon troncon)	{
-		troncons.add(troncon);
+		troncons.add(0, troncon);
+		
 	}
 	
 	public void removeTroncon(Troncon troncon)	{
@@ -42,6 +45,14 @@ public class Chemin {
 		return troncons;
 	}
 	
+	public Double getTempsDeParcours() {
+		return tempsDeParcours;
+	}
+
+	public void setTempsDeParcours(Double tempsDeParcours) {
+		this.tempsDeParcours = tempsDeParcours;
+	}
+
 	public Adresse getDebut()	{
 		if(troncons != null && troncons.size() >= 1)	{
 			troncons.get(0).getOrigine();
@@ -56,6 +67,12 @@ public class Chemin {
 		}
 		
 		return null;
+	}
+
+	@Override
+	public String toString() {
+		return "Chemin [tempsDeParcours=" + tempsDeParcours + ", troncons="
+				+ troncons + "]";
 	}
 	
 }

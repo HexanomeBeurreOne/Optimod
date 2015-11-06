@@ -76,6 +76,11 @@ public class Adresse {
 			currentTroncon.afficheTroncon();
 		}
 	}
-	
 
+	@Override
+	public String toString() {
+		return "Adresse [id=" + id + "]";
+	}
+	
+	
 }
