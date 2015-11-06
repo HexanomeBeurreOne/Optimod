@@ -21,6 +21,7 @@ public class PilesEtats
 //------------------------------------------------- METHODS
 	public void addCommand(Commande c)
 	{
+		c.execute();
 		undoStack.push(c);
 	}
 	
