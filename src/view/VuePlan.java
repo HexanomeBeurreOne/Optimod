@@ -30,12 +30,6 @@ public class VuePlan extends JPanel implements Observer {
         //plan.addObserver(this);
         setLayout(null);
         
-        hauteurVuePlan = fenetre.getHauteurFenetre()-70;
-        largeurVuePlan = 2*fenetre.getLargeurFenetre()/3;
-        
-        //Taille du plan
-        setSize(largeurVuePlan, hauteurVuePlan);
-        
         this.setBackground(Color.WHITE);
         
         //Couleur des bordures
