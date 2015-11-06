@@ -3,12 +3,12 @@ package view;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import controller.ControlleurApplication;
+import controller.ControleurApplication;
 
 public class EcouteurBoutons implements ActionListener {
-	private ControlleurApplication controleur;
+	private ControleurApplication controleur;
 
-	public EcouteurBoutons(ControlleurApplication controller){
+	public EcouteurBoutons(ControleurApplication controller){
 		this.controleur = controller;
 	}
 

@@ -6,7 +6,7 @@ import model.Livraison;
 import model.FenetreLivraison;
 import controller.commands.*;
 
-public class ControlleurApplication 
+public class ControleurApplication 
 {
 //------------------------------------------------- ATTRIBUTES	
 	
@@ -19,7 +19,7 @@ public class ControlleurApplication
 	
 //------------------------------------------------- CONSTRUCTORS
 	
-	public ControlleurApplication(Plan p)
+	public ControleurApplication(Plan p)
 	{
 		plan = p;
 		undoRedo = new PilesEtats();
