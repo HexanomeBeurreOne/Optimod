@@ -30,7 +30,7 @@ public class Plan {
 	// Hashmap better than Hashtable in single threaded environment.
 	// The Key of the outer Hashtable is the id of the starting Adresse, 
 	// The Key of the inner Hashtable is the id of the ending Adresse, 
-	private Hashtable<Integer,Hashtable<Integer,Chemin>> plusCourtsChemin;
+	private Hashtable<Integer,Hashtable<Integer,Chemin>> plusCourtsChemins;
 	
 	/**
 	 * Constructor
@@ -40,6 +40,7 @@ public class Plan {
 		this.adresses = new ArrayList<Adresse>();
 		this.troncons = new ArrayList<Troncon>();
 		this.demandeLivraisons = new DemandeLivraisons();
+		this.plusCourtsChemins = new Hashtable<Integer,Hashtable<Integer,Chemin>>();
 	}
 	
 	public DemandeLivraisons getDemandeLivraisons() {
@@ -152,17 +153,20 @@ public class Plan {
 			adressesFenList.add(adressesFen);
 		}
 		adressesFenList.add(entrepotList);
-		
+		Adresse depart;
+		List<Adresse> cibles;
 		//TODO : put it in dispatcher #multithread
 		for(int i=1; i < adressesFenList.size(); i++)
 		{
 			for(int j=0; j< adressesFenList.get(i-1).size(); j++)
 			{
-				List<Adresse> cibles = new ArrayList<Adresse>(adressesFenList.get(i));
+				cibles = new ArrayList<Adresse>(adressesFenList.get(i));
 				cibles.addAll(adressesFenList.get(i-1));
-				Adresse depart = adressesFenList.get(i-1).get(j);
+				depart = adressesFenList.get(i-1).get(j);
 				cibles.remove(depart);
-				plusCourtsChemin.put(depart.getId(), dijkstra(depart, cibles));
+				Integer departId = depart.getId();
+				Hashtable<Integer, Chemin> resDijkstra = dijkstra(depart, cibles);
+				plusCourtsChemins.put(departId, resDijkstra);
 			}
 		}	
 	}
