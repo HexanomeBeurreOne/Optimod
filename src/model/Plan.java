@@ -26,6 +26,7 @@ public class Plan {
 	 */
 	public Plan() {
 		this.nom = "";
+
 		this.adresses = new ArrayList<Adresse>();
 		this.troncons = new ArrayList<Troncon>();
 		this.demandeLivraisons = new DemandeLivraisons();

@@ -62,10 +62,13 @@ public class FactoryPlan implements FactoryBase {
 	 * @param idDestination
 	 * @return
 	 */
-	public Troncon getTroncon(String nomRue, double vitesseMoyenne, double longueur, int idDestination){
+	public Troncon getTroncon(String nomRue, double vitesseMoyenne, double longueur, int idDestination, int idOrigine){
 		// check parameters and if destination exists in in the adresses list
-		if(nomRue.length()!=0 && vitesseMoyenne>0 && longueur>0 && this.plan.getAdresseById(idDestination)!=null){
-			return new Troncon(nomRue, vitesseMoyenne, longueur, this.plan.getAdresseById(idDestination));
+		Adresse origine = this.plan.getAdresseById(idOrigine);
+		Adresse destination = this.plan.getAdresseById(idDestination);
+
+		if(nomRue.length()!=0 && vitesseMoyenne>0 && longueur>0 && origine!=null && destination!=null){
+			return new Troncon(nomRue, vitesseMoyenne, longueur, origine, destination);
 		}
 		return null;
 	}
@@ -107,7 +110,7 @@ public class FactoryPlan implements FactoryBase {
 		             if( newAdresse != null )this.plan.addAdresse(newAdresse);
 		            } catch (Exception e) {
 		            	
-		            	// s'il manque des paramètres pour créer une adresse dans le fichier xml on stoppe l'instanciation du plan
+		            	// s'il manque des paramï¿½tres pour crï¿½er une adresse dans le fichier xml on stoppe l'instanciation du plan
 		            	System.err.println("Missing parameters for Noeud tag #"+(Math.ceil(i/2))+" in the file "+uriXml);
 		            	return null;
 		            }
@@ -143,8 +146,8 @@ public class FactoryPlan implements FactoryBase {
 						    		double vitesse = Double.parseDouble(tronconSortant.getAttribute("vitesse").replace(',', '.'));
 						    		double longueur = Double.parseDouble(tronconSortant.getAttribute("longueur").replace(',', '.'));
 						    		int idAdresseDestination = Integer.parseInt(tronconSortant.getAttribute("idNoeudDestination"));
-						    		
-							        Troncon newTroncon = this.getTroncon(nomRue, vitesse, longueur, idAdresseDestination);
+						    		int idOrigine = currentAdresse.getId();
+							        Troncon newTroncon = this.getTroncon(nomRue, vitesse, longueur, idOrigine, idAdresseDestination);
 							        
 							        // add the Troncon to the list of the Plan and to the TronconsSortants list of the current Adresse if it is not null
 					                if( newTroncon != null ) {
@@ -162,7 +165,7 @@ public class FactoryPlan implements FactoryBase {
 		    }
 		}catch(Exception e) {
 				
-		// si le fichier n'est pas bien formé on ne stoppe l'instanciation de la demande de livraisons
+		// si le fichier n'est pas bien formï¿½ on ne stoppe l'instanciation de la demande de livraisons
 		System.err.println("The file "+uriXml+" is not well formed");
 		return null;
 	}
