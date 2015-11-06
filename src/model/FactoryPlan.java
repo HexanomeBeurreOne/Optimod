@@ -135,6 +135,8 @@ public class FactoryPlan implements FactoryBase {
 			            final NodeList tronconsSortantsListe = adresse.getElementsByTagName("LeTronconSortant");
 					    final int nbTronconsSortants = tronconsSortantsListe.getLength();
 						
+					    if(nbTronconsSortants==0) this.plan.removeAdresse(currentAdresse);
+					    
 					    for(int j = 0; j<nbTronconsSortants; j++) {
 					    	
 					    	// check if the current tag is a NODE and if it is called LeTronconSortant (ignoring the case)
