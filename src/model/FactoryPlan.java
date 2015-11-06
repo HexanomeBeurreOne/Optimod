@@ -155,12 +155,16 @@ public class FactoryPlan implements FactoryBase {
 						    		double longueur = Double.parseDouble(tronconSortant.getAttribute("longueur").replace(',', '.'));
 						    		int idAdresseDestination = Integer.parseInt(tronconSortant.getAttribute("idNoeudDestination"));
 						    		int idOrigine = currentAdresse.getId();
+				                	System.out.println(nomRue + " " + vitesse + " "  + longueur + " "  + idOrigine + " "  + idAdresseDestination);
 							        Troncon newTroncon = this.getTroncon(nomRue, vitesse, longueur, idOrigine, idAdresseDestination);
 							        
 							        // add the Troncon to the list of the Plan and to the TronconsSortants list of the current Adresse if it is not null
 					                if( newTroncon != null ) {
 					                	this.plan.addTroncon(newTroncon);
 						                currentAdresse.addTroncon(newTroncon);
+					                }
+					                else {
+					                	System.out.println(newTroncon);
 					                }
 					    		} catch(Exception e) {
 					    			System.err.println("Missing parameters for LeTronconSortant tag #"+j+" of Noeud tag #"+(Math.ceil(i/2))+" in the file "+uriXml);
