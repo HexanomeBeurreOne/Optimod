@@ -89,6 +89,14 @@ public class DemandeLivraisons {
 	public void setFenetresLivraisons(List<FenetreLivraison> fenetresLivraisons) {
 		this.fenetresLivraisons = fenetresLivraisons;
 	}
+	
+	public List<Livraison> getAllLivraisons() {
+		List<Livraison> livraisons = new ArrayList<Livraison>();
+		for (FenetreLivraison fen : fenetresLivraisons){
+			livraisons.addAll(fen.getLivraisons());
+		}
+		return livraisons;
+	}
 
 	public void afficheDemandeLivraisons() {
 		System.out.println("DemandeLivraison : idEntrepot="+this.idEntrepot);

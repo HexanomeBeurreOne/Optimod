@@ -9,10 +9,10 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
-import java.util.TreeMap;
+
+import model.tsp.Graphe;
+import model.tsp.GrapheOptimod;
 
 /**
  * @author Adrien Menella
@@ -126,6 +126,7 @@ public class Plan {
 	
 	public void calculTournee()	{
 		calculPlusCourtsChemins();
+		//Graphe g = new GrapheOptimod(10, plusCourtsChemins);
 		//Create graph with TSP
 	}
 	
@@ -135,13 +136,12 @@ public class Plan {
 	private void calculPlusCourtsChemins()	{
 		//The list is ordered
 		List<FenetreLivraison> fenetres = demandeLivraisons.getFenetresLivraisons();
-		
 		//Get entrepot
 		Adresse entrepot = getAdresseById(demandeLivraisons.getIdEntrepot());
-		//Liste contenant l'entrepot, qui est le d�part et l'arriv�e
+		//Liste contenant l'entrepot, qui est le depart et l'arrivee
 		List<Adresse> entrepotList = new ArrayList<Adresse>(); 
 		entrepotList.add(entrepot);
-		///Liste des listes des Adresses de livraison de la fenetre
+		//Liste de sous-listes d'Adresses correspondants aux adresses des points de livraison par fenetre
 		List<List<Adresse>> adressesFenList = new ArrayList<List<Adresse>>();
 		adressesFenList.add(entrepotList);
 		for(FenetreLivraison fen : fenetres)
@@ -153,19 +153,23 @@ public class Plan {
 			adressesFenList.add(adressesFen);
 		}
 		adressesFenList.add(entrepotList);
-		Adresse depart;
-		List<Adresse> cibles;
+		
+		Adresse departDijkstra;
+		List<Adresse> ciblesDijkstra;
 		//TODO : put it in dispatcher #multithread
-		for(int i=1; i < adressesFenList.size(); i++)
+		for(int i = 1; i < adressesFenList.size(); i++)
 		{
-			for(int j=0; j< adressesFenList.get(i-1).size(); j++)
+			for(int j = 0; j < adressesFenList.get(i-1).size(); j++)
 			{
-				cibles = new ArrayList<Adresse>(adressesFenList.get(i));
-				cibles.addAll(adressesFenList.get(i-1));
-				depart = adressesFenList.get(i-1).get(j);
-				cibles.remove(depart);
-				Integer departId = depart.getId();
-				Hashtable<Integer, Chemin> resDijkstra = dijkstra(depart, cibles);
+				//On recupere une adresse d'une premiere fenetre de livraison
+				departDijkstra = adressesFenList.get(i-1).get(j);
+				Integer departId = departDijkstra.getId();
+				//On met dans ciblesDijkstra les adresses de cette premiere fenetre de livraison et de la suivante
+				ciblesDijkstra = new ArrayList<Adresse>(adressesFenList.get(i));
+				ciblesDijkstra.addAll(adressesFenList.get(i-1));
+				//On retire des ciblesDijkstra le departDijkstra
+				ciblesDijkstra.remove(departDijkstra);
+				Hashtable<Integer, Chemin> resDijkstra = dijkstra(departDijkstra, ciblesDijkstra);
 				plusCourtsChemins.put(departId, resDijkstra);
 			}
 		}
