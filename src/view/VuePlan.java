@@ -19,8 +19,6 @@ import javax.swing.border.CompoundBorder;
 public class VuePlan extends JPanel implements Observer {
 
     private double echelle;
-    private int hauteurVuePlan;
-    private int largeurVuePlan;
     private Plan plan;
     
 

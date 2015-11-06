@@ -20,10 +20,9 @@ public class Fenetre extends JFrame{
 	protected final static String CHARGER_PLAN = "Charger un plan";
 	protected static final String CHARGER_LIVRAISONS = "Charger une demande de livraisons";
 	protected static final String CALCULER_TOURNEE = "Calculer une tournée";
-	private final int hauteurBouton = 40;
+	private final int hauteurBouton = 30;
 	private final int largeurBouton = 150;
 	private final int hauteurMessage = 50;
-	private final int largeurMessage = 300;
 	private final String[] intitulesBoutons = new String[]{CHARGER_PLAN, CHARGER_LIVRAISONS, 
 			CALCULER_TOURNEE};
 	private ArrayList<JButton> boutons;
@@ -41,10 +40,11 @@ public class Fenetre extends JFrame{
         this.setTitle("Optimod");
         
         //Définit sa taille : plein ecran
-        Dimension tailleEcran = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        hauteurFenetre = (int)tailleEcran.getHeight()-100;
-        largeurFenetre = (int)tailleEcran.getWidth();
+        
+        hauteurFenetre = 500;
+        largeurFenetre = 950;
         this.setSize(largeurFenetre, hauteurFenetre);
+        this.setResizable(false);
         
         //Nous demandons maintenant à notre objet de se positionner au centre
         this.setLocationRelativeTo(null);
@@ -57,12 +57,16 @@ public class Fenetre extends JFrame{
         //Instanciation d'un objet VuePlan
         VuePlan carte = new VuePlan(plan, echelle, this);
         carte.setLocation(0, hauteurBouton+hauteurMessage);
-        hauteurVuePlan = hauteurFenetre-hauteurBouton-hauteurMessage-30;
-        largeurVuePlan = 2*largeurFenetre/3;
+        hauteurVuePlan = hauteurFenetre-hauteurBouton-hauteurMessage-22;
+        largeurVuePlan = largeurFenetre/2;
         carte.setSize(largeurVuePlan, hauteurVuePlan);
         
+        //Instanciation d'un objet VueTextuelle
+        VueLivraison menu = new VueLivraison(plan, this);
+        
+        
         zoneMessage = new JLabel();
-        zoneMessage.setBorder(BorderFactory.createTitledBorder("Messages..."));
+        zoneMessage.setBorder(BorderFactory.createTitledBorder("Infos"));
 		getContentPane().add(zoneMessage);
 		zoneMessage.setSize(largeurVuePlan,hauteurMessage);
 		zoneMessage.setLocation(0,hauteurBouton);

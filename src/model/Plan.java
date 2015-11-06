@@ -6,12 +6,13 @@ package model;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Observable;
 
 /**
  * @author Adrien Menella
  *
  */
-public class Plan {
+public class Plan extends Observable {
 
 	/**
 	 * Attributes
@@ -38,6 +39,8 @@ public class Plan {
 
 	public void setDemandeLivraisons(DemandeLivraisons demandeLivraisons) {
 		this.demandeLivraisons = demandeLivraisons;
+		setChanged();
+		notifyObservers(this);
 	}
 	
 	/**
