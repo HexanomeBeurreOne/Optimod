@@ -4,7 +4,7 @@ import model.*;
 
 import javax.swing.*;
 
-import controller.ControlleurApplication;
+import controller.ControleurApplication;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -17,6 +17,7 @@ import java.util.Observer;
 public class Fenetre extends JFrame{
 	
 	private EcouteurBoutons ecouteurDeBoutons;
+	private EcouteurSouris ecouteurSouris;
 	protected final static String CHARGER_PLAN = "Charger un plan";
 	protected static final String CHARGER_LIVRAISONS = "Charger une demande de livraisons";
 	protected static final String CALCULER_TOURNEE = "Calculer une tournée";
@@ -28,8 +29,10 @@ public class Fenetre extends JFrame{
 	
 	private int hauteurFenetre;
 	private int largeurFenetre;
+	
+	private VuePlan carte;
 
-    public Fenetre(Plan plan, double echelle, ControlleurApplication controller) throws HeadlessException {
+    public Fenetre(Plan plan, double echelle, ControleurApplication controller) throws HeadlessException {
 
         //Définit un titre pour notre fenêtre
         this.setTitle("Optimod");
@@ -46,16 +49,20 @@ public class Fenetre extends JFrame{
         
         this.setLayout(null);
         creerBoutons(controller);
+        
 
         //Instanciation d'un objet VuePlan
         VuePlan carte = new VuePlan(plan, echelle, this);
-
+        
+        ecouteurSouris = new EcouteurSouris(controller, carte, this);
+        carte.addMouseListener(ecouteurSouris);
+        
         //Et enfin, la rendre visible
         this.setVisible(true);
 
     }
     
-    public void creerBoutons(ControlleurApplication controller) {
+    public void creerBoutons(ControleurApplication controller) {
     	ecouteurDeBoutons = new EcouteurBoutons(controller);
 		boutons = new ArrayList<JButton>();
 		for (int i=0; i<intitulesBoutons.length; i++){

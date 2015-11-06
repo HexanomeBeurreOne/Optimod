@@ -6,12 +6,15 @@ import java.awt.event.ActionListener;
 import controller.ControleurApplication;
 
 public class EcouteurBoutons implements ActionListener {
+//------------------------------------------------- ATTRIBUTES	
 	private ControleurApplication controleur;
 
+//------------------------------------------------- CONSTRUCTORS
 	public EcouteurBoutons(ControleurApplication controller){
 		this.controleur = controller;
 	}
 
+//------------------------------------------------- METHODS
 	@Override
 	public void actionPerformed(ActionEvent e) { 
 		// Methode appelee par l'ecouteur de boutons a chaque fois qu'un bouton est clique
