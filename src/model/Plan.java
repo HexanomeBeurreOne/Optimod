@@ -168,7 +168,8 @@ public class Plan {
 				Hashtable<Integer, Chemin> resDijkstra = dijkstra(depart, cibles);
 				plusCourtsChemins.put(departId, resDijkstra);
 			}
-		}	
+		}
+		System.out.println(plusCourtsChemins);
 	}
 	
 	private HashSet<Adresse> settledNodes;
@@ -211,7 +212,6 @@ public class Plan {
 		    	}
 		    	result.put(id, chemin);
 		    }
-		    System.out.println(result);
 		    
 		    return result;
 		} else {

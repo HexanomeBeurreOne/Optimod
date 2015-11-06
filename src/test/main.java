@@ -24,10 +24,6 @@ public class main {
 		plan.setDemandeLivraisons(demandeLivraisons);
 		plan.getDemandeLivraisons().afficheDemandeLivraisons();
 		
-		Adresse depart = plan.getAdresseById(1);
-		Adresse cible1 = plan.getAdresseById(350);
-		List<Adresse> cibles = new ArrayList<Adresse>();
-		cibles.add(cible1);
 		plan.calculTournee();
 		
 		/*
