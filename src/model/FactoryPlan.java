@@ -62,7 +62,7 @@ public class FactoryPlan implements FactoryBase {
 	 * @param idDestination
 	 * @return
 	 */
-	public Troncon getTroncon(String nomRue, double vitesseMoyenne, double longueur, int idDestination, int idOrigine){
+	public Troncon getTroncon(String nomRue, double vitesseMoyenne, double longueur, int idOrigine, int idDestination){
 		// check parameters and if destination exists in in the adresses list
 		Adresse origine = this.plan.getAdresseById(idOrigine);
 		Adresse destination = this.plan.getAdresseById(idDestination);
@@ -100,14 +100,19 @@ public class FactoryPlan implements FactoryBase {
 		            final Element adresse = (Element) adressesListe.item(i);
 		            
 		            try {
-		            int idAdresse = Integer.parseInt(adresse.getAttribute("id"));
-		            int coordX = Integer.parseInt(adresse.getAttribute("x"));
-		            int coordY = Integer.parseInt(adresse.getAttribute("y"));
-		            
-		            // instantiate a new Adresse object with attributes given in the xml tag
-	            	Adresse newAdresse = this.getAdresse(idAdresse, coordX, coordY);
-	            	// add the adresse to the list of the plan if it is not null
-		             if( newAdresse != null )this.plan.addAdresse(newAdresse);
+			            int idAdresse = Integer.parseInt(adresse.getAttribute("id"));
+			            int coordX = Integer.parseInt(adresse.getAttribute("x"));
+			            int coordY = Integer.parseInt(adresse.getAttribute("y"));
+			            
+			            // instantiate a new Adresse object with attributes given in the xml tag
+		            	Adresse newAdresse = this.getAdresse(idAdresse, coordX, coordY);
+		            	// add the adresse to the list of the plan if it is not null
+			            if( newAdresse != null ){
+			            	this.plan.addAdresse(newAdresse);
+			            } else {
+			            	System.err.println("Invalid parameters for Noeud tag #"+(Math.ceil(i/2))+" in the file "+uriXml);
+			            	return null;
+			            }
 		            } catch (Exception e) {
 		            	
 		            	// s'il manque des param�tres pour cr�er une adresse dans le fichier xml on stoppe l'instanciation du plan
@@ -135,6 +140,9 @@ public class FactoryPlan implements FactoryBase {
 			            final NodeList tronconsSortantsListe = adresse.getElementsByTagName("LeTronconSortant");
 					    final int nbTronconsSortants = tronconsSortantsListe.getLength();
 						
+					    // if the current Adresse does not have some Troncons we delete this Adresse from the list of the Plan object
+					    if(nbTronconsSortants==0) this.plan.removeAdresse(currentAdresse);
+					    
 					    for(int j = 0; j<nbTronconsSortants; j++) {
 					    	
 					    	// check if the current tag is a NODE and if it is called LeTronconSortant (ignoring the case)
@@ -169,6 +177,8 @@ public class FactoryPlan implements FactoryBase {
 		System.err.println("The file "+uriXml+" is not well formed");
 		return null;
 	}
+		// if the Adresse list of the Plan is empty return null
+	    if(this.plan.getAdresses().isEmpty()) return null;
 	    
 	    return this.plan;
 	    

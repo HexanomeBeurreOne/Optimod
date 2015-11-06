@@ -1,15 +1,15 @@
-package controller;
+package controller.commands;
 
-public class ControlleurApplication 
+public interface Commande 
 {
 //------------------------------------------------- ATTRIBUTES	
 
-	
-
 //------------------------------------------------- CONSTRUCTORS
-	
-	
-		
+			
 //------------------------------------------------- METHODS
+		
+	public void execute();
+	
+	public void unExecute();
 	
 }
