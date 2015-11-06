@@ -26,6 +26,7 @@ public class Plan {
 	 */
 	public Plan() {
 		this.nom = "";
+
 		this.adresses = new ArrayList<Adresse>();
 		this.troncons = new ArrayList<Troncon>();
 		this.demandeLivraisons = new DemandeLivraisons();
@@ -104,6 +105,15 @@ public class Plan {
 	public void addAdresse(Adresse newAdresse) {
 		this.adresses.add(newAdresse);
 	}
+	
+	/**
+	 * Remove an Adresse to the ArrayList adresses
+	 * @param adresseToRemove
+	 */
+	public void removeAdresse(Adresse adresseToRemove) {
+		if(this.adresses.contains(adresseToRemove)) this.adresses.remove(adresseToRemove);
+	}
+	
 	 /**
 	  * Add a Troncon to the ArrayList troncons
 	  * @param newTroncon
