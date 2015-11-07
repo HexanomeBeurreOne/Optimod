@@ -24,7 +24,6 @@ public class GrapheOptimod implements Graphe {
 	 */
 	public GrapheOptimod(DemandeLivraisons demandeLivraison, Hashtable<Integer,Hashtable<Integer,Chemin>> plusCourtsChemins){
 		int idEntrepot = demandeLivraison.getIdEntrepot();
-	   	System.out.println("idEntrepot = " + idEntrepot);
 		List<Integer> idAdressesLivraisons = new ArrayList<Integer>();
 		for(Livraison liv : demandeLivraison.getAllLivraisons())
 		{
@@ -62,7 +61,7 @@ public class GrapheOptimod implements Graphe {
 			   this.cout[indiceDepart][indiceArrivee] = plusCourtsChemins.get(key).get(innerKey).getTempsDeParcours().intValue();
 		   }
 		}
-		displayCout();
+		//displayCout();
 	}
 
 	private void displayCout() {
