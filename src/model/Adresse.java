@@ -55,8 +55,12 @@ public class Adresse {
 		this.coordY = coordY;
 	}
 
+	public List<Troncon> getTronconsSortants() {
+		return tronconsSortants;
+	}
+
 	/**
-	 * Add a new TronconSortant to the list of tronconsSortants of the current Adresse
+	 * Add a new TronconSortant to the list tronconsSortants of the current Adresse
 	 * @param newTronconSortant
 	 */
 	public void addTroncon(Troncon newTronconSortant) {
@@ -81,6 +85,5 @@ public class Adresse {
 	public String toString() {
 		return "Adresse [id=" + id + "]";
 	}
-	
 	
 }

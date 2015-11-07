@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<Reseau>
+	<Noeud id="0" x="51" y="37">
+		<LeTronconSortant nomRue="v0" vitesse="4,400000" longueur="300,200000" idNoeudDestination="1"/>
+		<LeTronconSortant nomRue="h0" vitesse="4,300000" longueur="116,400000" idNoeudDestination="20">
+</Reseau>
