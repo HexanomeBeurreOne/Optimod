@@ -10,6 +10,7 @@ public class Tournee {
 	 * Attributes
 	 */
 	private List<Etape> etapes;
+	// Chemin qui mene de l'adresse de livraison de la derniere etape à l'entrepot
 	private Chemin retourEntrepot;
 	private double heureDebut;
 	private double heureFin;

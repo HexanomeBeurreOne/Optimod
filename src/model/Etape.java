@@ -10,7 +10,9 @@ public class Etape {
 	private Chemin chemin;
 	// Heure de depart de l'étape, avant de parcourir le chemin
 	private double heureDepart;
+	// Heure de debut de livraison
 	private double heureLivraison;
+	// Retard eventuel sur la fenetre de livraison, sinon -1
 	private double retard;
 	
 	/**
