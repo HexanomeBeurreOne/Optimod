@@ -1,6 +1,7 @@
 package model.tsp;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -15,52 +16,64 @@ import model.Livraison;
 public class GrapheOptimod implements Graphe {
 	
 	int nbSommets;
-	//private LinkedHashMap<Integer, LinkedHashMap<Integer, Integer>> cout;
 	int[][] cout;
 	
 	/**
 	 * 
-	 * @param nbSommets
+	 * @param 
 	 */
-	public GrapheOptimod(Integer idEntrepot, DemandeLivraisons demandeLivraison, Hashtable<Integer,Hashtable<Integer,Chemin>> plusCourtsChemins){
-		this.nbSommets = demandeLivraison.getAllLivraisons().size() + 2;
-		this.cout = new int[nbSommets][nbSommets];
+	public GrapheOptimod(DemandeLivraisons demandeLivraison, Hashtable<Integer,Hashtable<Integer,Chemin>> plusCourtsChemins){
+		int idEntrepot = demandeLivraison.getIdEntrepot();
+	   	System.out.println("idEntrepot = " + idEntrepot);
 		List<Integer> idAdressesLivraisons = new ArrayList<Integer>();
-		for(Livraison liv : demandeLivraison.getAllLivraisons()){
+		for(Livraison liv : demandeLivraison.getAllLivraisons())
+		{
 			idAdressesLivraisons.add(liv.getAdresse().getId());
 		}
-		
+		this.nbSommets = idAdressesLivraisons.size() + 1;
+		this.cout = new int[nbSommets][nbSommets];
+		for(int i = 0; i < cout.length; i++)
+		{
+			Arrays.fill(this.cout[i], -1);
+		}
 		Set<Integer> keySet = plusCourtsChemins.keySet();
 		Iterator<Integer> keySetIterator = keySet.iterator();
 		Integer key;
-		while ( keySetIterator.hasNext() ) {
+		while ( keySetIterator.hasNext() ) 
+		{
 		   key = keySetIterator.next();
 		   Set<Integer> innerKeySet = plusCourtsChemins.get(key).keySet();
 		   Iterator<Integer> innerKeySetIterator = innerKeySet.iterator();
 		   Integer innerKey;
-		   while ( innerKeySetIterator.hasNext()) {
-			   innerKey = keySetIterator.next();
-			   if(key == idEntrepot){
-				   //Ajout sur cout[0][]
+		   while ( innerKeySetIterator.hasNext()) 
+		   {
+			   innerKey = innerKeySetIterator.next();
+			   int indiceDepart, indiceArrivee;
+			   indiceDepart = idAdressesLivraisons.indexOf(key)+1;
+			   indiceArrivee = idAdressesLivraisons.indexOf(innerKey)+1;
+			   if(key == idEntrepot)
+			   {
+				   indiceDepart = 0;
 			   }
-			   if(innerKey == idEntrepot){
-				   //Ajout sur cout[][nbSommets - 1]
+			   if(innerKey == idEntrepot)
+			   {
+				   indiceArrivee = 0;
 			   }
+			   this.cout[indiceDepart][indiceArrivee] = plusCourtsChemins.get(key).get(innerKey).getTempsDeParcours().intValue();
 		   }
 		}
+		displayCout();
+	}
 
-		
-		/*
-		this.cout = new LinkedHashMap<Integer, LinkedHashMap<Integer, Integer>>();
-		for (int idDepart : plusCourtsChemins.keySet()) {
-			Hashtable<Integer,Chemin> innerHashTable = plusCourtsChemins.get(idDepart);
-			LinkedHashMap<Integer, Integer> innerHashMap = new LinkedHashMap<Integer, Integer>();
-			for (int idArrivee : innerHashTable.keySet()) {
-				innerHashMap.put(idArrivee, innerHashTable.get(idArrivee).getTempsDeParcours().intValue());
+	private void displayCout() {
+		for(int i = 0; i < cout.length; i++)
+		{
+			for(int j = 0; j < cout[i].length; j++)
+			{
+				System.out.print(this.cout[i][j]+" ");
 			}
-			cout.put(idDepart, innerHashMap);
-		}*/
-
+			System.out.println("");
+		}
 	}
 
 	@Override
@@ -72,19 +85,6 @@ public class GrapheOptimod implements Graphe {
 	public int getCout(int i, int j) {
 		if (i<0 || i>=nbSommets || j<0 || j>=nbSommets)
 			return -1;
-		/*
-		Set<Integer> keySet = cout.keySet();
-		Iterator<Integer> keySetIterator = keySet.iterator();
-		Integer key = 0;
-		for (int a = 0; keySetIterator.hasNext() && a < i; a++) {
-		   key = keySetIterator.next();
-		}
-		Set<Integer> innerKeySet = cout.get(key).keySet();
-		Iterator<Integer> innerKeySetIterator = innerKeySet.iterator();
-		Integer innerKey = 0;
-		for (int b = 0; innerKeySetIterator.hasNext() && b < j; b++) {
-		    innerKey = keySetIterator.next();
-		}*/
 		return cout[i][j];
 	}
 
@@ -92,7 +92,7 @@ public class GrapheOptimod implements Graphe {
 	public boolean estArc(int i, int j) {
 		if (i<0 || i>=nbSommets || j<0 || j>=nbSommets)
 			return false;
-		return i != j;
+		return cout[i][j] != -1;
 	}
 
 }

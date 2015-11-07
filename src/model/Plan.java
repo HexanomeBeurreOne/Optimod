@@ -12,7 +12,10 @@ import java.util.List;
 import java.util.Set;
 
 import model.tsp.Graphe;
+import model.tsp.GrapheComplet;
 import model.tsp.GrapheOptimod;
+import model.tsp.TSP;
+import model.tsp.TSP1;
 
 /**
  * @author Adrien Menella
@@ -126,10 +129,27 @@ public class Plan {
 	
 	public void calculTournee()	{
 		calculPlusCourtsChemins();
-		//Graphe g = new GrapheOptimod(10, plusCourtsChemins);
-		//Create graph with TSP
+		List<Livraison> livraisonsOrdonnees = calculOrdreLivraisons();
+		// Tournee, etapes
 	}
 	
+	private List<Livraison> calculOrdreLivraisons() {
+		TSP tsp = new TSP1();
+		Graphe g = new GrapheOptimod(demandeLivraisons, plusCourtsChemins);
+		long tempsDebut = System.currentTimeMillis();
+		tsp.chercheSolution(60000, g);
+		System.out.print("Solution de longueur "+tsp.getCoutSolution()+" trouvee en "
+				+(System.currentTimeMillis() - tempsDebut)+"ms : ");
+		List<Livraison> livraisons = demandeLivraisons.getAllLivraisons();
+		List<Livraison> livraisonsOrdonnees = new ArrayList<Livraison>();
+		//TODO: Remplir livraisonsOrdonnees
+		for (int i=0; i<livraisons.size()+1; i++){
+			System.out.print(tsp.getSolution(i)+" ");
+		}
+		System.out.println();
+		return livraisonsOrdonnees;
+	}
+
 	/**
 	 * Calculate the shortest paths between the delivery points
 	 */
