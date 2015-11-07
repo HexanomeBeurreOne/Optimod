@@ -9,10 +9,12 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
-import java.util.TreeMap;
+
+import model.tsp.Graphe;
+import model.tsp.GrapheOptimod;
+import model.tsp.TSP;
+import model.tsp.TSP1;
 
 /**
  * @author Adrien Menella
@@ -37,6 +39,7 @@ public class Plan {
 	 */
 	public Plan() {
 		this.nom = "";
+
 		this.adresses = new ArrayList<Adresse>();
 		this.troncons = new ArrayList<Troncon>();
 		this.demandeLivraisons = new DemandeLivraisons();
@@ -116,6 +119,15 @@ public class Plan {
 	public void addAdresse(Adresse newAdresse) {
 		this.adresses.add(newAdresse);
 	}
+	
+	/**
+	 * Remove an Adresse to the ArrayList adresses
+	 * @param adresseToRemove
+	 */
+	public void removeAdresse(Adresse adresseToRemove) {
+		if(this.adresses.contains(adresseToRemove)) this.adresses.remove(adresseToRemove);
+	}
+	
 	 /**
 	  * Add a Troncon to the ArrayList troncons
 	  * @param newTroncon
@@ -126,22 +138,42 @@ public class Plan {
 	
 	public void calculTournee()	{
 		calculPlusCourtsChemins();
-		//Create graph with TSP
+		List<Livraison> livraisonsOrdonnees = calculOrdreLivraisons();
+		Tournee tournee = new Tournee(demandeLivraisons.getIdEntrepot(), demandeLivraisons.getHeureDepart(), livraisonsOrdonnees, plusCourtsChemins);
+		System.out.println(tournee);
 	}
 	
+	private List<Livraison> calculOrdreLivraisons() {
+		TSP tsp = new TSP1();
+		Graphe g = new GrapheOptimod(demandeLivraisons, plusCourtsChemins);
+		long tempsDebut = System.currentTimeMillis();
+		tsp.chercheSolution(60000, g);
+		System.out.print("Solution de longueur "+tsp.getCoutSolution()+" trouvee en "
+				+(System.currentTimeMillis() - tempsDebut)+"ms : ");
+		List<Livraison> livraisons = demandeLivraisons.getAllLivraisons();
+		List<Livraison> livraisonsOrdonnees = new ArrayList<Livraison>();
+		for (int i=0; i<livraisons.size(); i++){
+			livraisonsOrdonnees.add(livraisons.get(tsp.getSolution(i+1)-1));
+		}
+		for (int i=0; i<livraisons.size()+1; i++){
+			System.out.print(tsp.getSolution(i)+" ");
+		}
+		System.out.println();
+		return livraisonsOrdonnees;
+	}
+
 	/**
 	 * Calculate the shortest paths between the delivery points
 	 */
 	private void calculPlusCourtsChemins()	{
 		//The list is ordered
 		List<FenetreLivraison> fenetres = demandeLivraisons.getFenetresLivraisons();
-		
 		//Get entrepot
 		Adresse entrepot = getAdresseById(demandeLivraisons.getIdEntrepot());
-		//Liste contenant l'entrepot, qui est le d�part et l'arriv�e
+		//Liste contenant l'entrepot, qui est le depart et l'arrivee
 		List<Adresse> entrepotList = new ArrayList<Adresse>(); 
 		entrepotList.add(entrepot);
-		///Liste des listes des Adresses de livraison de la fenetre
+		//Liste de sous-listes d'Adresses correspondants aux adresses des points de livraison par fenetre
 		List<List<Adresse>> adressesFenList = new ArrayList<List<Adresse>>();
 		adressesFenList.add(entrepotList);
 		for(FenetreLivraison fen : fenetres)
@@ -153,19 +185,23 @@ public class Plan {
 			adressesFenList.add(adressesFen);
 		}
 		adressesFenList.add(entrepotList);
-		Adresse depart;
-		List<Adresse> cibles;
+		
+		Adresse departDijkstra;
+		List<Adresse> ciblesDijkstra;
 		//TODO : put it in dispatcher #multithread
-		for(int i=1; i < adressesFenList.size(); i++)
+		for(int i = 1; i < adressesFenList.size(); i++)
 		{
-			for(int j=0; j< adressesFenList.get(i-1).size(); j++)
+			for(int j = 0; j < adressesFenList.get(i-1).size(); j++)
 			{
-				cibles = new ArrayList<Adresse>(adressesFenList.get(i));
-				cibles.addAll(adressesFenList.get(i-1));
-				depart = adressesFenList.get(i-1).get(j);
-				cibles.remove(depart);
-				Integer departId = depart.getId();
-				Hashtable<Integer, Chemin> resDijkstra = dijkstra(depart, cibles);
+				//On recupere une adresse d'une premiere fenetre de livraison
+				departDijkstra = adressesFenList.get(i-1).get(j);
+				Integer departId = departDijkstra.getId();
+				//On met dans ciblesDijkstra les adresses de cette premiere fenetre de livraison et de la suivante
+				ciblesDijkstra = new ArrayList<Adresse>(adressesFenList.get(i));
+				ciblesDijkstra.addAll(adressesFenList.get(i-1));
+				//On retire des ciblesDijkstra le departDijkstra
+				ciblesDijkstra.remove(departDijkstra);
+				Hashtable<Integer, Chemin> resDijkstra = dijkstra(departDijkstra, ciblesDijkstra);
 				plusCourtsChemins.put(departId, resDijkstra);
 			}
 		}
@@ -283,7 +319,7 @@ public class Plan {
 	  }
 	
 	/**
-	 * Get the Adresse which id is corresponding, return null if it does not contain
+	 * Get the Adresse which id is corresponding to the given parameter, return null if it does not contain
 	 * @param id
 	 * @return
 	 */
@@ -306,5 +342,6 @@ public class Plan {
 			currentAdresse.afficheAdresse();
 		}
 	}
+
 
 }

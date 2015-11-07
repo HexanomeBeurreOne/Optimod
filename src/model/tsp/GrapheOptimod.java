@@ -1,11 +1,15 @@
 package model.tsp;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.Iterator;
-import java.util.Map.Entry;
+import java.util.List;
 import java.util.Set;
 
 import model.Chemin;
+import model.DemandeLivraisons;
+import model.Livraison;
 
 public class GrapheOptimod implements Graphe {
 	
@@ -13,21 +17,60 @@ public class GrapheOptimod implements Graphe {
 	int[][] cout;
 	
 	/**
-	 * Cree un graphe complet dont les aretes ont un cout compris entre COUT_MIN et COUT_MAX
-	 * @param nbSommets
+	 * 
+	 * @param 
 	 */
-	public GrapheOptimod(Hashtable<Integer,Hashtable<Integer,Chemin>> hashTableGraph, Integer nombreAdresses){
-		this.nbSommets = nombreAdresses;
-		this.cout = new int[nbSommets][nbSommets];
-		// Get a set of all the entries (key - value pairs) contained in the Hashtable
-		Set<Entry<Integer, Hashtable<Integer, Chemin>>> entrySet = hashTableGraph.entrySet();
-		// Obtain an Iterator for the entries Set
-		Iterator<Entry<Integer, Hashtable<Integer, Chemin>>> itDeparts = entrySet.iterator();
-		// Iterate through Hashtable entries
-		while(itDeparts.hasNext()){
-			//itDeparts.next().getValue();
+	public GrapheOptimod(DemandeLivraisons demandeLivraison, Hashtable<Integer,Hashtable<Integer,Chemin>> plusCourtsChemins){
+		int idEntrepot = demandeLivraison.getIdEntrepot();
+		List<Integer> idAdressesLivraisons = new ArrayList<Integer>();
+		for(Livraison liv : demandeLivraison.getAllLivraisons())
+		{
+			idAdressesLivraisons.add(liv.getAdresse().getId());
 		}
+		this.nbSommets = idAdressesLivraisons.size() + 1;
+		this.cout = new int[nbSommets][nbSommets];
+		for(int i = 0; i < cout.length; i++)
+		{
+			Arrays.fill(this.cout[i], -1);
+		}
+		Set<Integer> keySet = plusCourtsChemins.keySet();
+		Iterator<Integer> keySetIterator = keySet.iterator();
+		Integer key;
+		while ( keySetIterator.hasNext() ) 
+		{
+		   key = keySetIterator.next();
+		   Set<Integer> innerKeySet = plusCourtsChemins.get(key).keySet();
+		   Iterator<Integer> innerKeySetIterator = innerKeySet.iterator();
+		   Integer innerKey;
+		   while ( innerKeySetIterator.hasNext()) 
+		   {
+			   innerKey = innerKeySetIterator.next();
+			   int indiceDepart, indiceArrivee;
+			   indiceDepart = idAdressesLivraisons.indexOf(key)+1;
+			   indiceArrivee = idAdressesLivraisons.indexOf(innerKey)+1;
+			   if(key == idEntrepot)
+			   {
+				   indiceDepart = 0;
+			   }
+			   if(innerKey == idEntrepot)
+			   {
+				   indiceArrivee = 0;
+			   }
+			   this.cout[indiceDepart][indiceArrivee] = plusCourtsChemins.get(key).get(innerKey).getTempsDeParcours().intValue();
+		   }
+		}
+		displayCout();
+	}
 
+	private void displayCout() {
+		for(int i = 0; i < cout.length; i++)
+		{
+			for(int j = 0; j < cout[i].length; j++)
+			{
+				System.out.print(this.cout[i][j]+" ");
+			}
+			System.out.println("");
+		}
 	}
 
 	@Override
@@ -46,7 +89,8 @@ public class GrapheOptimod implements Graphe {
 	public boolean estArc(int i, int j) {
 		if (i<0 || i>=nbSommets || j<0 || j>=nbSommets)
 			return false;
-		return i != j;
+
+		return cout[i][j] != -1;
 	}
 
 }

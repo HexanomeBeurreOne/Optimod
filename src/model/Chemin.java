@@ -8,8 +8,8 @@ public class Chemin {
 	/**
 	 * Attributes
 	 */
-	Double tempsDeParcours;
-	List<Troncon> troncons;
+	private Double tempsDeParcours;
+	private List<Troncon> troncons;
 	
 	/**
 	 * Constructor
