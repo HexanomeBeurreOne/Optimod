@@ -18,6 +18,7 @@ public class DemandeLivraisons {
 	 */
 	private int idEntrepot;
 	private List<FenetreLivraison> fenetresLivraisons;
+	private int heureDepart;
 	
 	/**
 	 * Constructor
@@ -25,6 +26,7 @@ public class DemandeLivraisons {
 	public DemandeLivraisons() {
 		this.idEntrepot = 0;
 		this.fenetresLivraisons = new ArrayList<FenetreLivraison>();
+		this.heureDepart = 8*3600;
 	}
 	
 	/**
@@ -80,6 +82,14 @@ public class DemandeLivraisons {
 
 	public void setIdEntrepot(int idEntrepot) {
 		this.idEntrepot = idEntrepot;
+	}
+	
+	public int getHeureDepart() {
+		return heureDepart;
+	}
+
+	public void setHeureDepart(int heureDepart) {
+		this.heureDepart = heureDepart;
 	}
 
 	public List<FenetreLivraison> getFenetresLivraisons() {

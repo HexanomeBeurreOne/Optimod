@@ -54,7 +54,7 @@ public class FactoryDemandeLivraisons implements FactoryBase {
 	}
 	
 	/**
-	 * Return a nex FenetreLivraison object with given parameters if it has not already been instantiated and added to the FenetreLivraison list of DemandeLivraison object
+	 * Return a new FenetreLivraison object with given parameters if it has not already been instantiated and added to the FenetreLivraison list of DemandeLivraison object
 	 * return null otherwise
 	 * @param heureDebut
 	 * @param heureFin

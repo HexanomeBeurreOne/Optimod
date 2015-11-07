@@ -4,11 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
 
-import model.Adresse;
 import model.Chemin;
 import model.DemandeLivraisons;
 import model.Livraison;
@@ -61,7 +59,7 @@ public class GrapheOptimod implements Graphe {
 			   this.cout[indiceDepart][indiceArrivee] = plusCourtsChemins.get(key).get(innerKey).getTempsDeParcours().intValue();
 		   }
 		}
-		//displayCout();
+		displayCout();
 	}
 
 	private void displayCout() {

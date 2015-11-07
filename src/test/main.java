@@ -12,10 +12,10 @@ public class main {
 		FactoryPlan factoryPlan = new FactoryPlan();
 		
 		// Le fichier passe en parametre doit se trouver dans le dossier principal du projet
-		Plan plan = factoryPlan.getPlan("plan20x20.xml");
+		Plan plan = factoryPlan.getPlan("data/plan20x20.xml");
 		
 		FactoryDemandeLivraisons factoryDemandeLivraisons = new FactoryDemandeLivraisons();
-		DemandeLivraisons demandeLivraisons = factoryDemandeLivraisons.getDemandeLivraisons("livraison20x20-1.xml", plan);
+		DemandeLivraisons demandeLivraisons = factoryDemandeLivraisons.getDemandeLivraisons("data/livraison20x20-1.xml", plan);
 
 		plan.setDemandeLivraisons(demandeLivraisons);
 		

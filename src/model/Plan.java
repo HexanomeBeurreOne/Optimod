@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Set;
 
 import model.tsp.Graphe;
-import model.tsp.GrapheComplet;
 import model.tsp.GrapheOptimod;
 import model.tsp.TSP;
 import model.tsp.TSP1;
@@ -140,7 +139,8 @@ public class Plan {
 	public void calculTournee()	{
 		calculPlusCourtsChemins();
 		List<Livraison> livraisonsOrdonnees = calculOrdreLivraisons();
-		// Tournee, etapes
+		Tournee tournee = new Tournee(demandeLivraisons.getIdEntrepot(), demandeLivraisons.getHeureDepart(), livraisonsOrdonnees, plusCourtsChemins);
+		System.out.println(tournee);
 	}
 	
 	private List<Livraison> calculOrdreLivraisons() {
@@ -152,7 +152,9 @@ public class Plan {
 				+(System.currentTimeMillis() - tempsDebut)+"ms : ");
 		List<Livraison> livraisons = demandeLivraisons.getAllLivraisons();
 		List<Livraison> livraisonsOrdonnees = new ArrayList<Livraison>();
-		//TODO: Remplir livraisonsOrdonnees
+		for (int i=0; i<livraisons.size(); i++){
+			livraisonsOrdonnees.add(livraisons.get(tsp.getSolution(i+1)-1));
+		}
 		for (int i=0; i<livraisons.size()+1; i++){
 			System.out.print(tsp.getSolution(i)+" ");
 		}
