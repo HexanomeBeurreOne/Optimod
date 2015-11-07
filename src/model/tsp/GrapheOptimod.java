@@ -89,6 +89,7 @@ public class GrapheOptimod implements Graphe {
 	public boolean estArc(int i, int j) {
 		if (i<0 || i>=nbSommets || j<0 || j>=nbSommets)
 			return false;
+
 		return cout[i][j] != -1;
 	}
 
