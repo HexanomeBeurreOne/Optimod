@@ -8,8 +8,6 @@ public class Etape {
 	private Livraison livraison;
 	// Chemin qui mene au lieu de livraison
 	private Chemin chemin;
-	// Heure de depart de l'étape, avant de parcourir le chemin
-	private double heureDepart;
 	// Heure de debut de livraison
 	private double heureLivraison;
 	// Retard eventuel sur la fenetre de livraison, sinon -1
@@ -21,7 +19,6 @@ public class Etape {
 	public Etape(Livraison livraison, Chemin chemin, double heureDepart) {
 		this.livraison = livraison;
 		this.chemin = chemin;
-		this.heureDepart = heureDepart;
 		heureLivraison = heureDepart + chemin.getTempsDeParcours();
 		// Si on est en avance sur le debut de la fenetre horaire, on attend.
 		if(heureLivraison < livraison.getFenetreLivraison().getHeureDebut())
@@ -31,7 +28,7 @@ public class Etape {
 		retard = -1;
 		if(heureLivraison > livraison.getFenetreLivraison().getHeureFin())
 		{
-			retard = livraison.getFenetreLivraison().getHeureFin() - heureLivraison;
+			retard = heureLivraison - livraison.getFenetreLivraison().getHeureFin();
 		}
 	}
 	
@@ -42,10 +39,6 @@ public class Etape {
 	public Chemin getChemin() {
 		return chemin;
 	}	
-	
-	public double getHeureDepart() {
-		return heureDepart;
-	}
 	
 	public double getHeureLivraison() {
 		return heureLivraison;

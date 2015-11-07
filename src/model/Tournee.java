@@ -35,6 +35,7 @@ public class Tournee {
 		}
 		retourEntrepot = plusCourtsChemins.get(idDepartEtape).get(idEntrepot);
 		heureFin = heureDepartEtape + retourEntrepot.getTempsDeParcours();
+		if(heureFin > 24*3600) System.out.println("La tournee se termine après minuit.");
 	}
 	
 	public List<Etape> getEtapes() {
