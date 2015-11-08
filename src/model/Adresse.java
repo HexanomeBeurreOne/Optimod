@@ -67,6 +67,10 @@ public class Adresse {
 		this.tronconsSortants.add(newTronconSortant);
 	}
 	
+	public List<Troncon> getTroncons() {
+		return this.tronconsSortants;
+	}
+	
 	public void afficheAdresse() {
 		System.out.println("Adresse "+this.id+" | x="+this.coordX+" y="+this.coordY);
 		Iterator<Troncon> tronconsSortantsIterator = this.tronconsSortants.iterator();
@@ -76,6 +80,10 @@ public class Adresse {
 			currentTroncon.afficheTroncon();
 		}
 	}
-	
+
+	@Override
+	public String toString() {
+		return "Adresse [id=" + id + "]";
+	}
 	
 }
