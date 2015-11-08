@@ -23,7 +23,7 @@ public class DemandeLivraisons {
 	 * Constructor
 	 */
 	public DemandeLivraisons() {
-		this.idEntrepot = 0;
+		this.idEntrepot = -1;
 		this.fenetresLivraisons = new ArrayList<FenetreLivraison>();
 	}
 	

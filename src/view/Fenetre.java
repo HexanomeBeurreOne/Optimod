@@ -15,8 +15,8 @@ import java.util.Observer;
  * Created by cyrilcanete on 03/11/15.
  */
 public class Fenetre extends JFrame{
-	private final int hauteurFenetre = 500;
-	private final int largeurFenetre = 950;
+	private final int hauteurFenetre = 1000;
+	private final int largeurFenetre = 1900;
 	
 	private VuePlan vuePlan;
 	private int largeurVuePlan;

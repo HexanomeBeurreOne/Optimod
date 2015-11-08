@@ -64,14 +64,17 @@ public class VuePlan extends JPanel implements Observer {
         Iterator<Adresse> itAdresses = adressesPlan.iterator();
         g2.setColor(Color.GRAY);
         while (itAdresses.hasNext()){
-            drawAdresse(g2, itAdresses.next(), 2);
+            drawAdresse(g2, itAdresses.next(), 4);
         }
+        
+        // colorier l'entrepot
+		colorierEntrepot(g2);
         
         // Colorier les livraisons
         colorierLivraisons(g2);
     }
 
-    private void drawAdresse(Graphics2D g2, Adresse adresse, int rayon) {
+	private void drawAdresse(Graphics2D g2, Adresse adresse, int rayon) {
     	int x = scaleIt(adresse.getCoordX());
         int y = scaleIt(adresse.getCoordY());
         g2.fillOval(x - rayon, y - rayon, 2*rayon, 2*rayon);
@@ -141,12 +144,20 @@ public class VuePlan extends JPanel implements Observer {
 			while (itL.hasNext()) {
 				g2.setColor(new Color(R, G, B));
 				Adresse adresseTemp = itL.next().getAdresse();
-				this.drawAdresse(g2, adresseTemp, 3);
+				this.drawAdresse(g2, adresseTemp, 8);
 				g2.setColor(Color.WHITE);
-				
-				this.drawAdresse(g2, adresseTemp, 2);
+				this.drawAdresse(g2, adresseTemp, 4);
 				
 			}
+		}
+	}
+	
+	private void colorierEntrepot(Graphics2D g2) {
+		Adresse entrepot = plan.getAdresseById(plan.getDemandeLivraisons().getIdEntrepot());
+		if (entrepot!=null) {
+			//entrepot.afficheAdresse();
+			g2.setColor(Color.RED);
+			this.drawAdresse(g2, entrepot, 8);
 		}
 	}
 

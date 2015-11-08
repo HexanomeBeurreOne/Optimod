@@ -32,7 +32,7 @@ public class ControleurApplication
 	public ControleurApplication(Plan p)
 	{
 		plan = p;
-		fenetre = new Fenetre(plan, 0.5, this);
+		fenetre = new Fenetre(plan, 1.14, this);
 		undoRedo = new PilesEtats();
 	}
 		
