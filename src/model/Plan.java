@@ -9,8 +9,9 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
+import java.util.Observable;
 
+import java.util.Set;
 import model.tsp.Graphe;
 import model.tsp.GrapheOptimod;
 import model.tsp.TSP;
@@ -20,7 +21,7 @@ import model.tsp.TSP1;
  * @author Adrien Menella
  *
  */
-public class Plan {
+public class Plan extends Observable {
 
 	/**
 	 * Attributes
@@ -52,6 +53,8 @@ public class Plan {
 
 	public void setDemandeLivraisons(DemandeLivraisons demandeLivraisons) {
 		this.demandeLivraisons = demandeLivraisons;
+		setChanged();
+		notifyObservers(this);
 	}
 	
 	/**
@@ -94,6 +97,8 @@ public class Plan {
 
 	public void setNom(String nom) {
 		this.nom = nom;
+		setChanged();
+		notifyObservers(this);
 	}
 
 	public List<Adresse> getAdresses() {
@@ -102,6 +107,8 @@ public class Plan {
 
 	public void setAdresses(List<Adresse> adresses) {
 		this.adresses = adresses;
+		setChanged();
+		notifyObservers(this);
 	}
 
 	public List<Troncon> getTroncons() {
@@ -110,6 +117,8 @@ public class Plan {
 
 	public void setTroncons(List<Troncon> troncons) {
 		this.troncons = troncons;
+		setChanged();
+		notifyObservers(this);
 	}
 
 	/**

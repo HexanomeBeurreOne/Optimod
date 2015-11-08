@@ -19,22 +19,13 @@ import javax.swing.border.CompoundBorder;
 public class VuePlan extends JPanel implements Observer {
 
     private double echelle;
-    private int hauteurVuePlan;
-    private int largeurVuePlan;
     private Plan plan;
     
-
-
     public VuePlan(Plan plan, double echelle, Fenetre fenetre) {
         super();
-        //plan.addObserver(this);
+        
+        plan.addObserver(this);
         setLayout(null);
-        
-        hauteurVuePlan = fenetre.getHauteurFenetre()-70;
-        largeurVuePlan = 2*fenetre.getLargeurFenetre()/3;
-        
-        //Taille du plan
-        setSize(largeurVuePlan, hauteurVuePlan);
         
         this.setBackground(Color.WHITE);
         
@@ -50,6 +41,21 @@ public class VuePlan extends JPanel implements Observer {
         this.plan = plan;
         this.echelle=echelle;
     }
+    
+
+	/**
+	 * @return the plan
+	 */
+	public Plan getPlan() {
+		return plan;
+	}
+
+	/**
+	 * @param plan the plan to set
+	 */
+	public void setPlan(Plan plan) {
+		this.plan = plan;
+	}
 
     @Override
     public void paintComponent(Graphics g) {
@@ -71,14 +77,24 @@ public class VuePlan extends JPanel implements Observer {
         Iterator<Adresse> itAdresses = adressesPlan.iterator();
         g2.setColor(Color.GRAY);
         while (itAdresses.hasNext()){
-            drawAdresse(g2, itAdresses.next());
+            drawAdresse(g2, itAdresses.next(), 4);
         }
+        
+        // colorier l'entrepot
+		colorierEntrepot(g2);
+        
+        // Colorier les livraisons
+        colorierLivraisons(g2);
     }
 
-    private void drawAdresse(Graphics2D g2, Adresse adresse) {
+    private int scaleIt(int coordonnee) {
+        return (int) Math.round(coordonnee*this.echelle);
+    }
+    
+	private void drawAdresse(Graphics2D g2, Adresse adresse, int rayon) {
     	int x = scaleIt(adresse.getCoordX());
         int y = scaleIt(adresse.getCoordY());
-        g2.fillOval(x - 3, y - 3, 6, 6);
+        g2.fillOval(x - rayon, y - rayon, 2*rayon, 2*rayon);
     }
 
     private void drawTroncon(Graphics2D g2, Troncon troncon) {
@@ -91,10 +107,39 @@ public class VuePlan extends JPanel implements Observer {
         g2.drawLine(xOrigine, yOrigine, xDestination, yDestination);
     }
 
-    private int scaleIt(int coordonnee) {
-        return (int) Math.round(coordonnee*this.echelle);
-    }
-
+	private void colorierLivraisons(Graphics2D g2) {
+		float R, G, B;
+		List<FenetreLivraison> fenetreLivraisons = plan.getDemandeLivraisons().getFenetresLivraisons();
+		Iterator<FenetreLivraison> itFL = fenetreLivraisons.iterator();
+		while (itFL.hasNext()) {
+			R=(float)Math.random();
+			
+			G=(float)Math.random();
+			
+			B=(float)Math.random();
+			
+			
+			FenetreLivraison fenetreLivraisonActuelle = itFL.next();
+			Iterator<Livraison> itL = fenetreLivraisonActuelle.getLivraisons().iterator();
+			while (itL.hasNext()) {
+				g2.setColor(new Color(R, G, B));
+				Adresse adresseTemp = itL.next().getAdresse();
+				this.drawAdresse(g2, adresseTemp, 8);
+				g2.setColor(Color.WHITE);
+				this.drawAdresse(g2, adresseTemp, 4);
+			}
+		}
+	}
+	
+	private void colorierEntrepot(Graphics2D g2) {
+		Adresse entrepot = plan.getAdresseById(plan.getDemandeLivraisons().getIdEntrepot());
+		if (entrepot!=null) {
+			//entrepot.afficheAdresse();
+			g2.setColor(Color.RED);
+			this.drawAdresse(g2, entrepot, 8);
+		}
+	}
+	
     /**
      * @param fromPoint end of the arrow
      * @param rotationDeg rotation angle of line
@@ -123,6 +168,8 @@ public class VuePlan extends JPanel implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-
+    	Plan plan = (Plan)arg;
+    	this.plan = plan;
+    	repaint();
     }
 }
