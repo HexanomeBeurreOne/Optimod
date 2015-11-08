@@ -29,7 +29,7 @@ public class VueLivraison extends JPanel implements Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		this.plan = (Plan)arg;
-		plan.getDemandeLivraisons().afficheDemandeLivraisons();
+		//plan.getDemandeLivraisons().afficheDemandeLivraisons();
 		//miseAJourLivraisons();
 	}
 }

@@ -103,7 +103,6 @@ public class Plan extends Observable {
 
 	public void setTroncons(List<Troncon> troncons) {
 		this.troncons = troncons;
-		setChanged();
 		notifyObservers(this);
 	}
 
