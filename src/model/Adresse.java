@@ -55,6 +55,10 @@ public class Adresse {
 		this.coordY = coordY;
 	}
 
+	public List<Troncon> getTronconsSortants() {
+		return tronconsSortants;
+	}
+
 	/**
 	 * Add a new TronconSortant to the list tronconsSortants of the current Adresse
 	 * @param newTronconSortant
