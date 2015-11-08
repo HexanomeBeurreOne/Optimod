@@ -3,6 +3,7 @@ package controller;
 import model.Plan;
 import view.Fenetre;
 import model.DemandeLivraisons;
+import model.FactoryDemandeLivraisons;
 import model.FactoryPlan;
 import model.Livraison;
 import model.FenetreLivraison;
@@ -65,7 +66,9 @@ public class ControleurApplication
 	}
 	
 	public void chargerDemandeLivraisons() {
-		
+		FactoryDemandeLivraisons factoryDemandeLivraisons = new FactoryDemandeLivraisons();
+		DemandeLivraisons dLTemp = factoryDemandeLivraisons.getDemandeLivraisons("data/livraison20x20-1.xml", this.plan);
+		this.plan.setDemandeLivraisons(dLTemp);
 	}
 	
 	public String chargerFichier(String path) {
