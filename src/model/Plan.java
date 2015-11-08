@@ -4,9 +4,18 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Observable;
+
+import java.util.Set;
+import model.tsp.Graphe;
+import model.tsp.GrapheOptimod;
+import model.tsp.TSP;
+import model.tsp.TSP1;
 
 /**
  * @author Adrien Menella
@@ -21,6 +30,10 @@ public class Plan extends Observable {
 	private List<Adresse> adresses;
 	private List<Troncon> troncons;
 	private DemandeLivraisons demandeLivraisons;
+	// Hashmap better than Hashtable in single threaded environment.
+	// The Key of the outer Hashtable is the id of the starting Adresse, 
+	// The Key of the inner Hashtable is the id of the ending Adresse, 
+	private Hashtable<Integer,Hashtable<Integer,Chemin>> plusCourtsChemins;
 	
 	/**
 	 * Constructor
@@ -31,6 +44,7 @@ public class Plan extends Observable {
 		this.adresses = new ArrayList<Adresse>();
 		this.troncons = new ArrayList<Troncon>();
 		this.demandeLivraisons = new DemandeLivraisons();
+		this.plusCourtsChemins = new Hashtable<Integer,Hashtable<Integer,Chemin>>();
 	}
 	
 	public DemandeLivraisons getDemandeLivraisons() {
@@ -129,6 +143,188 @@ public class Plan extends Observable {
 	public void addTroncon(Troncon newTroncon) {
 		this.troncons.add(newTroncon);
 	}
+	
+	public void calculTournee()	{
+		calculPlusCourtsChemins();
+		List<Livraison> livraisonsOrdonnees = calculOrdreLivraisons();
+		Tournee tournee = new Tournee(demandeLivraisons.getIdEntrepot(), demandeLivraisons.getHeureDepart(), livraisonsOrdonnees, plusCourtsChemins);
+		System.out.println(tournee);
+	}
+	
+	private List<Livraison> calculOrdreLivraisons() {
+		TSP tsp = new TSP1();
+		Graphe g = new GrapheOptimod(demandeLivraisons, plusCourtsChemins);
+		long tempsDebut = System.currentTimeMillis();
+		tsp.chercheSolution(60000, g);
+		System.out.print("Solution de longueur "+tsp.getCoutSolution()+" trouvee en "
+				+(System.currentTimeMillis() - tempsDebut)+"ms : ");
+		List<Livraison> livraisons = demandeLivraisons.getAllLivraisons();
+		List<Livraison> livraisonsOrdonnees = new ArrayList<Livraison>();
+		for (int i=0; i<livraisons.size(); i++){
+			livraisonsOrdonnees.add(livraisons.get(tsp.getSolution(i+1)-1));
+		}
+		for (int i=0; i<livraisons.size()+1; i++){
+			System.out.print(tsp.getSolution(i)+" ");
+		}
+		System.out.println();
+		return livraisonsOrdonnees;
+	}
+
+	/**
+	 * Calculate the shortest paths between the delivery points
+	 */
+	private void calculPlusCourtsChemins()	{
+		//The list is ordered
+		List<FenetreLivraison> fenetres = demandeLivraisons.getFenetresLivraisons();
+		//Get entrepot
+		Adresse entrepot = getAdresseById(demandeLivraisons.getIdEntrepot());
+		//Liste contenant l'entrepot, qui est le depart et l'arrivee
+		List<Adresse> entrepotList = new ArrayList<Adresse>(); 
+		entrepotList.add(entrepot);
+		//Liste de sous-listes d'Adresses correspondants aux adresses des points de livraison par fenetre
+		List<List<Adresse>> adressesFenList = new ArrayList<List<Adresse>>();
+		adressesFenList.add(entrepotList);
+		for(FenetreLivraison fen : fenetres)
+		{
+			List<Adresse> adressesFen = new ArrayList<Adresse>();
+			for(Livraison liv:fen.getLivraisons()){
+				adressesFen.add(liv.getAdresse());
+			}
+			adressesFenList.add(adressesFen);
+		}
+		adressesFenList.add(entrepotList);
+		
+		Adresse departDijkstra;
+		List<Adresse> ciblesDijkstra;
+		//TODO : put it in dispatcher #multithread
+		for(int i = 1; i < adressesFenList.size(); i++)
+		{
+			for(int j = 0; j < adressesFenList.get(i-1).size(); j++)
+			{
+				//On recupere une adresse d'une premiere fenetre de livraison
+				departDijkstra = adressesFenList.get(i-1).get(j);
+				Integer departId = departDijkstra.getId();
+				//On met dans ciblesDijkstra les adresses de cette premiere fenetre de livraison et de la suivante
+				ciblesDijkstra = new ArrayList<Adresse>(adressesFenList.get(i));
+				ciblesDijkstra.addAll(adressesFenList.get(i-1));
+				//On retire des ciblesDijkstra le departDijkstra
+				ciblesDijkstra.remove(departDijkstra);
+				Hashtable<Integer, Chemin> resDijkstra = dijkstra(departDijkstra, ciblesDijkstra);
+				plusCourtsChemins.put(departId, resDijkstra);
+			}
+		}
+		System.out.println(plusCourtsChemins);
+	}
+	
+	private HashSet<Adresse> settledNodes;
+	private HashSet<Adresse> unSettledNodes;
+	private HashMap<Adresse, Double> distance;
+	private HashMap<Adresse, Adresse> predecessors;
+	
+	public Hashtable<Integer, Chemin> dijkstra(Adresse depart, List<Adresse> cibles) {
+		settledNodes = new HashSet<Adresse>();
+		unSettledNodes = new HashSet<Adresse>();
+		distance = new HashMap<Adresse, Double>();
+		predecessors = new HashMap<Adresse, Adresse>();
+	    distance.put(depart, 0.);
+	    unSettledNodes.add(depart);
+	    while (unSettledNodes.size() > 0) {
+	      Adresse node = getMinimum(unSettledNodes);
+	      settledNodes.add(node);
+	      unSettledNodes.remove(node);
+	      findMinimalDistances(node);
+	    }
+	    
+	    Hashtable<Integer, Chemin> result = new Hashtable<Integer, Chemin>();
+	    if(settledNodes.containsAll(cibles))	{
+		    for(int i=0; i < cibles.size(); i++)	{
+		    	Adresse precede = cibles.get(i);
+		    	Integer id = precede.getId();
+		    	Chemin chemin = new Chemin();
+		    	chemin.setTempsDeParcours(distance.get(cibles.get(i)));
+		    	//Iterate to get each troncon from cibles[i] to depart
+		    	while(precede.getId() != depart.getId())	{
+		    		Adresse adressePrec = predecessors.get(precede);
+		    		List<Troncon> tronconsSortants = adressePrec.getTroncons();
+		    		for(int j=0; j < tronconsSortants.size(); j++)	{
+		    			if(tronconsSortants.get(j).getDestination().getId() == precede.getId()) {
+		    				chemin.addTroncon(tronconsSortants.get(j));
+		    				break;
+		    			}
+		    		}
+		    		precede = adressePrec;
+		    	}
+		    	result.put(id, chemin);
+		    }
+		    
+		    return result;
+		} else {
+			System.out.println("This is not a connex graph !");
+			return null;
+		}
+	  }
+	
+	private void findMinimalDistances(Adresse node) {
+	    List<Adresse> adjacentNodes = getNeighbors(node);
+	    for (Adresse target : adjacentNodes) {
+	      if (getShortestTime(target) > getShortestTime(node)
+	          + getTime(node, target)) {
+	        distance.put(target, getShortestTime(node)
+	            + getTime(node, target));
+	        predecessors.put(target, node);
+	        unSettledNodes.add(target);
+	      }
+	    }
+
+	  }
+
+	  private double getTime(Adresse node, Adresse target) {
+	    for (Troncon edge : troncons) {
+	      if (edge.getOrigine().equals(node)
+	          && edge.getDestination().equals(target)) {
+	        return edge.getTempsTroncon();
+	      }
+	    }
+	    throw new RuntimeException("Should not happen");
+	  }
+	  
+	  private List<Adresse> getNeighbors(Adresse node) {
+		    List<Adresse> neighbors = new ArrayList<Adresse>();
+		    for (Troncon edge : troncons) {
+		      if (edge.getOrigine().equals(node)
+		          && !isSettled(edge.getDestination())) {
+		        neighbors.add(edge.getDestination());
+		      }
+		    }
+		    return neighbors;
+		  }
+	  
+	  private boolean isSettled(Adresse node) {
+		    return settledNodes.contains(node);
+	  }
+	  
+	  private Adresse getMinimum(Set<Adresse> adresseSet) {
+	    Adresse minimum = null;
+	    for (Adresse ad : adresseSet) {
+	      if (minimum == null) {
+	        minimum = ad;
+	      } else {
+	        if (getShortestTime(ad) < getShortestTime(minimum)) {
+	          minimum = ad;
+	        }
+	      }
+	    }
+	    return minimum;
+	  }
+
+	  private Double getShortestTime(Adresse destination) {
+	    Double d = (Double) distance.get(destination);
+	    if (d == null) {
+	      return Double.MAX_VALUE;
+	    } else {
+	      return d;
+	    }
+	  }
 	
 	/**
 	 * Get the Adresse which id is corresponding to the given parameter, return null if it does not contain
