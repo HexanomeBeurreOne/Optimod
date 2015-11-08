@@ -34,6 +34,7 @@ public class Plan extends Observable {
 	// The Key of the outer Hashtable is the id of the starting Adresse, 
 	// The Key of the inner Hashtable is the id of the ending Adresse, 
 	private Hashtable<Integer,Hashtable<Integer,Chemin>> plusCourtsChemins;
+	private Tournee tournee;
 	
 	/**
 	 * Constructor
@@ -145,10 +146,14 @@ public class Plan extends Observable {
 		this.troncons.add(newTroncon);
 	}
 	
+	public Tournee getTournee() {
+		return tournee;
+	}
+	
 	public void calculTournee()	{
 		calculPlusCourtsChemins();
 		List<Livraison> livraisonsOrdonnees = calculOrdreLivraisons();
-		Tournee tournee = new Tournee(demandeLivraisons.getIdEntrepot(), demandeLivraisons.getHeureDepart(), livraisonsOrdonnees, plusCourtsChemins);
+		tournee = new Tournee(demandeLivraisons.getIdEntrepot(), demandeLivraisons.getHeureDepart(), livraisonsOrdonnees, plusCourtsChemins);
 		System.out.println(tournee);
 	}
 	
@@ -339,6 +344,10 @@ public class Plan extends Observable {
 			if(currentAdresse.getId()==id) return currentAdresse;
 		}
 		return null;
+	}
+	
+	public void supprimerEtape(Livraison livraison) {
+		tournee.supprimerEtape(livraison, plusCourtsChemins);
 	}
 	
 	public void affichePlan() {
