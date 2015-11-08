@@ -116,11 +116,8 @@ public class VuePlan extends JPanel implements Observer {
 		Iterator<FenetreLivraison> itFL = fenetreLivraisons.iterator();
 		while (itFL.hasNext()) {
 			R=(float)Math.random();
-			
 			G=(float)Math.random();
-			
 			B=(float)Math.random();
-			
 			
 			FenetreLivraison fenetreLivraisonActuelle = itFL.next();
 			Iterator<Livraison> itL = fenetreLivraisonActuelle.getLivraisons().iterator();
@@ -144,16 +141,22 @@ public class VuePlan extends JPanel implements Observer {
 	}
 	
     private void colorierChemins(Graphics2D g2) {
+    	List<Troncon> troncons;
     	g2.setColor(Color.RED);
 		List<Etape> etapes = plan.getTournee().getEtapes();
 		if (etapes != null) {
 			Iterator<Etape> itE = etapes.iterator();
 			while (itE.hasNext()) {
-				List<Troncon> troncons = itE.next().getChemin().getTroncons();
+				troncons = itE.next().getChemin().getTroncons();
 				Iterator<Troncon> itT = troncons.iterator();
 				while (itT.hasNext()) {
 					drawTroncon(g2, itT.next());
 				}
+			}
+			troncons = plan.getTournee().getRetourEntrepot().getTroncons();
+			Iterator<Troncon> itT = troncons.iterator();
+			while (itT.hasNext()) {
+				drawTroncon(g2, itT.next());
 			}
 		}
 	}

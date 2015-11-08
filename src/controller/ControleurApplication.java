@@ -1,6 +1,7 @@
 package controller;
 
 import model.Plan;
+import model.Tournee;
 import view.Fenetre;
 import model.DemandeLivraisons;
 import model.FactoryDemandeLivraisons;
@@ -60,6 +61,7 @@ public class ControleurApplication
 				this.plan.setTroncons(planTemp.getTroncons());
 				this.plan.setNom(planTemp.getNom());
 				this.plan.setDemandeLivraisons(new DemandeLivraisons());
+				this.plan.setTournee(new Tournee());
 				fenetre.getBoutons().get(1).setEnabled(true);
 				fenetre.getZoneMessage().setText("Vous pouvez charger une demande de livraisons");
 	    	} else {
@@ -78,6 +80,7 @@ public class ControleurApplication
 			DemandeLivraisons dLTemp = factoryDemandeLivraisons.getDemandeLivraisons(fichier, this.plan);
 			if(dLTemp!=null) {
 				this.plan.setDemandeLivraisons(dLTemp);
+				this.plan.setTournee(new Tournee());
 				fenetre.getBoutons().get(2).setEnabled(true);
 				fenetre.getZoneMessage().setText("Vous pouvez calculer une tournée");
 			} else {
