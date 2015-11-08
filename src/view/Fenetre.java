@@ -71,6 +71,7 @@ public class Fenetre extends JFrame{
         zoneMessage.setBorder(BorderFactory.createTitledBorder("Message"));
         zoneMessage.setSize(largeurVuePlan,hauteurMessage);
 		zoneMessage.setLocation(0,hauteurBouton);
+		zoneMessage.setText("Vous pouvez charger un plan");
 		getContentPane().add(zoneMessage);
 		
 		//Souris
@@ -135,6 +136,20 @@ public class Fenetre extends JFrame{
 	 */
 	public void setBoutons(ArrayList<JButton> boutons) {
 		this.boutons = boutons;
+	}
+
+	/**
+	 * @return the zoneMessage
+	 */
+	public JLabel getZoneMessage() {
+		return zoneMessage;
+	}
+
+	/**
+	 * @param zoneMessage the zoneMessage to set
+	 */
+	public void setZoneMessage(JLabel zoneMessage) {
+		this.zoneMessage = zoneMessage;
 	}
 
     

@@ -14,6 +14,7 @@ import java.io.IOException;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import controller.commands.*;
@@ -58,9 +59,14 @@ public class ControleurApplication
 		    	this.plan.setAdresses(planTemp.getAdresses());
 				this.plan.setTroncons(planTemp.getTroncons());
 				this.plan.setNom(planTemp.getNom());
-				fenetre.getBoutons().get(1).setEnabled(true);;
+				this.plan.setDemandeLivraisons(new DemandeLivraisons());
+				fenetre.getBoutons().get(1).setEnabled(true);
+				fenetre.getZoneMessage().setText("Vous pouvez charger une demande de livraisons");
 	    	} else {
-	    		//TODO
+	    		JOptionPane.showMessageDialog(fenetre,
+	    			    "Le fichier de plan est mal formé",
+	    			    "Erreur",
+	    			    JOptionPane.ERROR_MESSAGE);
 	    	}
 	    }
 	}
@@ -73,7 +79,10 @@ public class ControleurApplication
 			if(dLTemp!=null) {
 				this.plan.setDemandeLivraisons(dLTemp);
 			} else {
-				//TODO
+				JOptionPane.showMessageDialog(fenetre,
+					    "Le fichier de demande de livraisons est mal formé",
+					    "Erreur",
+					    JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}
