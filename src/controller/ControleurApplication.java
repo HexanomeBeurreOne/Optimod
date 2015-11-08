@@ -50,12 +50,13 @@ public class ControleurApplication
 		undoRedo.redo();
 	}
 	
-	public void chargerPlan() throws IOException {
-		
+	public void chargerPlan() {
 		FactoryPlan factoryPlan = new FactoryPlan();
 		String fichier = chargerFichier("./data");
-		if (fichier!=null) {
+		
+		if (fichier != null) {
 	    	Plan planTemp  = factoryPlan.getPlan(fichier);
+	    	
 		    if (planTemp != null) {
 		    	this.plan.setAdresses(planTemp.getAdresses());
 				this.plan.setTroncons(planTemp.getTroncons());
@@ -76,11 +77,14 @@ public class ControleurApplication
 	public void chargerDemandeLivraisons() {
 		FactoryDemandeLivraisons factoryDemandeLivraisons = new FactoryDemandeLivraisons();
 		String fichier = chargerFichier("./data");
-		if (fichier!=null) {
+		
+		if (fichier != null) {
 			DemandeLivraisons dLTemp = factoryDemandeLivraisons.getDemandeLivraisons(fichier, this.plan);
-			if(dLTemp!=null) {
+			
+			if(dLTemp != null) {
 				this.plan.setDemandeLivraisons(dLTemp);
 				this.plan.setTournee(new Tournee());
+				//On active le bouton "calculer tournee
 				fenetre.getBoutons().get(2).setEnabled(true);
 				fenetre.getZoneMessage().setText("Vous pouvez calculer une tournée");
 			} else {
@@ -92,7 +96,7 @@ public class ControleurApplication
 		}
 	}
 	
-	public String chargerFichier(String path) {
+	private String chargerFichier(String path) {
 		JFileChooser chooser = new JFileChooser(path);
 	    int returnVal = chooser.showOpenDialog(new JFrame());
 	    if(returnVal == JFileChooser.APPROVE_OPTION) {
@@ -103,7 +107,7 @@ public class ControleurApplication
 	
 	public void calculerTournee () {
 		plan.calculTournee();
-		
+		fenetre.getZoneMessage().setText("");
 	}
 	
 	/**
