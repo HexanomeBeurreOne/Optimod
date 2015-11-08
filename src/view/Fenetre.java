@@ -123,5 +123,19 @@ public class Fenetre extends JFrame{
 		this.vuePlan = vuePlan;
 	}
 
+	/**
+	 * @return the boutons
+	 */
+	public ArrayList<JButton> getBoutons() {
+		return boutons;
+	}
+
+	/**
+	 * @param boutons the boutons to set
+	 */
+	public void setBoutons(ArrayList<JButton> boutons) {
+		this.boutons = boutons;
+	}
+
     
 }

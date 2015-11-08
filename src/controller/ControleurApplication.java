@@ -6,6 +6,15 @@ import model.DemandeLivraisons;
 import model.FactoryPlan;
 import model.Livraison;
 import model.FenetreLivraison;
+
+import java.awt.Desktop;
+import java.io.File;
+import java.io.IOException;
+
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 import controller.commands.*;
 
 public class ControleurApplication 
@@ -38,17 +47,34 @@ public class ControleurApplication
 		undoRedo.redo();
 	}
 	
-	public void chargerPlan() {
-		//
+	public void chargerPlan() throws IOException {
+		
 		FactoryPlan factoryPlan = new FactoryPlan();
-		Plan planTemp = factoryPlan.getPlan("data/plan20x20.xml");
-		this.plan.setAdresses(planTemp.getAdresses());
-		this.plan.setTroncons(planTemp.getTroncons());
-		this.plan.setNom(planTemp.getNom());
+		String fichier = chargerFichier("./data");
+		if (fichier!=null) {
+	    	Plan planTemp  = factoryPlan.getPlan(fichier);
+		    if (planTemp != null) {
+		    	this.plan.setAdresses(planTemp.getAdresses());
+				this.plan.setTroncons(planTemp.getTroncons());
+				this.plan.setNom(planTemp.getNom());
+				fenetre.getBoutons().get(1).setEnabled(true);;
+	    	} else {
+	    		//TODO
+	    	}
+	    }
 	}
 	
 	public void chargerDemandeLivraisons() {
 		
+	}
+	
+	public String chargerFichier(String path) {
+		JFileChooser chooser = new JFileChooser(path);
+	    int returnVal = chooser.showOpenDialog(new JFrame());
+	    if(returnVal == JFileChooser.APPROVE_OPTION) {
+	    	return chooser.getSelectedFile().getPath();
+	    }
+	    return null;
 	}
 	
 	/**
