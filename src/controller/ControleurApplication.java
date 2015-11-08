@@ -39,9 +39,15 @@ public class ControleurApplication
 	}
 	
 	public void chargerPlan() {
-		System.out.println("Je charge un plan");
+		//
 		FactoryPlan factoryPlan = new FactoryPlan();
-		this.plan = factoryPlan.getPlan("data/plan20x20.xml");
+		Plan planTemp = factoryPlan.getPlan("data/plan20x20.xml");
+		this.plan.setAdresses(planTemp.getAdresses());
+		this.plan.setTroncons(planTemp.getTroncons());
+		this.plan.setNom(planTemp.getNom());
+	}
+	
+	public void chargerDemandeLivraisons() {
 		
 	}
 	

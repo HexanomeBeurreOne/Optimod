@@ -94,6 +94,11 @@ public class Fenetre extends JFrame{
 			bouton.addActionListener(ecouteurDeBoutons);
 			this.getContentPane().add(bouton);	
 		}
+		
+		//On desactive le bouton "charger livraisons"
+		boutons.get(1).setEnabled(false);
+		//On désactive le bouton "calculer une tournée"
+		boutons.get(2).setEnabled(false);
     }
 
 	public int getHauteurFenetre() {
@@ -102,6 +107,20 @@ public class Fenetre extends JFrame{
 
 	public int getLargeurFenetre() {
 		return largeurFenetre;
+	}
+
+	/**
+	 * @return the vuePlan
+	 */
+	public VuePlan getVuePlan() {
+		return vuePlan;
+	}
+
+	/**
+	 * @param vuePlan the vuePlan to set
+	 */
+	public void setVuePlan(VuePlan vuePlan) {
+		this.vuePlan = vuePlan;
 	}
 
     

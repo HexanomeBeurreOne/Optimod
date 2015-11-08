@@ -46,7 +46,6 @@ public class VuePlan extends JPanel implements Observer {
 
     @Override
     public void paintComponent(Graphics g) {
-    	System.out.print("In paintComponent VuePlan");
     	super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
@@ -117,9 +116,21 @@ public class VuePlan extends JPanel implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-    	System.out.println("update");
     	this.plan = (Plan)arg;
-    	plan.affichePlan();
     	repaint();
     }
+
+	/**
+	 * @return the plan
+	 */
+	public Plan getPlan() {
+		return plan;
+	}
+
+	/**
+	 * @param plan the plan to set
+	 */
+	public void setPlan(Plan plan) {
+		this.plan = plan;
+	}
 }

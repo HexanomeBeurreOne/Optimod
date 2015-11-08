@@ -83,6 +83,8 @@ public class Plan extends Observable {
 
 	public void setNom(String nom) {
 		this.nom = nom;
+		setChanged();
+		notifyObservers(this);
 	}
 
 	public List<Adresse> getAdresses() {
@@ -91,6 +93,8 @@ public class Plan extends Observable {
 
 	public void setAdresses(List<Adresse> adresses) {
 		this.adresses = adresses;
+		setChanged();
+		notifyObservers(this);
 	}
 
 	public List<Troncon> getTroncons() {
@@ -99,6 +103,8 @@ public class Plan extends Observable {
 
 	public void setTroncons(List<Troncon> troncons) {
 		this.troncons = troncons;
+		setChanged();
+		notifyObservers(this);
 	}
 
 	/**
@@ -107,8 +113,6 @@ public class Plan extends Observable {
 	 */
 	public void addAdresse(Adresse newAdresse) {
 		this.adresses.add(newAdresse);
-		setChanged();
-		notifyObservers(this);
 	}
 	
 	/**
@@ -117,8 +121,6 @@ public class Plan extends Observable {
 	 */
 	public void removeAdresse(Adresse adresseToRemove) {
 		if(this.adresses.contains(adresseToRemove)) this.adresses.remove(adresseToRemove);
-		setChanged();
-		notifyObservers(this);
 	}
 	
 	 /**
@@ -127,8 +129,6 @@ public class Plan extends Observable {
 	  */
 	public void addTroncon(Troncon newTroncon) {
 		this.troncons.add(newTroncon);
-		setChanged();
-		notifyObservers(this);
 	}
 	
 	/**
