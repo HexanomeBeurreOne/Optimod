@@ -34,6 +34,7 @@ public class Plan extends Observable {
 	// The Key of the outer Hashtable is the id of the starting Adresse, 
 	// The Key of the inner Hashtable is the id of the ending Adresse, 
 	private Hashtable<Integer,Hashtable<Integer,Chemin>> plusCourtsChemins;
+	private Tournee tournee;
 	
 	/**
 	 * Constructor
@@ -45,6 +46,7 @@ public class Plan extends Observable {
 		this.troncons = new ArrayList<Troncon>();
 		this.demandeLivraisons = new DemandeLivraisons();
 		this.plusCourtsChemins = new Hashtable<Integer,Hashtable<Integer,Chemin>>();
+		this.tournee = new Tournee();
 	}
 	
 	public DemandeLivraisons getDemandeLivraisons() {
@@ -148,9 +150,19 @@ public class Plan extends Observable {
 		calculPlusCourtsChemins();
 		List<Livraison> livraisonsOrdonnees = calculOrdreLivraisons();
 		Tournee tournee = new Tournee(demandeLivraisons.getIdEntrepot(), demandeLivraisons.getHeureDepart(), livraisonsOrdonnees, plusCourtsChemins);
-		System.out.println(tournee);
+		this.setTournee(tournee);
 	}
 	
+	public void setTournee(Tournee tournee) {
+		this.tournee = tournee;
+		setChanged();
+		notifyObservers(this);
+	}
+	
+	public Tournee getTournee() {
+		return this.tournee;
+	}
+
 	private List<Livraison> calculOrdreLivraisons() {
 		TSP tsp = new TSP1();
 		Graphe g = new GrapheOptimod(demandeLivraisons, plusCourtsChemins);

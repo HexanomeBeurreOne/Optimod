@@ -22,9 +22,9 @@ public class EcouteurBoutons implements ActionListener {
 		// Envoi au controleur du message correspondant au bouton clique
 		try {
 			switch (e.getActionCommand()){
-			case Fenetre.CHARGER_PLAN: controleur.chargerPlan(); break;
-			case Fenetre.CHARGER_LIVRAISONS: controleur.chargerDemandeLivraisons(); break;
-	//		case Fenetre.CALCULER_TOURNEE: controleur.calculerTournee(); break;
+				case Fenetre.CHARGER_PLAN: controleur.chargerPlan(); break;
+				case Fenetre.CHARGER_LIVRAISONS: controleur.chargerDemandeLivraisons(); break;
+				case Fenetre.CALCULER_TOURNEE: controleur.calculerTournee(); break;
 			}
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block

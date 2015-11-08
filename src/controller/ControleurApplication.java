@@ -33,7 +33,7 @@ public class ControleurApplication
 	public ControleurApplication(Plan p)
 	{
 		plan = p;
-		fenetre = new Fenetre(plan, 1.14, this);
+		fenetre = new Fenetre(plan, 0.83, this);
 		undoRedo = new PilesEtats();
 	}
 		
@@ -78,6 +78,8 @@ public class ControleurApplication
 			DemandeLivraisons dLTemp = factoryDemandeLivraisons.getDemandeLivraisons(fichier, this.plan);
 			if(dLTemp!=null) {
 				this.plan.setDemandeLivraisons(dLTemp);
+				fenetre.getBoutons().get(2).setEnabled(true);
+				fenetre.getZoneMessage().setText("Vous pouvez calculer une tournée");
 			} else {
 				JOptionPane.showMessageDialog(fenetre,
 					    "Le fichier de demande de livraisons est mal formé",
@@ -94,6 +96,11 @@ public class ControleurApplication
 	    	return chooser.getSelectedFile().getPath();
 	    }
 	    return null;
+	}
+	
+	public void calculerTournee () {
+		plan.calculTournee();
+		
 	}
 	
 	/**

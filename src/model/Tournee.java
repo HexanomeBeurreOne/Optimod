@@ -10,7 +10,7 @@ public class Tournee {
 	 * Attributes
 	 */
 	private List<Etape> etapes;
-	// Chemin qui mene de l'adresse de livraison de la derniere etape à l'entrepot
+	// Chemin qui mene de l'adresse de livraison de la derniere etape ï¿½ l'entrepot
 	private Chemin retourEntrepot;
 	private double heureDebut;
 	private double heureFin;
@@ -18,6 +18,9 @@ public class Tournee {
 	/**
 	 * Constructor
 	 */
+	public Tournee() {
+	}
+	
 	public Tournee(int idEntrepot, int heureDebut, List<Livraison> livraisonsOrdonnees, Hashtable<Integer,Hashtable<Integer,Chemin>> plusCourtsChemins) {
 		this.etapes = new ArrayList<Etape>();
 		this.heureDebut = heureDebut;
@@ -35,7 +38,7 @@ public class Tournee {
 		}
 		retourEntrepot = plusCourtsChemins.get(idDepartEtape).get(idEntrepot);
 		heureFin = heureDepartEtape + retourEntrepot.getTempsDeParcours();
-		if(heureFin > 24*3600) System.out.println("La tournee se termine après minuit.");
+		if(heureFin > 24*3600) System.out.println("La tournee se termine aprï¿½s minuit.");
 	}
 	
 	public List<Etape> getEtapes() {

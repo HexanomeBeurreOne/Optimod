@@ -72,6 +72,9 @@ public class VuePlan extends JPanel implements Observer {
             drawTroncon(g2, itTroncons.next());
         }
         
+        // Colorier les chemins
+        colorierChemins(g2);
+        
         // Récupérer adresses du plan
         List<Adresse>  adressesPlan = plan.getAdresses();
         Iterator<Adresse> itAdresses = adressesPlan.iterator();
@@ -80,14 +83,14 @@ public class VuePlan extends JPanel implements Observer {
             drawAdresse(g2, itAdresses.next(), 4);
         }
         
-        // colorier l'entrepot
+        // Colorier l'entrepot
 		colorierEntrepot(g2);
         
         // Colorier les livraisons
         colorierLivraisons(g2);
     }
 
-    private int scaleIt(int coordonnee) {
+	private int scaleIt(int coordonnee) {
         return (int) Math.round(coordonnee*this.echelle);
     }
     
@@ -137,6 +140,21 @@ public class VuePlan extends JPanel implements Observer {
 			//entrepot.afficheAdresse();
 			g2.setColor(Color.RED);
 			this.drawAdresse(g2, entrepot, 8);
+		}
+	}
+	
+    private void colorierChemins(Graphics2D g2) {
+    	g2.setColor(Color.RED);
+		List<Etape> etapes = plan.getTournee().getEtapes();
+		if (etapes != null) {
+			Iterator<Etape> itE = etapes.iterator();
+			while (itE.hasNext()) {
+				List<Troncon> troncons = itE.next().getChemin().getTroncons();
+				Iterator<Troncon> itT = troncons.iterator();
+				while (itT.hasNext()) {
+					drawTroncon(g2, itT.next());
+				}
+			}
 		}
 	}
 	

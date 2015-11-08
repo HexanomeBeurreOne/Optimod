@@ -8,8 +8,6 @@ import controller.ControleurApplication;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Observable;
-import java.util.Observer;
 
 /**
  * Created by cyrilcanete on 03/11/15.
