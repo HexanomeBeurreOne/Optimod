@@ -15,72 +15,68 @@ import java.util.Observer;
  * Created by cyrilcanete on 03/11/15.
  */
 public class Fenetre extends JFrame{
+	private final int hauteurFenetre = 500;
+	private final int largeurFenetre = 950;
 	
-	private EcouteurBoutons ecouteurDeBoutons;
-	private EcouteurSouris ecouteurSouris;
-	protected final static String CHARGER_PLAN = "Charger plan";
-	protected static final String CHARGER_LIVRAISONS = "Charger livraisons";
-	protected static final String CALCULER_TOURNEE = "Calculer tournée";
-	private final int hauteurBouton = 30;
-	private final int largeurBouton = 150;
-	private final int hauteurMessage = 50;
-	private final String[] intitulesBoutons = new String[]{CHARGER_PLAN, CHARGER_LIVRAISONS, 
-			CALCULER_TOURNEE};
-	private ArrayList<JButton> boutons;
-	
-	private JLabel zoneMessage;
-	
-	private int hauteurFenetre;
-	private int largeurFenetre;
-	
+	private VuePlan vuePlan;
 	private int largeurVuePlan;
 	private int hauteurVuePlan;
 	
-	private VuePlan carte;
+	private VueLivraison vueLivraison;
+	private int largeurVueLivraison;
+	private int hauteurLivraison;
+	
+	private ArrayList<JButton> boutons;
+	private final int hauteurBouton = 30;
+	private final int largeurBouton = 150;
+	protected final static String CHARGER_PLAN = "Charger plan";
+	protected static final String CHARGER_LIVRAISONS = "Charger livraisons";
+	protected static final String CALCULER_TOURNEE = "Calculer tournée";
+	private final String[] intitulesBoutons = new String[]{CHARGER_PLAN, CHARGER_LIVRAISONS, CALCULER_TOURNEE};
+	private EcouteurBoutons ecouteurDeBoutons;
+	
+	private EcouteurSouris ecouteurSouris;
+	
+	private JLabel zoneMessage;
+	private final int hauteurMessage = 50;
 
     public Fenetre(Plan plan, double echelle, ControleurApplication controller) throws HeadlessException {
 
-        //Définit un titre pour notre fenêtre
+        //Fenetre
         this.setTitle("Optimod");
-        
-        //Définit sa taille : plein ecran
-        
-        hauteurFenetre = 500;
-        largeurFenetre = 950;
         this.setSize(largeurFenetre, hauteurFenetre);
         this.setResizable(false);
-        
-        //Nous demandons maintenant à notre objet de se positionner au centre
+        //Position de la fenetre au centre de l'ecran
         this.setLocationRelativeTo(null);
         //Termine le processus lorsqu'on clique sur la croix rouge
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
         this.setLayout(null);
-        creerBoutons(controller);
         
-
-        //Instanciation d'un objet VuePlan
-        VuePlan carte = new VuePlan(plan, echelle, this);
-        carte.setLocation(0, hauteurBouton+hauteurMessage);
+        //VuePlan
+        vuePlan = new VuePlan(plan, echelle, this);
+        vuePlan.setLocation(0, hauteurBouton+hauteurMessage);
         hauteurVuePlan = hauteurFenetre-hauteurBouton-hauteurMessage-22;
         largeurVuePlan = largeurFenetre/2;
-        carte.setSize(largeurVuePlan, hauteurVuePlan);
+        vuePlan.setSize(largeurVuePlan, hauteurVuePlan);
         
-        //Instanciation d'un objet VueTextuelle
-        VueLivraison menu = new VueLivraison(plan, this);
+        //VueLivraison
+        vueLivraison = new VueLivraison(plan, this);
+        vueLivraison.setLocation(largeurVuePlan, hauteurBouton+hauteurMessage);
         
+        //Boutons
+        creerBoutons(controller);
         
+        //ZoneMessage
         zoneMessage = new JLabel();
-        zoneMessage.setBorder(BorderFactory.createTitledBorder("Infos"));
-		getContentPane().add(zoneMessage);
-		zoneMessage.setSize(largeurVuePlan,hauteurMessage);
+        zoneMessage.setBorder(BorderFactory.createTitledBorder("Message"));
+        zoneMessage.setSize(largeurVuePlan,hauteurMessage);
 		zoneMessage.setLocation(0,hauteurBouton);
-
+		getContentPane().add(zoneMessage);
+		
+		//Souris
+        ecouteurSouris = new EcouteurSouris(controller, vuePlan, this);
+        vuePlan.addMouseListener(ecouteurSouris);
         
-        ecouteurSouris = new EcouteurSouris(controller, carte, this);
-        carte.addMouseListener(ecouteurSouris);
-        
-        //Et enfin, la rendre visible
         this.setVisible(true);
     }
 
@@ -90,12 +86,11 @@ public class Fenetre extends JFrame{
 		for (int i=0; i<intitulesBoutons.length; i++){
 			JButton bouton = new JButton(intitulesBoutons[i]);
 			boutons.add(bouton);
-			
 			bouton.setForeground(Color.DARK_GRAY);
 			bouton.setSize(largeurBouton,hauteurBouton);
 			bouton.setLocation((boutons.size()-1)*largeurBouton+5, 0);
-			//bouton.setFocusable(false);
-			//bouton.setFocusPainted(false);
+			bouton.setFocusable(false);
+			bouton.setFocusPainted(false);
 			bouton.addActionListener(ecouteurDeBoutons);
 			this.getContentPane().add(bouton);	
 		}

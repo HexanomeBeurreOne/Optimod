@@ -19,12 +19,12 @@ public class VueLivraison extends JPanel implements Observer {
 	private ArrayList<JButton> livraisons;
 	
 	public VueLivraison(Plan plan, Fenetre fenetre) {
+		super();
+		
 		this.plan = plan;
 		
 		plan.addObserver(this);
 	}
-	
-	
 	
 	@Override
 	public void update(Observable o, Object arg) {

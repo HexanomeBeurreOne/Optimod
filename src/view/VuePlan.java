@@ -25,7 +25,8 @@ public class VuePlan extends JPanel implements Observer {
 
     public VuePlan(Plan plan, double echelle, Fenetre fenetre) {
         super();
-        //plan.addObserver(this);
+        
+        plan.addObserver(this);
         setLayout(null);
         
         this.setBackground(Color.WHITE);

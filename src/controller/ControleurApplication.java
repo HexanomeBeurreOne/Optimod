@@ -1,6 +1,7 @@
 package controller;
 
 import model.Plan;
+import view.Fenetre;
 import model.DemandeLivraisons;
 import model.Livraison;
 import model.FenetreLivraison;
@@ -12,16 +13,15 @@ public class ControleurApplication
 	
 	protected PilesEtats undoRedo;
 
+	protected Fenetre fenetre;
 	protected Plan plan;
-	protected Livraison livraison;
-	protected FenetreLivraison fenetre;
-	protected DemandeLivraisons demande;
 	
 //------------------------------------------------- CONSTRUCTORS
 	
 	public ControleurApplication(Plan p)
 	{
 		plan = p;
+		fenetre = new Fenetre(plan, 0.83, this);
 		undoRedo = new PilesEtats();
 	}
 		
@@ -37,13 +37,17 @@ public class ControleurApplication
 		undoRedo.redo();
 	}
 	
+	public void chargerPlan() {
+		System.out.println("Je charge un plan");
+	}
+	
 	/**
 	 * Créé une livraison à une adresse
 	 */
 	public void addLivraison()
 	{
-		AjouterLivraison ajout = new AjouterLivraison(plan, livraison, fenetre);
-		undoRedo.addCommand(ajout);
+//		AjouterLivraison ajout = new AjouterLivraison(plan, livraison, fenetre);
+//		undoRedo.addCommand(ajout);
 	}
 	
 	/**
@@ -51,7 +55,7 @@ public class ControleurApplication
 	 */
 	public void removeLivraison()
 	{
-		SupprimerLivraison suppression = new SupprimerLivraison(plan, livraison, fenetre);
-		undoRedo.addCommand(suppression);
+//		SupprimerLivraison suppression = new SupprimerLivraison(plan, livraison, fenetre);
+//		undoRedo.addCommand(suppression);
 	}
 }
