@@ -18,9 +18,9 @@ public class Fenetre extends JFrame{
 	
 	private EcouteurBoutons ecouteurDeBoutons;
 	private EcouteurSouris ecouteurSouris;
-	protected final static String CHARGER_PLAN = "Charger un plan";
-	protected static final String CHARGER_LIVRAISONS = "Charger une demande de livraisons";
-	protected static final String CALCULER_TOURNEE = "Calculer une tournée";
+	protected final static String CHARGER_PLAN = "Charger plan";
+	protected static final String CHARGER_LIVRAISONS = "Charger livraisons";
+	protected static final String CALCULER_TOURNEE = "Calculer tournée";
 	private final int hauteurBouton = 30;
 	private final int largeurBouton = 150;
 	private final int hauteurMessage = 50;
