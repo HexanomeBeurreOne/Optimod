@@ -67,8 +67,15 @@ public class ControleurApplication
 	
 	public void chargerDemandeLivraisons() {
 		FactoryDemandeLivraisons factoryDemandeLivraisons = new FactoryDemandeLivraisons();
-		DemandeLivraisons dLTemp = factoryDemandeLivraisons.getDemandeLivraisons("data/livraison20x20-1.xml", this.plan);
-		this.plan.setDemandeLivraisons(dLTemp);
+		String fichier = chargerFichier("./data");
+		if (fichier!=null) {
+			DemandeLivraisons dLTemp = factoryDemandeLivraisons.getDemandeLivraisons(fichier, this.plan);
+			if(dLTemp!=null) {
+				this.plan.setDemandeLivraisons(dLTemp);
+			} else {
+				//TODO
+			}
+		}
 	}
 	
 	public String chargerFichier(String path) {
