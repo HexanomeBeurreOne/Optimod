@@ -37,9 +37,13 @@ public class Fenetre extends JFrame{
 	
 	private JLabel zoneMessage;
 	private final int hauteurMessage = 50;
+	
+	private ArrayList<Color> couleurs;
 
     public Fenetre(Plan plan, double echelle, ControleurApplication controller) throws HeadlessException {
 
+    	couleurs = new ArrayList<Color>();
+    	
         //Fenetre
         this.setTitle("Optimod");
         this.setSize(largeurFenetre, hauteurFenetre);
@@ -99,6 +103,16 @@ public class Fenetre extends JFrame{
 		//On désactive le bouton "calculer une tournée"
 		boutons.get(2).setEnabled(false);
     }
+    
+    public void genererCouleurs(int nbCouleurs) {
+    	float R = 0.0f, G = 0.0f, B = 0.0f;
+    	for (int i = 0; i < nbCouleurs; i++) {
+    		R=(float)Math.random();
+    		G=(float)Math.random();
+    		B=(float)Math.random();
+    		couleurs.add(new Color(R, G, B));
+    	}
+    }
 
 	public int getHauteurFenetre() {
 		return hauteurFenetre;
@@ -148,6 +162,20 @@ public class Fenetre extends JFrame{
 	 */
 	public void setZoneMessage(JLabel zoneMessage) {
 		this.zoneMessage = zoneMessage;
+	}
+
+	/**
+	 * @return the couleurs
+	 */
+	public ArrayList<Color> getCouleurs() {
+		return couleurs;
+	}
+
+	/**
+	 * @param couleurs the couleurs to set
+	 */
+	public void setCouleurs(ArrayList<Color> couleurs) {
+		this.couleurs = couleurs;
 	}
 
     

@@ -20,6 +20,9 @@ public class VuePlan extends JPanel implements Observer {
 
     private double echelle;
     private Plan plan;
+    private boolean couleursDefinies;
+    private ArrayList<Color> couleurs;
+    private Fenetre fenetre;
     
     public VuePlan(Plan plan, double echelle, Fenetre fenetre) {
         super();
@@ -38,8 +41,11 @@ public class VuePlan extends JPanel implements Observer {
         setLocation(5, 40);
         
         fenetre.getContentPane().add(this);
+        this.fenetre = fenetre;
         this.plan = plan;
         this.echelle=echelle;
+        this.couleursDefinies = false;
+        this.couleurs = new ArrayList<Color>();
     }
     
 
@@ -111,23 +117,22 @@ public class VuePlan extends JPanel implements Observer {
     }
 
 	private void colorierLivraisons(Graphics2D g2) {
-		float R, G, B;
+		
+		int indiceCouleur=0;
 		List<FenetreLivraison> fenetreLivraisons = plan.getDemandeLivraisons().getFenetresLivraisons();
 		Iterator<FenetreLivraison> itFL = fenetreLivraisons.iterator();
 		while (itFL.hasNext()) {
-			R=(float)Math.random();
-			G=(float)Math.random();
-			B=(float)Math.random();
 			
 			FenetreLivraison fenetreLivraisonActuelle = itFL.next();
 			Iterator<Livraison> itL = fenetreLivraisonActuelle.getLivraisons().iterator();
 			while (itL.hasNext()) {
-				g2.setColor(new Color(R, G, B));
 				Adresse adresseTemp = itL.next().getAdresse();
+				g2.setColor(fenetre.getCouleurs().get(indiceCouleur));
 				this.drawAdresse(g2, adresseTemp, 8);
 				g2.setColor(Color.WHITE);
 				this.drawAdresse(g2, adresseTemp, 4);
 			}
+			indiceCouleur++;
 		}
 	}
 	

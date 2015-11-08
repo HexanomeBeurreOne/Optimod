@@ -80,7 +80,7 @@ public class ControleurApplication
 		
 		if (fichier != null) {
 			DemandeLivraisons dLTemp = factoryDemandeLivraisons.getDemandeLivraisons(fichier, this.plan);
-			
+			fenetre.genererCouleurs(dLTemp.getFenetresLivraisons().size());
 			if(dLTemp != null) {
 				this.plan.setDemandeLivraisons(dLTemp);
 				this.plan.setTournee(new Tournee());
