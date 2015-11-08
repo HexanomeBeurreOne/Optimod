@@ -3,6 +3,7 @@ package controller;
 import model.Plan;
 import view.Fenetre;
 import model.DemandeLivraisons;
+import model.FactoryPlan;
 import model.Livraison;
 import model.FenetreLivraison;
 import controller.commands.*;
@@ -39,6 +40,9 @@ public class ControleurApplication
 	
 	public void chargerPlan() {
 		System.out.println("Je charge un plan");
+		FactoryPlan factoryPlan = new FactoryPlan();
+		this.plan = factoryPlan.getPlan("data/plan20x20.xml");
+		
 	}
 	
 	/**
