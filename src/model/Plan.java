@@ -156,8 +156,7 @@ public class Plan extends Observable {
 	public void calculTournee()	{
 		calculPlusCourtsChemins();
 		List<Livraison> livraisonsOrdonnees = calculOrdreLivraisons();
-		Adresse entrepot = getAdresseById(demandeLivraisons.getIdEntrepot());
-		tournee = new Tournee(entrepot, demandeLivraisons.getHeureDepart(), livraisonsOrdonnees, plusCourtsChemins);
+		tournee = new Tournee(demandeLivraisons, livraisonsOrdonnees, plusCourtsChemins);
 		System.out.println(tournee);
 	}
 	
@@ -187,7 +186,7 @@ public class Plan extends Observable {
 		//The list is ordered
 		List<FenetreLivraison> fenetres = demandeLivraisons.getFenetresLivraisons();
 		//Get entrepot
-		Adresse entrepot = getAdresseById(demandeLivraisons.getIdEntrepot());
+		Adresse entrepot = demandeLivraisons.getEntrepot();
 		//Liste contenant l'entrepot, qui est le depart et l'arrivee
 		List<Adresse> entrepotList = new ArrayList<Adresse>(); 
 		entrepotList.add(entrepot);
@@ -350,25 +349,65 @@ public class Plan extends Observable {
 		return null;
 	}
 	
-	public void supprimerLivraison(Livraison livraison) {		
+	/**
+	 * Verifie que la livraison existe, puis calcul, si besoin, le plus court chemin dont on aura besoin pour corriger la tournee apres suppression
+	 * @param Livraison a supprimer
+	 * @return True si la suppression peut etre effectuee
+	 */
+	public int testSuppression(Livraison livraison){
 		int indiceEtape = tournee.findIndiceEtape(livraison);
-		if(indiceEtape != -1){
-			Adresse[] adressesAVerifier = tournee.testSuppression(indiceEtape);
-			if(adressesAVerifier != null && plusCourtsChemins.get(adressesAVerifier[0].getId()).get(adressesAVerifier[1].getId()) == null) {
+		if(indiceEtape != -1) {
+			if(tournee.getEtapes().size() == 1)	{
+				// On souhaite supprimer l'unique livraison de la tournee
+				return indiceEtape;
+			}
+			Adresse depart;
+			Adresse arrivee;
+			if(indiceEtape == tournee.getEtapes().size()-1) {
+				// On souhaite supprimer la derniere etape, le chemin retourEntrepot va etre mis a jour
+				depart = tournee.getEtapes().get(indiceEtape-1).getLivraison().getAdresse();
+				arrivee = demandeLivraisons.getEntrepot();
+			}
+			else {
+				if(indiceEtape == 0){
+					// On souhaite supprimer la premiere etape, on met a jour le chemin de la nouvelle premiere etape en partant de l'entrepot
+					depart = demandeLivraisons.getEntrepot();
+				}
+				else {
+					depart = tournee.getEtapes().get(indiceEtape-1).getLivraison().getAdresse();
+				}
+				arrivee = tournee.getEtapes().get(indiceEtape+1).getLivraison().getAdresse();
+			}
+			// Calcul 
+			if(plusCourtsChemins.get(depart.getId()).get(arrivee.getId()) == null) {
 				List<Adresse> cibles = new ArrayList<Adresse>();
-				cibles.addAll(tournee.getAdressesSameFenetre(indiceEtape+1));
-				Hashtable<Integer, Chemin> resDijkstra = dijkstra(adressesAVerifier[0], cibles);
+				if(arrivee == demandeLivraisons.getEntrepot()) {
+					cibles.add(arrivee);
+				}
+				else {
+					for(Livraison liv : demandeLivraisons.getLivraison(arrivee).getFenetreLivraison().getLivraisons()) {
+						cibles.add(liv.getAdresse());
+					}
+				}
+				Hashtable<Integer, Chemin> resDijkstra = dijkstra(depart, cibles);
 				Set<Entry<Integer, Chemin>> entrySet = resDijkstra.entrySet();
 				Iterator<Entry<Integer, Chemin>> it = entrySet.iterator();
 				while(it.hasNext())	{
 					Entry<Integer, Chemin> entry = it.next();
 					int idAdresseCible = entry.getKey();
 					Chemin dureePlusCourtChemin = entry.getValue();
-					System.out.println("Calcul plus court chemin de "+adressesAVerifier[0].getId()
+					System.out.println("Calcul plus court chemin de "+depart.getId()
 										+" a "+idAdresseCible);
-					plusCourtsChemins.get(adressesAVerifier[0].getId()).put(idAdresseCible, dureePlusCourtChemin);
+					plusCourtsChemins.get(depart.getId()).put(idAdresseCible, dureePlusCourtChemin);
 				}
 			}
+		}
+		return indiceEtape;
+	}	
+	
+	public void supprimerLivraison(Livraison livraison) {
+		int indiceEtape = testSuppression(livraison);
+		if(indiceEtape != -1) {
 			tournee.supprimerEtape(indiceEtape, plusCourtsChemins);
 		}
 		else {

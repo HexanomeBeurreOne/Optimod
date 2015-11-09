@@ -9,21 +9,19 @@ public class Tournee {
 	/**
 	 * Attributes
 	 */
+	private DemandeLivraisons demandeLivraisons;
 	private List<Etape> etapes;
-	// Chemin qui mene de l'adresse de livraison de la derniere etape � l'entrepot
+	// Chemin qui mene de l'adresse de livraison de la derniere etape a l'entrepot
 	private Chemin retourEntrepot;
-	Adresse entrepot;
-	private double heureDebut;
 	private double heureFin;
 	
 	/**
 	 * Constructor
 	 */
-	public Tournee(Adresse entrepot, int heureDebut, List<Livraison> livraisonsOrdonnees, Hashtable<Integer,Hashtable<Integer,Chemin>> plusCourtsChemins) {
+	public Tournee(DemandeLivraisons demandeLivraisons, List<Livraison> livraisonsOrdonnees, Hashtable<Integer,Hashtable<Integer,Chemin>> plusCourtsChemins) {
+		this.demandeLivraisons = demandeLivraisons;
 		this.etapes = new ArrayList<Etape>();
-		this.heureDebut = heureDebut;
-		this.entrepot = entrepot;
-		int idDepartEtape = entrepot.getId();
+		int idDepartEtape = getEntrepot().getId();
 		int idArriveeEtape = 0;
 		Etape etape;
 		for(int i = 0 ; i < livraisonsOrdonnees.size() ; i++)
@@ -33,7 +31,7 @@ public class Tournee {
 			etapes.add(etape);
 			idDepartEtape = idArriveeEtape;
 		}
-		retourEntrepot = plusCourtsChemins.get(idDepartEtape).get(entrepot.getId());
+		retourEntrepot = plusCourtsChemins.get(idDepartEtape).get(getEntrepot().getId());
 		calculHoraires();
 	}
 	
@@ -46,7 +44,11 @@ public class Tournee {
 	}
 	
 	public double getHeureDebut() {
-		return heureDebut;
+		return demandeLivraisons.getHeureDepart();
+	}
+	
+	public Adresse getEntrepot() {
+		return demandeLivraisons.getEntrepot();
 	}
 	
 	public double getHeureFin() {
@@ -54,7 +56,7 @@ public class Tournee {
 	}
 	
 	public void calculHoraires() {
-		double heureDepartEtape = heureDebut;
+		double heureDepartEtape = getHeureDebut();
 		for(Etape etape : etapes) {
 			etape.calculHeureLivraison(heureDepartEtape);
 			// 10 minutes de livraison avant de commencer l'etape suivante
@@ -65,70 +67,33 @@ public class Tournee {
 	}
 	
 	public int findIndiceEtape(Livraison livraison) {
-		boolean found = false;
-		int i;
-		for( i = 0; i < etapes.size() && !found ; )	{
+		for(int i = 0; i < etapes.size() ; i++)	{
 			if(etapes.get(i).getLivraison() == livraison) {
-				found = true;
-			}
-			else {
-				i++;
+				return i;
 			}
 		}
-		if(found) return i;
 		return -1;
 	}
 	
 	//TODO : besoin de deux plus courts chemins si on remet une livraison dans une tournee vide
-	
-	/**
-	 * Retourne les ids des adresses extremes du plus court chemin dont on aura besoin pour corriger la tournee apres suppression, de l'etape
-	 * Si on supprime la derniere livraison, on retourne un tableau null
-	 */
-	public Adresse[] testSuppression(int indiceEtape){
-		Adresse[] extremites = new Adresse[2];
-		if(etapes.size() == 1)	{
-			return null;
-		}
-		if(indiceEtape == etapes.size()-1) {
-			// Si on a supprime la derniere etape on met a jour le chemin de retour
-			Adresse adresseDerniereEtape = etapes.get(indiceEtape-1).getLivraison().getAdresse();
-			extremites[0] = adresseDerniereEtape;
-			extremites[1] = entrepot;
-		}
-		else {
-			Adresse adressePrecedente;
-			if(indiceEtape == 0){
-				// Si on a supprime la premiere etape on met a jour le chemin de la nouvelle premiere en partant de l'entrepot
-				adressePrecedente = entrepot;
-			}
-			else {
-				adressePrecedente = etapes.get(indiceEtape-1).getLivraison().getAdresse();
-			}
-			Adresse adresseEtape = etapes.get(indiceEtape+1).getLivraison().getAdresse();
-			extremites[0] = adressePrecedente;
-			extremites[1] = adresseEtape;
-		}
-		return extremites;
-	}		
-	
+		
 	public void supprimerEtape(int indiceEtape, Hashtable<Integer,Hashtable<Integer,Chemin>> plusCourtsChemins) {
 		etapes.remove(indiceEtape);
 		if(etapes.size() == 0) {
 			retourEntrepot = null;
-			heureFin = heureDebut;
+			heureFin = getHeureDebut();
 			return;
 		}
 		if(etapes.size() == indiceEtape) {
 			// Si on a supprime la derniere etape on met a jour le chemin de retour
 			int idAdresseDerniereEtape = etapes.get(indiceEtape-1).getLivraison().getAdresse().getId();
-			retourEntrepot = plusCourtsChemins.get(idAdresseDerniereEtape).get(entrepot.getId());
+			retourEntrepot = plusCourtsChemins.get(idAdresseDerniereEtape).get(getEntrepot().getId());
 		}
 		else {
 			int idAdressePrecedente;
 			if(indiceEtape == 0){
 				// Si on a supprime la premiere etape on met a jour le chemin de la nouvelle premiere en partant de l'entrepot
-				idAdressePrecedente = entrepot.getId();
+				idAdressePrecedente = getEntrepot().getId();
 			}
 			else {
 				idAdressePrecedente = etapes.get(indiceEtape-1).getLivraison().getAdresse().getId();
@@ -158,6 +123,7 @@ public class Tournee {
 	}
 	
 	public String toString(){
+		double heureDebut = getHeureDebut();
 		return "Tournee de " + etapes.size() + " etapes, " + 
 				"debut a " + (int)heureDebut/3600 + ":"+ ((int)heureDebut%3600)/60 + ":"+ (int)heureDebut%60
 				+ ", fin a " + (int)heureFin/3600 + ":"+ ((int)heureFin%3600)/60 + ":"+ (int)heureFin%60;

@@ -12,13 +12,16 @@ public class main {
 		FactoryDemandeLivraisons factoryDemandeLivraisons = new FactoryDemandeLivraisons();
 		DemandeLivraisons demandeLivraisons = factoryDemandeLivraisons.getDemandeLivraisons("data/livraison20x20-1.xml", plan);
 		plan.setDemandeLivraisons(demandeLivraisons);
+		
 		plan.calculTournee();
 		Tournee tournee = plan.getTournee();
+		
 		Livraison liv;
 		for(int i = 0; i<12 ; i++) {
 			liv = tournee.getEtapes().get(0).getLivraison();
 			plan.supprimerLivraison(liv);
-			System.out.println(plan.getTournee());
+			System.out.println(tournee);
 		}
+		
 	}
 }

@@ -105,7 +105,8 @@ public class FactoryDemandeLivraisons implements FactoryBase {
 			
 			if (childrenNodes.item(1).getNodeType() == Node.ELEMENT_NODE && childrenNodes.item(1).getNodeName().equalsIgnoreCase("Entrepot")) {
 				final Element entrepot = (Element) childrenNodes.item(1);
-				this.demandeLivraisons.setIdEntrepot(Integer.parseInt(((Element) entrepot).getAttribute("adresse")));
+				Adresse adresseEntrepot = this.plan.getAdresseById(Integer.parseInt(((Element) entrepot).getAttribute("adresse")));
+				this.demandeLivraisons.setEntrepot(adresseEntrepot);
 			}
 			else {
 				System.err.println("Entrepot tag must be the first child of "+racine.getNodeName()+" tag in the file "+uriXml);

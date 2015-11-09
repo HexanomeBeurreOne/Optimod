@@ -10,7 +10,6 @@ import java.util.*;
 import java.util.List;
 
 import javax.swing.BorderFactory;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.CompoundBorder;
 /**
@@ -132,7 +131,7 @@ public class VuePlan extends JPanel implements Observer {
 	}
 	
 	private void colorierEntrepot(Graphics2D g2) {
-		Adresse entrepot = plan.getAdresseById(plan.getDemandeLivraisons().getIdEntrepot());
+		Adresse entrepot = plan.getDemandeLivraisons().getEntrepot();
 		if (entrepot!=null) {
 			//entrepot.afficheAdresse();
 			g2.setColor(Color.RED);
