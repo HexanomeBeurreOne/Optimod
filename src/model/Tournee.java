@@ -79,10 +79,17 @@ public class Tournee {
 		return -1;
 	}
 	
-	//TODO: Doit-on gerer la suppression de la seule etape de la tournee
+	//TODO : besoin de deux plus courts chemins si on remet une livraison dans une tournee vide
 	
+	/**
+	 * Retourne les ids des adresses extremes du plus court chemin dont on aura besoin pour corriger la tournee apres suppression, de l'etape
+	 * Si on supprime la derniere livraison, on retourne un tableau null
+	 */
 	public Adresse[] testSuppression(int indiceEtape){
 		Adresse[] extremites = new Adresse[2];
+		if(etapes.size() == 1)	{
+			return null;
+		}
 		if(indiceEtape == etapes.size()-1) {
 			// Si on a supprime la derniere etape on met a jour le chemin de retour
 			Adresse adresseDerniereEtape = etapes.get(indiceEtape-1).getLivraison().getAdresse();
@@ -107,6 +114,11 @@ public class Tournee {
 	
 	public void supprimerEtape(int indiceEtape, Hashtable<Integer,Hashtable<Integer,Chemin>> plusCourtsChemins) {
 		etapes.remove(indiceEtape);
+		if(etapes.size() == 0) {
+			retourEntrepot = null;
+			heureFin = heureDebut;
+			return;
+		}
 		if(etapes.size() == indiceEtape) {
 			// Si on a supprime la derniere etape on met a jour le chemin de retour
 			int idAdresseDerniereEtape = etapes.get(indiceEtape-1).getLivraison().getAdresse().getId();

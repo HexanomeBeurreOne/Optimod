@@ -15,8 +15,8 @@ public class main {
 		plan.calculTournee();
 		Tournee tournee = plan.getTournee();
 		Livraison liv;
-		for(int i = 0; i<7 ; i++) {
-			liv = tournee.getEtapes().get(3).getLivraison();
+		for(int i = 0; i<12 ; i++) {
+			liv = tournee.getEtapes().get(0).getLivraison();
 			plan.supprimerLivraison(liv);
 			System.out.println(plan.getTournee());
 		}

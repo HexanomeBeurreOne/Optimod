@@ -352,33 +352,27 @@ public class Plan extends Observable {
 	
 	public void supprimerLivraison(Livraison livraison) {		
 		int indiceEtape = tournee.findIndiceEtape(livraison);
-		// On interdit (pour l'instant) la suppression si il n'y a qu'une etape
-		if(tournee.getEtapes().size() > 1){
-			if(indiceEtape != -1){
-				Adresse[] adressesAVerifier = tournee.testSuppression(indiceEtape);
-				if(plusCourtsChemins.get(adressesAVerifier[0].getId()).get(adressesAVerifier[1].getId()) == null) {
-					List<Adresse> cibles = new ArrayList<Adresse>();
-					cibles.addAll(tournee.getAdressesSameFenetre(indiceEtape+1));
-					Hashtable<Integer, Chemin> resDijkstra = dijkstra(adressesAVerifier[0], cibles);
-					Set<Entry<Integer, Chemin>> entrySet = resDijkstra.entrySet();
-					Iterator<Entry<Integer, Chemin>> it = entrySet.iterator();
-					while(it.hasNext())	{
-						Entry<Integer, Chemin> entry = it.next();
-						int idAdresseCible = entry.getKey();
-						Chemin dureePlusCourtChemin = entry.getValue();
-						System.out.println("Calcul plus court chemin de "+adressesAVerifier[0].getId()
-											+" a "+idAdresseCible);
-						plusCourtsChemins.get(adressesAVerifier[0].getId()).put(idAdresseCible, dureePlusCourtChemin);
-					}
+		if(indiceEtape != -1){
+			Adresse[] adressesAVerifier = tournee.testSuppression(indiceEtape);
+			if(adressesAVerifier != null && plusCourtsChemins.get(adressesAVerifier[0].getId()).get(adressesAVerifier[1].getId()) == null) {
+				List<Adresse> cibles = new ArrayList<Adresse>();
+				cibles.addAll(tournee.getAdressesSameFenetre(indiceEtape+1));
+				Hashtable<Integer, Chemin> resDijkstra = dijkstra(adressesAVerifier[0], cibles);
+				Set<Entry<Integer, Chemin>> entrySet = resDijkstra.entrySet();
+				Iterator<Entry<Integer, Chemin>> it = entrySet.iterator();
+				while(it.hasNext())	{
+					Entry<Integer, Chemin> entry = it.next();
+					int idAdresseCible = entry.getKey();
+					Chemin dureePlusCourtChemin = entry.getValue();
+					System.out.println("Calcul plus court chemin de "+adressesAVerifier[0].getId()
+										+" a "+idAdresseCible);
+					plusCourtsChemins.get(adressesAVerifier[0].getId()).put(idAdresseCible, dureePlusCourtChemin);
 				}
-				tournee.supprimerEtape(indiceEtape, plusCourtsChemins);
 			}
-			else {
-				System.out.println("La livraison ne fait pas partie de la tournee.");
-			}
+			tournee.supprimerEtape(indiceEtape, plusCourtsChemins);
 		}
 		else {
-			System.out.println("Il ne reste qu'une livraison a la tournee, vous ne pouvez pas la supprimer.");
+			System.out.println("La livraison ne fait pas partie de la tournee.");
 		}
 	}
 	
