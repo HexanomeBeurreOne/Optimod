@@ -14,8 +14,11 @@ public class main {
 		plan.setDemandeLivraisons(demandeLivraisons);
 		plan.calculTournee();
 		Tournee tournee = plan.getTournee();
-		Livraison liv = tournee.getEtapes().get(11).getLivraison();
-		plan.supprimerEtape(liv);
-		System.out.println(plan.getTournee());
+		Livraison liv;
+		for(int i = 0; i<8 ; i++) {
+			liv = tournee.getEtapes().get(4).getLivraison();
+			plan.supprimerLivraison(liv);
+			System.out.println(plan.getTournee());
+		}
 	}
 }

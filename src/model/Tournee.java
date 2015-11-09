@@ -62,7 +62,7 @@ public class Tournee {
 		if(heureFin > 24*3600) System.out.println("La tournee se termine après minuit.");
 	}
 	
-	public void supprimerEtape(Livraison livraison, Hashtable<Integer,Hashtable<Integer,Chemin>> plusCourtsChemins) {
+	public int findIndiceEtape(Livraison livraison) {
 		boolean found = false;
 		int i;
 		for( i = 0; i < etapes.size() && !found ; )	{
@@ -73,32 +73,58 @@ public class Tournee {
 				i++;
 			}
 		}
-		if(found){
-			etapes.remove(i);
-			//TODO: Gerer le cas ou le plus court chemin n'a pas ete calcule
-			if(etapes.size() == i) {
-				// Si on a supprime la derniere etape on met a jour le chemin de retour
-				int idAdresseDerniereEtape = etapes.get(i-1).getLivraison().getAdresse().getId();
-				int idAdresseEntrepot = retourEntrepot.getFin().getId();
-				retourEntrepot = plusCourtsChemins.get(idAdresseDerniereEtape).get(idAdresseEntrepot);
-			}
-			else {
-				int idAdressePrecedente;
-				if(i == 0){
-					// Si on a supprime la premiere etape on met a jour le chemin de la nouvelle premiere en partant de l'entrepot
-					idAdressePrecedente = retourEntrepot.getFin().getId();;
-				}
-				else {
-					idAdressePrecedente = etapes.get(i-1).getLivraison().getAdresse().getId();
-				}
-				int idAdresseEtape = etapes.get(i).getLivraison().getAdresse().getId();
-				etapes.get(i).setChemin(plusCourtsChemins.get(idAdressePrecedente).get(idAdresseEtape));
-			}
-			calculHoraires();
+		if(found) return i;
+		return -1;
+	}
+	
+	//TODO: Doit-on gerer la suppression de la seule etape de la tournee
+	
+	public Adresse[] testSuppression(int indiceEtape){
+		Adresse[] extremites = new Adresse[2];
+		if(indiceEtape == etapes.size()-1) {
+			// Si on a supprime la derniere etape on met a jour le chemin de retour
+			Adresse adresseDerniereEtape = etapes.get(indiceEtape-1).getLivraison().getAdresse();
+			Adresse adresseEntrepot = retourEntrepot.getFin();
+			extremites[0] = adresseDerniereEtape;
+			extremites[1] = adresseEntrepot;
 		}
 		else {
-			System.out.println("La livraison ne fait pas partie de la tournee");
+			Adresse adressePrecedente;
+			if(indiceEtape == 0){
+				// Si on a supprime la premiere etape on met a jour le chemin de la nouvelle premiere en partant de l'entrepot
+				adressePrecedente = retourEntrepot.getFin();
+			}
+			else {
+				adressePrecedente = etapes.get(indiceEtape-1).getLivraison().getAdresse();
+			}
+			Adresse adresseEtape = etapes.get(indiceEtape+1).getLivraison().getAdresse();
+			extremites[0] = adressePrecedente;
+			extremites[1] = adresseEtape;
 		}
+		return extremites;
+	}		
+	
+	public void supprimerEtape(int indiceEtape, Hashtable<Integer,Hashtable<Integer,Chemin>> plusCourtsChemins) {
+		etapes.remove(indiceEtape);
+		if(etapes.size() == indiceEtape) {
+			// Si on a supprime la derniere etape on met a jour le chemin de retour
+			int idAdresseDerniereEtape = etapes.get(indiceEtape-1).getLivraison().getAdresse().getId();
+			int idAdresseEntrepot = retourEntrepot.getFin().getId();
+			retourEntrepot = plusCourtsChemins.get(idAdresseDerniereEtape).get(idAdresseEntrepot);
+		}
+		else {
+			int idAdressePrecedente;
+			if(indiceEtape == 0){
+				// Si on a supprime la premiere etape on met a jour le chemin de la nouvelle premiere en partant de l'entrepot
+				idAdressePrecedente = retourEntrepot.getFin().getId();;
+			}
+			else {
+				idAdressePrecedente = etapes.get(indiceEtape-1).getLivraison().getAdresse().getId();
+			}
+			int idAdresseEtape = etapes.get(indiceEtape).getLivraison().getAdresse().getId();
+			etapes.get(indiceEtape).setChemin(plusCourtsChemins.get(idAdressePrecedente).get(idAdresseEtape));
+		}
+		calculHoraires();
 	}
 
 	public String toString(){

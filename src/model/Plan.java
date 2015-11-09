@@ -346,8 +346,31 @@ public class Plan extends Observable {
 		return null;
 	}
 	
-	public void supprimerEtape(Livraison livraison) {
-		tournee.supprimerEtape(livraison, plusCourtsChemins);
+	public void supprimerLivraison(Livraison livraison) {
+		//TODO: On lance dijkstra sur une seule adresse ou on cherche la fenetre suivante ?
+		// On passe le plan en parametre ou on verifie ici ?
+		
+		int indiceEtape = tournee.findIndiceEtape(livraison);
+		// On interdit (pour l'instant) la suppression si il n'y a qu'une etape
+		if(tournee.getEtapes().size() > 1){
+			if(indiceEtape != -1){
+				Adresse[] adressesAVerifier = tournee.testSuppression(indiceEtape);
+				if(plusCourtsChemins.get(adressesAVerifier[0].getId()).get(adressesAVerifier[1].getId()) == null) {
+					List<Adresse> cibles = new ArrayList<Adresse>();
+					cibles.add(adressesAVerifier[1]);
+					Hashtable<Integer, Chemin> resDijkstra = dijkstra(adressesAVerifier[0], cibles);
+					//TODO : Ameliorer la copie dans plusCourtsChemins 
+					plusCourtsChemins.get(adressesAVerifier[0].getId()).put(adressesAVerifier[1].getId(), resDijkstra.get(adressesAVerifier[1].getId()));
+				}
+				tournee.supprimerEtape(indiceEtape, plusCourtsChemins);
+			}
+			else {
+				System.out.println("La livraison ne fait pas partie de la tournee.");
+			}
+		}
+		else {
+			System.out.println("Il ne reste qu'une livraison a la tournee, vous ne pouvez pas la supprimer.");
+		}
 	}
 	
 	public void affichePlan() {
