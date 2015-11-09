@@ -131,8 +131,9 @@ public class VuePlan extends JPanel implements Observer {
 				this.drawAdresse(g2, adresseTemp, 8);
 				g2.setColor(Color.WHITE);
 				this.drawAdresse(g2, adresseTemp, 4);
+				indiceCouleur++;
 			}
-			indiceCouleur++;
+			
 		}
 	}
 	
@@ -146,20 +147,32 @@ public class VuePlan extends JPanel implements Observer {
 	}
 	
     private void colorierChemins(Graphics2D g2) {
+    	
+    	int indicesTroncons = 0;
     	List<Troncon> troncons;
-    	g2.setColor(Color.RED);
 		List<Etape> etapes = plan.getTournee().getEtapes();
+		
 		if (etapes != null) {
-			Iterator<Etape> itE = etapes.iterator();
-			while (itE.hasNext()) {
-				troncons = itE.next().getChemin().getTroncons();
+//			Iterator<Etape> itE = etapes.iterator();
+//			
+//			while (itE.hasNext()) {
+			for (int i = etapes.size()-1; i >= 0; i--) {
+				troncons = etapes.get(i).getChemin().getTroncons();
 				Iterator<Troncon> itT = troncons.iterator();
+				g2.setColor(fenetre.getCouleurs().get(indicesTroncons));
+				g2.setStroke(new BasicStroke(fenetre.getEpaisseursLignes().get(indicesTroncons)));
+				
 				while (itT.hasNext()) {
 					drawTroncon(g2, itT.next());
 				}
+				
+				indicesTroncons++;
 			}
+			
+			g2.setColor(Color.RED);
 			troncons = plan.getTournee().getRetourEntrepot().getTroncons();
 			Iterator<Troncon> itT = troncons.iterator();
+			
 			while (itT.hasNext()) {
 				drawTroncon(g2, itT.next());
 			}
