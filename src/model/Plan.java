@@ -9,9 +9,10 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Observable;
-
 import java.util.Set;
+
 import model.tsp.Graphe;
 import model.tsp.GrapheOptimod;
 import model.tsp.TSP;
@@ -346,10 +347,7 @@ public class Plan extends Observable {
 		return null;
 	}
 	
-	public void supprimerLivraison(Livraison livraison) {
-		//TODO: On lance dijkstra sur une seule adresse ou on cherche la fenetre suivante ?
-		// On passe le plan en parametre ou on verifie ici ?
-		
+	public void supprimerLivraison(Livraison livraison) {		
 		int indiceEtape = tournee.findIndiceEtape(livraison);
 		// On interdit (pour l'instant) la suppression si il n'y a qu'une etape
 		if(tournee.getEtapes().size() > 1){
@@ -358,9 +356,18 @@ public class Plan extends Observable {
 				if(plusCourtsChemins.get(adressesAVerifier[0].getId()).get(adressesAVerifier[1].getId()) == null) {
 					List<Adresse> cibles = new ArrayList<Adresse>();
 					cibles.add(adressesAVerifier[1]);
+					cibles.addAll(tournee.getAdressesSameFenetre(indiceEtape));
 					Hashtable<Integer, Chemin> resDijkstra = dijkstra(adressesAVerifier[0], cibles);
-					//TODO : Ameliorer la copie dans plusCourtsChemins 
-					plusCourtsChemins.get(adressesAVerifier[0].getId()).put(adressesAVerifier[1].getId(), resDijkstra.get(adressesAVerifier[1].getId()));
+					Set<Entry<Integer, Chemin>> entrySet = resDijkstra.entrySet();
+					Iterator<Entry<Integer, Chemin>> it = entrySet.iterator();
+					while(it.hasNext())	{
+						Entry<Integer, Chemin> entry = it.next();
+						int idAdresseCible = entry.getKey();
+						Chemin dureePlusCourtChemin = entry.getValue();
+						System.out.println("Calcul plus court chemin de "+adressesAVerifier[0].getId()
+											+" a "+idAdresseCible);
+						plusCourtsChemins.get(adressesAVerifier[0].getId()).put(idAdresseCible, dureePlusCourtChemin);
+					}
 				}
 				tournee.supprimerEtape(indiceEtape, plusCourtsChemins);
 			}

@@ -10,7 +10,7 @@ public class Tournee {
 	 * Attributes
 	 */
 	private List<Etape> etapes;
-	// Chemin qui mene de l'adresse de livraison de la derniere etape à l'entrepot
+	// Chemin qui mene de l'adresse de livraison de la derniere etape ï¿½ l'entrepot
 	private Chemin retourEntrepot;
 	private double heureDebut;
 	private double heureFin;
@@ -59,7 +59,7 @@ public class Tournee {
 			heureDepartEtape = etape.getHeureLivraison() + 10*60;
 		}
 		heureFin = heureDepartEtape + retourEntrepot.getTempsDeParcours();
-		if(heureFin > 24*3600) System.out.println("La tournee se termine après minuit.");
+		if(heureFin > 24*3600) System.out.println("La tournee se termine aprï¿½s minuit.");
 	}
 	
 	public int findIndiceEtape(Livraison livraison) {
@@ -127,6 +127,24 @@ public class Tournee {
 		calculHoraires();
 	}
 
+	/*
+	 * Get adresses from the same fenetre of an etape index.
+	 * @param etapeIndex
+	 */
+	public List<Adresse> getAdressesSameFenetre(int etapeIndex)	{
+		List<Adresse> adressesOfTheSameFenetre = new ArrayList<Adresse>();
+		
+		if(etapeIndex < etapes.size())	{
+			Livraison liv = etapes.get(etapeIndex).getLivraison();
+			for(int i = 0; i < etapes.size(); i++)	{
+				if(etapes.get(i).getLivraison().getFenetreLivraison() == liv.getFenetreLivraison())	{
+					adressesOfTheSameFenetre.add(etapes.get(i).getLivraison().getAdresse());
+				}
+			}
+		}
+		return adressesOfTheSameFenetre;
+	}
+	
 	public String toString(){
 		return "Tournee de " + etapes.size() + " etapes, " + 
 				"debut a " + (int)heureDebut/3600 + ":"+ ((int)heureDebut%3600)/60 + ":"+ (int)heureDebut%60
