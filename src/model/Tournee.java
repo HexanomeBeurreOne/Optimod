@@ -12,16 +12,18 @@ public class Tournee {
 	private List<Etape> etapes;
 	// Chemin qui mene de l'adresse de livraison de la derniere etape � l'entrepot
 	private Chemin retourEntrepot;
+	Adresse entrepot;
 	private double heureDebut;
 	private double heureFin;
 	
 	/**
 	 * Constructor
 	 */
-	public Tournee(int idEntrepot, int heureDebut, List<Livraison> livraisonsOrdonnees, Hashtable<Integer,Hashtable<Integer,Chemin>> plusCourtsChemins) {
+	public Tournee(Adresse entrepot, int heureDebut, List<Livraison> livraisonsOrdonnees, Hashtable<Integer,Hashtable<Integer,Chemin>> plusCourtsChemins) {
 		this.etapes = new ArrayList<Etape>();
 		this.heureDebut = heureDebut;
-		int idDepartEtape = idEntrepot;
+		this.entrepot = entrepot;
+		int idDepartEtape = entrepot.getId();
 		int idArriveeEtape = 0;
 		Etape etape;
 		for(int i = 0 ; i < livraisonsOrdonnees.size() ; i++)
@@ -31,7 +33,7 @@ public class Tournee {
 			etapes.add(etape);
 			idDepartEtape = idArriveeEtape;
 		}
-		retourEntrepot = plusCourtsChemins.get(idDepartEtape).get(idEntrepot);
+		retourEntrepot = plusCourtsChemins.get(idDepartEtape).get(entrepot.getId());
 		calculHoraires();
 	}
 	
@@ -84,15 +86,14 @@ public class Tournee {
 		if(indiceEtape == etapes.size()-1) {
 			// Si on a supprime la derniere etape on met a jour le chemin de retour
 			Adresse adresseDerniereEtape = etapes.get(indiceEtape-1).getLivraison().getAdresse();
-			Adresse adresseEntrepot = retourEntrepot.getFin();
 			extremites[0] = adresseDerniereEtape;
-			extremites[1] = adresseEntrepot;
+			extremites[1] = entrepot;
 		}
 		else {
 			Adresse adressePrecedente;
 			if(indiceEtape == 0){
 				// Si on a supprime la premiere etape on met a jour le chemin de la nouvelle premiere en partant de l'entrepot
-				adressePrecedente = retourEntrepot.getFin();
+				adressePrecedente = entrepot;
 			}
 			else {
 				adressePrecedente = etapes.get(indiceEtape-1).getLivraison().getAdresse();
@@ -109,14 +110,13 @@ public class Tournee {
 		if(etapes.size() == indiceEtape) {
 			// Si on a supprime la derniere etape on met a jour le chemin de retour
 			int idAdresseDerniereEtape = etapes.get(indiceEtape-1).getLivraison().getAdresse().getId();
-			int idAdresseEntrepot = retourEntrepot.getFin().getId();
-			retourEntrepot = plusCourtsChemins.get(idAdresseDerniereEtape).get(idAdresseEntrepot);
+			retourEntrepot = plusCourtsChemins.get(idAdresseDerniereEtape).get(entrepot.getId());
 		}
 		else {
 			int idAdressePrecedente;
 			if(indiceEtape == 0){
 				// Si on a supprime la premiere etape on met a jour le chemin de la nouvelle premiere en partant de l'entrepot
-				idAdressePrecedente = retourEntrepot.getFin().getId();;
+				idAdressePrecedente = entrepot.getId();
 			}
 			else {
 				idAdressePrecedente = etapes.get(indiceEtape-1).getLivraison().getAdresse().getId();
@@ -135,9 +135,9 @@ public class Tournee {
 		List<Adresse> adressesOfTheSameFenetre = new ArrayList<Adresse>();
 		
 		if(etapeIndex < etapes.size())	{
-			Livraison liv = etapes.get(etapeIndex).getLivraison();
+			FenetreLivraison fenLivraison = etapes.get(etapeIndex).getLivraison().getFenetreLivraison();
 			for(int i = 0; i < etapes.size(); i++)	{
-				if(etapes.get(i).getLivraison().getFenetreLivraison() == liv.getFenetreLivraison())	{
+				if(etapes.get(i).getLivraison().getFenetreLivraison() == fenLivraison)	{
 					adressesOfTheSameFenetre.add(etapes.get(i).getLivraison().getAdresse());
 				}
 			}

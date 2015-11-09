@@ -151,10 +151,13 @@ public class Plan extends Observable {
 		return tournee;
 	}
 	
+	//TODO : Pq pas stocker l'entrepot plutot que l'idEntreport dans demandeLivraisons ?
+	
 	public void calculTournee()	{
 		calculPlusCourtsChemins();
 		List<Livraison> livraisonsOrdonnees = calculOrdreLivraisons();
-		tournee = new Tournee(demandeLivraisons.getIdEntrepot(), demandeLivraisons.getHeureDepart(), livraisonsOrdonnees, plusCourtsChemins);
+		Adresse entrepot = getAdresseById(demandeLivraisons.getIdEntrepot());
+		tournee = new Tournee(entrepot, demandeLivraisons.getHeureDepart(), livraisonsOrdonnees, plusCourtsChemins);
 		System.out.println(tournee);
 	}
 	
@@ -355,8 +358,7 @@ public class Plan extends Observable {
 				Adresse[] adressesAVerifier = tournee.testSuppression(indiceEtape);
 				if(plusCourtsChemins.get(adressesAVerifier[0].getId()).get(adressesAVerifier[1].getId()) == null) {
 					List<Adresse> cibles = new ArrayList<Adresse>();
-					cibles.add(adressesAVerifier[1]);
-					cibles.addAll(tournee.getAdressesSameFenetre(indiceEtape));
+					cibles.addAll(tournee.getAdressesSameFenetre(indiceEtape+1));
 					Hashtable<Integer, Chemin> resDijkstra = dijkstra(adressesAVerifier[0], cibles);
 					Set<Entry<Integer, Chemin>> entrySet = resDijkstra.entrySet();
 					Iterator<Entry<Integer, Chemin>> it = entrySet.iterator();
