@@ -378,7 +378,7 @@ public class Plan extends Observable {
 				}
 				arrivee = tournee.getEtapes().get(indiceEtape+1).getLivraison().getAdresse();
 			}
-			// Calcul 
+			// Calcul d'un nouveau plus court chemin si besoin
 			if(plusCourtsChemins.get(depart.getId()).get(arrivee.getId()) == null) {
 				List<Adresse> cibles = new ArrayList<Adresse>();
 				if(arrivee == demandeLivraisons.getEntrepot()) {
