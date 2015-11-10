@@ -9,6 +9,7 @@ import java.util.Set;
 
 import model.Chemin;
 import model.DemandeLivraisons;
+import model.FenetreLivraison;
 import model.Livraison;
 
 public class GrapheOptimod implements Graphe {
@@ -22,20 +23,37 @@ public class GrapheOptimod implements Graphe {
 	 */
 	public GrapheOptimod(DemandeLivraisons demandeLivraison, Hashtable<Integer,Hashtable<Integer,Chemin>> plusCourtsChemins){
 		int idEntrepot = demandeLivraison.getEntrepot().getId();
-		List<Integer> idAdressesLivraisons = new ArrayList<Integer>();
-		for(Livraison liv : demandeLivraison.getAllLivraisons())
-		{
-			idAdressesLivraisons.add(liv.getAdresse().getId());
+		List<Integer> idsAdressesLivraisons = new ArrayList<Integer>();
+		for(Livraison livraison : demandeLivraison.getAllLivraisons()){
+			idsAdressesLivraisons.add(livraison.getAdresse().getId());
 		}
-		this.nbSommets = idAdressesLivraisons.size() + 1;
+		this.nbSommets = idsAdressesLivraisons.size() + 1;
 		this.cout = new int[nbSommets][nbSommets];
 		for(int i = 0; i < cout.length; i++)
 		{
 			Arrays.fill(this.cout[i], -1);
 		}
+		// TODO : Gerer le cas d'une demande sans livraison ?
+		int indiceDepart = 0;
+		int idDepart = idEntrepot;
+		List<FenetreLivraison> fenetresLiv = demandeLivraison.getFenetresLivraisons();
+		// On met a jour le cout entre l'entrepot et les livraisons de la premiere fenetre
 		
-		// TODO : Reparer le remplissage de cout
+		// Pour chaque fenetre, sauf la derniere, on met a jour le cout entre chaque livraison et celles de la meme fenetre et de la suivante
+		for(int i = 0 ; i < fenetresLiv.size() - 1; i++)
+		{
+			List<Livraison> livraisonsFen = fenetresLiv.get(i).getLivraisons();
+			for(int j = 0 ; j < livraisonsFen.size() ; j++)
+			{
+				idsAdressesLivraisons.indexOf(o)
+				int idLiv = livraisonsFen.get(j).getAdresse().getId();
+				this.cout[indiceDepart][indiceArrivee] = plusCourtsChemins.get(key).get(innerKey).getTempsDeParcours().intValue();
+			}
+			
+		}
+		// On met a jour le cout entre les livraisons de la derniere fenetre et l'entrepot
 		
+		/*
 		Set<Integer> keySet = plusCourtsChemins.keySet();
 		Iterator<Integer> keySetIterator = keySet.iterator();
 		Integer key;
@@ -61,7 +79,7 @@ public class GrapheOptimod implements Graphe {
 			   }
 			   this.cout[indiceDepart][indiceArrivee] = plusCourtsChemins.get(key).get(innerKey).getTempsDeParcours().intValue();
 		   }
-		}
+		}*/
 		displayCout();
 	}
 
