@@ -1,5 +1,7 @@
 package model.tsp;
 
+import java.util.List;
+
 public interface TSP {
 	
 	/**
@@ -12,8 +14,13 @@ public interface TSP {
 	
 	/**
 	 * @param i
+<<<<<<< HEAD
 	 * @return l'ordre des sommets visites dans la solution calculee par <code>chercheSolution</code> 
 	 * (null si <code>chercheSolution</code> n'a pas encore ete appele)
+=======
+	 * @return la liste ordonee des indices des sommets visites dans la solution calculee par <code>chercheSolution</code> 
+	 * (-1 si <code>chercheSolution</code> n'a pas encore ete appele, ou si i < 0 ou i >= g.getNbSommets())
+>>>>>>> tmp
 	 */
 	public Integer[] getSolution();
 	

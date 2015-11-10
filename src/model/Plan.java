@@ -42,7 +42,6 @@ public class Plan extends Observable {
 	 */
 	public Plan() {
 		this.nom = "";
-
 		this.adresses = new ArrayList<Adresse>();
 		this.troncons = new ArrayList<Troncon>();
 		this.demandeLivraisons = new DemandeLivraisons();
@@ -165,12 +164,21 @@ public class Plan extends Observable {
 		tsp.chercheSolution(60000, g);
 		System.out.print("Solution de longueur "+tsp.getCoutSolution()+" trouvee en "
 				+(System.currentTimeMillis() - tempsDebut)+"ms : ");
+<<<<<<< HEAD
 		Integer[] ordreLivraisons = tsp.getSolution();
 		for (int i=0; i<ordreLivraisons.length; i++){
 			System.out.print(ordreLivraisons[i]+" ");
 		}
 		System.out.println();
 		return ordreLivraisons;
+=======
+		Integer[] solution = tsp.getSolution();
+		for (Integer i : solution){
+			System.out.print(i + " ");
+		}
+		System.out.println();
+		return tsp.getSolution();
+>>>>>>> tmp
 	}
 
 	/**
@@ -328,11 +336,19 @@ public class Plan extends Observable {
 	
 	/**
 	 * @param Livraison a supprimer
-	 * @return True si la suppression peut etre effectuee
+	 * @return Indice de l'etape a supprimer, -1 si la livraison ne fais pas partie de la tournee
 	 */
+<<<<<<< HEAD
 	/*
 	public int testAjout(Livraison livraison){
 		int indiceEtape = tournee.getIndiceEtape(livraison);
+=======
+	public int testSuppression(Livraison livraison){
+		
+		// TODO : On n'utilise pas la demande de livraisons ici que la tournee 
+		
+		int indiceEtape = tournee.findIndiceEtape(livraison);
+>>>>>>> tmp
 		if(indiceEtape != -1) {
 			if(tournee.getEtapes().size() == 1)	{
 				// On souhaite supprimer l'unique livraison de la tournee

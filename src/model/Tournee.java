@@ -120,7 +120,6 @@ public class Tournee {
 	 */
 	public List<Adresse> getAdressesSameFenetre(int etapeIndex)	{
 		List<Adresse> adressesOfTheSameFenetre = new ArrayList<Adresse>();
-		
 		if(etapeIndex < etapes.size())	{
 			FenetreLivraison fenLivraison = etapes.get(etapeIndex).getLivraison().getFenetreLivraison();
 			for(int i = 0; i < etapes.size(); i++)	{
