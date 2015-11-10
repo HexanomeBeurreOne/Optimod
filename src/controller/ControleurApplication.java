@@ -4,8 +4,8 @@ import model.Plan;
 import model.Tournee;
 import view.Fenetre;
 import model.DemandeLivraisons;
-import model.FactoryDemandeLivraisons;
-import model.FactoryPlan;
+import model.factory.FactoryDemandeLivraisons;
+import model.factory.FactoryPlan;
 import model.Livraison;
 import model.FenetreLivraison;
 
