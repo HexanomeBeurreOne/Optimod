@@ -35,7 +35,7 @@ public class DemandeLivraisons {
 	 * @param heureDebut
 	 * @return
 	 */
-	public FenetreLivraison getFenetreLivraison(double heureDebut) {
+	public FenetreLivraison getFenetreLivraison(int heureDebut) {
 		Iterator<FenetreLivraison> fenetresLivraisonsIterator = this.fenetresLivraisons.iterator();
 		while(fenetresLivraisonsIterator.hasNext()) {
 			FenetreLivraison currentFenetreLivraison = (FenetreLivraison) fenetresLivraisonsIterator.next();
@@ -74,6 +74,14 @@ public class DemandeLivraisons {
 	 */
 	public void addFenetreLivraison(FenetreLivraison newFenetreLivraison) {
 		this.fenetresLivraisons.add(newFenetreLivraison);
+	}
+	
+	/**
+	 * remove a FenetreLivraison to the list fenetresLivraisons
+	 * @param fenetreLivraison
+	 */
+	public void removeFenetreLivraison(FenetreLivraison fenetreLivraison) {
+		if( this.fenetresLivraisons.contains(fenetreLivraison) ) this.fenetresLivraisons.remove(fenetreLivraison);
 	}
 
 	public int getIdEntrepot() {
