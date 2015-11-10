@@ -55,7 +55,7 @@ public class Chemin {
 
 	public Adresse getDebut()	{
 		if(troncons != null && troncons.size() >= 1)	{
-			troncons.get(0).getOrigine();
+			return troncons.get(0).getOrigine();
 		}
 		
 		return null;
@@ -63,7 +63,7 @@ public class Chemin {
 	
 	public Adresse getFin()	{
 		if(troncons != null && troncons.size() >= 1)	{
-			troncons.get(troncons.size()-1).getDestination();
+			return troncons.get(troncons.size()-1).getDestination();
 		}
 		
 		return null;

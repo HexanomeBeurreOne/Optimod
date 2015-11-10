@@ -14,6 +14,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import model.Adresse;
 import model.DemandeLivraisons;
 import model.FenetreLivraison;
 import model.Livraison;
@@ -106,8 +107,9 @@ public class FactoryDemandeLivraisons implements FactoryBase {
 				final Element entrepot = (Element) noeudEntrepot;
 				int idEntrepot = Integer.parseInt(((Element) entrepot).getAttribute("adresse"));
 				// on vérifie que l'id de l'entrepot du XML pointe vers une adresse existante
-				if( this.plan.getAdresseById(idEntrepot)!= null) {
-					this.demandeLivraisons.setIdEntrepot(idEntrepot);
+				Adresse adresseEntrepot = this.plan.getAdresseById(idEntrepot);
+				if( adresseEntrepot!= null) {
+					this.demandeLivraisons.setEntrepot(adresseEntrepot);
 					return true;
 				} else {
 					return false;
