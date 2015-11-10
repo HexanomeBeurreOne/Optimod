@@ -9,9 +9,10 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Observable;
-
 import java.util.Set;
+
 import model.tsp.Graphe;
 import model.tsp.GrapheOptimod;
 import model.tsp.TSP;
@@ -34,13 +35,13 @@ public class Plan extends Observable {
 	// The Key of the outer Hashtable is the id of the starting Adresse, 
 	// The Key of the inner Hashtable is the id of the ending Adresse, 
 	private Hashtable<Integer,Hashtable<Integer,Chemin>> plusCourtsChemins;
+	private Tournee tournee;
 	
 	/**
 	 * Constructor
 	 */
 	public Plan() {
 		this.nom = "";
-
 		this.adresses = new ArrayList<Adresse>();
 		this.troncons = new ArrayList<Troncon>();
 		this.demandeLivraisons = new DemandeLivraisons();
@@ -145,30 +146,30 @@ public class Plan extends Observable {
 		this.troncons.add(newTroncon);
 	}
 	
+	public Tournee getTournee() {
+		return tournee;
+	}
+		
 	public void calculTournee()	{
 		calculPlusCourtsChemins();
-		List<Livraison> livraisonsOrdonnees = calculOrdreLivraisons();
-		Tournee tournee = new Tournee(demandeLivraisons.getIdEntrepot(), demandeLivraisons.getHeureDepart(), livraisonsOrdonnees, plusCourtsChemins);
+		Integer[] ordreLivraisons = calculOrdreLivraisons();
+		tournee = new Tournee(demandeLivraisons, ordreLivraisons, plusCourtsChemins);
 		System.out.println(tournee);
 	}
 	
-	private List<Livraison> calculOrdreLivraisons() {
+	private Integer[] calculOrdreLivraisons() {
 		TSP tsp = new TSP1();
 		Graphe g = new GrapheOptimod(demandeLivraisons, plusCourtsChemins);
 		long tempsDebut = System.currentTimeMillis();
 		tsp.chercheSolution(60000, g);
 		System.out.print("Solution de longueur "+tsp.getCoutSolution()+" trouvee en "
 				+(System.currentTimeMillis() - tempsDebut)+"ms : ");
-		List<Livraison> livraisons = demandeLivraisons.getAllLivraisons();
-		List<Livraison> livraisonsOrdonnees = new ArrayList<Livraison>();
-		for (int i=0; i<livraisons.size(); i++){
-			livraisonsOrdonnees.add(livraisons.get(tsp.getSolution(i+1)-1));
-		}
-		for (int i=0; i<livraisons.size()+1; i++){
-			System.out.print(tsp.getSolution(i)+" ");
+		Integer[] solution = tsp.getSolution();
+		for (Integer i : solution){
+			System.out.print(i + " ");
 		}
 		System.out.println();
-		return livraisonsOrdonnees;
+		return tsp.getSolution();
 	}
 
 	/**
@@ -178,7 +179,7 @@ public class Plan extends Observable {
 		//The list is ordered
 		List<FenetreLivraison> fenetres = demandeLivraisons.getFenetresLivraisons();
 		//Get entrepot
-		Adresse entrepot = getAdresseById(demandeLivraisons.getIdEntrepot());
+		Adresse entrepot = demandeLivraisons.getEntrepot();
 		//Liste contenant l'entrepot, qui est le depart et l'arrivee
 		List<Adresse> entrepotList = new ArrayList<Adresse>(); 
 		entrepotList.add(entrepot);
@@ -339,6 +340,75 @@ public class Plan extends Observable {
 			if(currentAdresse.getId()==id) return currentAdresse;
 		}
 		return null;
+	}
+	
+	/**
+	 * Verifie que la livraison existe, puis calcul, si besoin, le plus court chemin dont on aura besoin pour corriger la tournee apres suppression
+	 * @param Livraison a supprimer
+	 * @return Indice de l'etape a supprimer, -1 si la livraison ne fais pas partie de la tournee
+	 */
+	public int testSuppression(Livraison livraison){
+		
+		// TODO : On n'utilise pas la demande de livraisons ici que la tournee 
+		
+		int indiceEtape = tournee.findIndiceEtape(livraison);
+		if(indiceEtape != -1) {
+			if(tournee.getEtapes().size() == 1)	{
+				// On souhaite supprimer l'unique livraison de la tournee
+				return indiceEtape;
+			}
+			Adresse depart;
+			Adresse arrivee;
+			if(indiceEtape == tournee.getEtapes().size()-1) {
+				// On souhaite supprimer la derniere etape, le chemin retourEntrepot va etre mis a jour
+				depart = tournee.getEtapes().get(indiceEtape-1).getLivraison().getAdresse();
+				arrivee = demandeLivraisons.getEntrepot();
+			}
+			else {
+				if(indiceEtape == 0){
+					// On souhaite supprimer la premiere etape, on met a jour le chemin de la nouvelle premiere etape en partant de l'entrepot
+					depart = demandeLivraisons.getEntrepot();
+				}
+				else {
+					depart = tournee.getEtapes().get(indiceEtape-1).getLivraison().getAdresse();
+				}
+				arrivee = tournee.getEtapes().get(indiceEtape+1).getLivraison().getAdresse();
+			}
+			// Calcul 
+			if(plusCourtsChemins.get(depart.getId()).get(arrivee.getId()) == null) {
+				List<Adresse> cibles = new ArrayList<Adresse>();
+				if(arrivee == demandeLivraisons.getEntrepot()) {
+					cibles.add(arrivee);
+				}
+				else {
+					for(Livraison liv : demandeLivraisons.getLivraison(arrivee).getFenetreLivraison().getLivraisons()) {
+						cibles.add(liv.getAdresse());
+					}
+				}
+				Hashtable<Integer, Chemin> resDijkstra = dijkstra(depart, cibles);
+				Set<Entry<Integer, Chemin>> entrySet = resDijkstra.entrySet();
+				Iterator<Entry<Integer, Chemin>> it = entrySet.iterator();
+				while(it.hasNext())	{
+					Entry<Integer, Chemin> entry = it.next();
+					int idAdresseCible = entry.getKey();
+					Chemin dureePlusCourtChemin = entry.getValue();
+					System.out.println("Calcul plus court chemin de "+depart.getId()
+										+" a "+idAdresseCible);
+					plusCourtsChemins.get(depart.getId()).put(idAdresseCible, dureePlusCourtChemin);
+				}
+			}
+		}
+		return indiceEtape;
+	}	
+	
+	public void supprimerLivraison(Livraison livraison) {
+		int indiceEtape = testSuppression(livraison);
+		if(indiceEtape != -1) {
+			tournee.supprimerEtape(indiceEtape, plusCourtsChemins);
+		}
+		else {
+			System.out.println("La livraison ne fait pas partie de la tournee.");
+		}
 	}
 	
 	public void affichePlan() {

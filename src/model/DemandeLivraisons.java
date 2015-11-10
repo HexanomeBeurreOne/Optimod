@@ -16,7 +16,7 @@ public class DemandeLivraisons {
 	/**
 	 * Attributes
 	 */
-	private int idEntrepot;
+	private Adresse entrepot;
 	private List<FenetreLivraison> fenetresLivraisons;
 	private int heureDepart;
 	
@@ -24,7 +24,7 @@ public class DemandeLivraisons {
 	 * Constructor
 	 */
 	public DemandeLivraisons() {
-		this.idEntrepot = -1;
+		this.entrepot = null;
 		this.fenetresLivraisons = new ArrayList<FenetreLivraison>();
 		this.heureDepart = 8*3600;
 	}
@@ -76,12 +76,12 @@ public class DemandeLivraisons {
 		this.fenetresLivraisons.add(newFenetreLivraison);
 	}
 
-	public int getIdEntrepot() {
-		return idEntrepot;
+	public Adresse getEntrepot() {
+		return entrepot;
 	}
 
-	public void setIdEntrepot(int idEntrepot) {
-		this.idEntrepot = idEntrepot;
+	public void setEntrepot(Adresse entrepot) {
+		this.entrepot = entrepot;
 	}
 	
 	public int getHeureDepart() {
@@ -107,9 +107,17 @@ public class DemandeLivraisons {
 		}
 		return livraisons;
 	}
+	
+	public Livraison getLivraison(Adresse adresse){
+		List<Livraison> livraisons = getAllLivraisons();
+		for (Livraison liv : livraisons){
+			if(liv.getAdresse() == adresse) return liv;
+		}
+		return null;
+	}
 
 	public void afficheDemandeLivraisons() {
-		System.out.println("DemandeLivraison : idEntrepot="+this.idEntrepot);
+		System.out.println("DemandeLivraison : idEntrepot="+this.entrepot.getId());
 		System.out.println("Liste livraisons : ");
 		Iterator<FenetreLivraison> fenetresLivraisonsIterator = this.fenetresLivraisons.iterator();
 		while(fenetresLivraisonsIterator.hasNext()) {

@@ -16,9 +16,20 @@ public class Etape {
 	/**
 	 * Constructor
 	 */
+	public Etape(Livraison livraison, Chemin chemin) {
+		this.livraison = livraison;
+		this.chemin = chemin;
+		this.heureLivraison = -1;
+		this.retard = -1;
+	}
+	
 	public Etape(Livraison livraison, Chemin chemin, double heureDepart) {
 		this.livraison = livraison;
 		this.chemin = chemin;
+		calculHeureLivraison(heureDepart);
+	}
+	
+	public void calculHeureLivraison(double heureDepart){
 		heureLivraison = heureDepart + chemin.getTempsDeParcours();
 		// Si on est en avance sur le debut de la fenetre horaire, on attend.
 		if(heureLivraison < livraison.getFenetreLivraison().getHeureDebut())
@@ -38,7 +49,11 @@ public class Etape {
 
 	public Chemin getChemin() {
 		return chemin;
-	}	
+	}
+	
+	public void setChemin(Chemin chemin) {
+		this.chemin = chemin;
+	}
 	
 	public double getHeureLivraison() {
 		return heureLivraison;

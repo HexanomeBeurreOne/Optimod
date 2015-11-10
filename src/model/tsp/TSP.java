@@ -1,5 +1,7 @@
 package model.tsp;
 
+import java.util.List;
+
 public interface TSP {
 	
 	/**
@@ -9,6 +11,13 @@ public interface TSP {
 	 * @param g
 	 */
 	public void chercheSolution(int tpsLimite, Graphe g);
+	
+	/**
+	 * @param i
+	 * @return la liste ordonee des indices des sommets visites dans la solution calculee par <code>chercheSolution</code> 
+	 * (-1 si <code>chercheSolution</code> n'a pas encore ete appele, ou si i < 0 ou i >= g.getNbSommets())
+	 */
+	public Integer[] getSolution();
 	
 	/**
 	 * @param i
