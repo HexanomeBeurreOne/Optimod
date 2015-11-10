@@ -32,6 +32,10 @@ public abstract class TemplateTSP implements TSP {
 		return -1;
 	}
 	
+	public Integer[] getSolution(){
+		return meilleureSolution;
+	}
+	
 	public int getCoutSolution(){
 		if (g != null)
 			return coutMeilleureSolution;

@@ -33,6 +33,9 @@ public class GrapheOptimod implements Graphe {
 		{
 			Arrays.fill(this.cout[i], -1);
 		}
+		
+		// TODO : Reparer le remplissage de cout
+		
 		Set<Integer> keySet = plusCourtsChemins.keySet();
 		Iterator<Integer> keySetIterator = keySet.iterator();
 		Integer key;

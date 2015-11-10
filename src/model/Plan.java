@@ -150,33 +150,27 @@ public class Plan extends Observable {
 	public Tournee getTournee() {
 		return tournee;
 	}
-	
-	//TODO : Pq pas stocker l'entrepot plutot que l'idEntreport dans demandeLivraisons ?
-	
+		
 	public void calculTournee()	{
 		calculPlusCourtsChemins();
-		List<Livraison> livraisonsOrdonnees = calculOrdreLivraisons();
-		tournee = new Tournee(demandeLivraisons, livraisonsOrdonnees, plusCourtsChemins);
+		Integer[] ordreLivraisons = calculOrdreLivraisons();
+		tournee = new Tournee(demandeLivraisons, ordreLivraisons, plusCourtsChemins);
 		System.out.println(tournee);
 	}
 	
-	private List<Livraison> calculOrdreLivraisons() {
+	private Integer[] calculOrdreLivraisons() {
 		TSP tsp = new TSP1();
 		Graphe g = new GrapheOptimod(demandeLivraisons, plusCourtsChemins);
 		long tempsDebut = System.currentTimeMillis();
 		tsp.chercheSolution(60000, g);
 		System.out.print("Solution de longueur "+tsp.getCoutSolution()+" trouvee en "
 				+(System.currentTimeMillis() - tempsDebut)+"ms : ");
-		List<Livraison> livraisons = demandeLivraisons.getAllLivraisons();
-		List<Livraison> livraisonsOrdonnees = new ArrayList<Livraison>();
-		for (int i=0; i<livraisons.size(); i++){
-			livraisonsOrdonnees.add(livraisons.get(tsp.getSolution(i+1)-1));
-		}
-		for (int i=0; i<livraisons.size()+1; i++){
-			System.out.print(tsp.getSolution(i)+" ");
+		Integer[] ordreLivraisons = tsp.getSolution();
+		for (int i=0; i<ordreLivraisons.length; i++){
+			System.out.print(ordreLivraisons[i]+" ");
 		}
 		System.out.println();
-		return livraisonsOrdonnees;
+		return ordreLivraisons;
 	}
 
 	/**
@@ -185,42 +179,25 @@ public class Plan extends Observable {
 	private void calculPlusCourtsChemins()	{
 		//The list is ordered
 		List<FenetreLivraison> fenetres = demandeLivraisons.getFenetresLivraisons();
-		//Get entrepot
-		Adresse entrepot = demandeLivraisons.getEntrepot();
-		//Liste contenant l'entrepot, qui est le depart et l'arrivee
-		List<Adresse> entrepotList = new ArrayList<Adresse>(); 
-		entrepotList.add(entrepot);
-		//Liste de sous-listes d'Adresses correspondants aux adresses des points de livraison par fenetre
-		List<List<Adresse>> adressesFenList = new ArrayList<List<Adresse>>();
-		adressesFenList.add(entrepotList);
+		//Liste contenant les adresses de l'entrepot et des livraisons de la demande de livraison
+		List<Adresse> adresses = new ArrayList<Adresse>(); 
+		// On recupere l'adresse de l'entrepot
+		adresses.add(demandeLivraisons.getEntrepot());
 		for(FenetreLivraison fen : fenetres)
 		{
-			List<Adresse> adressesFen = new ArrayList<Adresse>();
-			for(Livraison liv:fen.getLivraisons()){
-				adressesFen.add(liv.getAdresse());
+			for(Livraison livraison : fen.getLivraisons()) {
+				adresses.add(livraison.getAdresse());
 			}
-			adressesFenList.add(adressesFen);
 		}
-		adressesFenList.add(entrepotList);
-		
+
 		Adresse departDijkstra;
-		List<Adresse> ciblesDijkstra;
 		//TODO : put it in dispatcher #multithread
-		for(int i = 1; i < adressesFenList.size(); i++)
+		for(int i = 0; i < adresses.size(); i++)
 		{
-			for(int j = 0; j < adressesFenList.get(i-1).size(); j++)
-			{
-				//On recupere une adresse d'une premiere fenetre de livraison
-				departDijkstra = adressesFenList.get(i-1).get(j);
-				Integer departId = departDijkstra.getId();
-				//On met dans ciblesDijkstra les adresses de cette premiere fenetre de livraison et de la suivante
-				ciblesDijkstra = new ArrayList<Adresse>(adressesFenList.get(i));
-				ciblesDijkstra.addAll(adressesFenList.get(i-1));
-				//On retire des ciblesDijkstra le departDijkstra
-				ciblesDijkstra.remove(departDijkstra);
-				Hashtable<Integer, Chemin> resDijkstra = dijkstra(departDijkstra, ciblesDijkstra);
-				plusCourtsChemins.put(departId, resDijkstra);
-			}
+				departDijkstra = adresses.remove(0);
+				Hashtable<Integer, Chemin> resDijkstra = dijkstra(departDijkstra, adresses);
+				plusCourtsChemins.put(departDijkstra.getId(), resDijkstra);
+				adresses.add(departDijkstra);
 		}
 		System.out.println(plusCourtsChemins);
 	}
@@ -350,12 +327,12 @@ public class Plan extends Observable {
 	}
 	
 	/**
-	 * Verifie que la livraison existe, puis calcul, si besoin, le plus court chemin dont on aura besoin pour corriger la tournee apres suppression
 	 * @param Livraison a supprimer
 	 * @return True si la suppression peut etre effectuee
 	 */
-	public int testSuppression(Livraison livraison){
-		int indiceEtape = tournee.findIndiceEtape(livraison);
+	/*
+	public int testAjout(Livraison livraison){
+		int indiceEtape = tournee.getIndiceEtape(livraison);
 		if(indiceEtape != -1) {
 			if(tournee.getEtapes().size() == 1)	{
 				// On souhaite supprimer l'unique livraison de la tournee
@@ -403,10 +380,12 @@ public class Plan extends Observable {
 			}
 		}
 		return indiceEtape;
-	}	
+	}	*/
+	
+	// TODO : Mieux de passer un set<Adresses a dijkstra pour faire peter les doublons entre ceux de demande et ceux de tournee
 	
 	public void supprimerLivraison(Livraison livraison) {
-		int indiceEtape = testSuppression(livraison);
+		int indiceEtape = tournee.getIndiceEtape(livraison);
 		if(indiceEtape != -1) {
 			tournee.supprimerEtape(indiceEtape, plusCourtsChemins);
 		}
