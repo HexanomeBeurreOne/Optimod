@@ -42,7 +42,6 @@ public class Plan extends Observable {
 	 */
 	public Plan() {
 		this.nom = "";
-
 		this.adresses = new ArrayList<Adresse>();
 		this.troncons = new ArrayList<Troncon>();
 		this.demandeLivraisons = new DemandeLivraisons();
@@ -150,33 +149,27 @@ public class Plan extends Observable {
 	public Tournee getTournee() {
 		return tournee;
 	}
-	
-	//TODO : Pq pas stocker l'entrepot plutot que l'idEntreport dans demandeLivraisons ?
-	
+		
 	public void calculTournee()	{
 		calculPlusCourtsChemins();
-		List<Livraison> livraisonsOrdonnees = calculOrdreLivraisons();
-		tournee = new Tournee(demandeLivraisons, livraisonsOrdonnees, plusCourtsChemins);
+		Integer[] ordreLivraisons = calculOrdreLivraisons();
+		tournee = new Tournee(demandeLivraisons, ordreLivraisons, plusCourtsChemins);
 		System.out.println(tournee);
 	}
 	
-	private List<Livraison> calculOrdreLivraisons() {
+	private Integer[] calculOrdreLivraisons() {
 		TSP tsp = new TSP1();
 		Graphe g = new GrapheOptimod(demandeLivraisons, plusCourtsChemins);
 		long tempsDebut = System.currentTimeMillis();
 		tsp.chercheSolution(60000, g);
 		System.out.print("Solution de longueur "+tsp.getCoutSolution()+" trouvee en "
 				+(System.currentTimeMillis() - tempsDebut)+"ms : ");
-		List<Livraison> livraisons = demandeLivraisons.getAllLivraisons();
-		List<Livraison> livraisonsOrdonnees = new ArrayList<Livraison>();
-		for (int i=0; i<livraisons.size(); i++){
-			livraisonsOrdonnees.add(livraisons.get(tsp.getSolution(i+1)-1));
-		}
-		for (int i=0; i<livraisons.size()+1; i++){
-			System.out.print(tsp.getSolution(i)+" ");
+		Integer[] solution = tsp.getSolution();
+		for (Integer i : solution){
+			System.out.print(i + " ");
 		}
 		System.out.println();
-		return livraisonsOrdonnees;
+		return tsp.getSolution();
 	}
 
 	/**
@@ -352,9 +345,12 @@ public class Plan extends Observable {
 	/**
 	 * Verifie que la livraison existe, puis calcul, si besoin, le plus court chemin dont on aura besoin pour corriger la tournee apres suppression
 	 * @param Livraison a supprimer
-	 * @return True si la suppression peut etre effectuee
+	 * @return Indice de l'etape a supprimer, -1 si la livraison ne fais pas partie de la tournee
 	 */
 	public int testSuppression(Livraison livraison){
+		
+		// TODO : On n'utilise pas la demande de livraisons ici que la tournee 
+		
 		int indiceEtape = tournee.findIndiceEtape(livraison);
 		if(indiceEtape != -1) {
 			if(tournee.getEtapes().size() == 1)	{
