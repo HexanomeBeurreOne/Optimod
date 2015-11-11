@@ -421,10 +421,67 @@ public class Plan extends Observable {
 		}
 	}
 	
-	public void ajouterLivraison(Adresse livraison, FenetreLivraison fenetre, int indiceNouvelleEtape) {
-		// TODO : testAjout(...)
-		// tester l'indice, validite fenetre, pas deja de livraison a la meme adresse, 
-		//tournee.ajouterEtape
+	/**
+	 * Ajoute une livraison à la tournée sans demander la fenetre dans laquelle la livraison doit être ajoutée.
+	 * Seule des objets Adresses sont passées en paramètres en plus du client, et non des objets Livraison
+	 * 
+	 * @param client
+	 * @param precLivraisonAdresse
+	 * @param nouvellelivraisonAdresse
+	 * @return
+	 */
+	public FenetreLivraison ajouterLivraison(int client, Adresse precLivraisonAdresse, Adresse nouvellelivraisonAdresse) {
+		Livraison livPrec = demandeLivraisons.getLivraison(precLivraisonAdresse);
+		FenetreLivraison fenetreDeNouvelleLiv = null;
+		if(livPrec != null)	{
+			fenetreDeNouvelleLiv = livPrec.getFenetreLivraison();
+			//TODO: (Optionnel) Gerer les bords de fenetre
+			
+			ajouterLivraisonAvecFenetre(client, precLivraisonAdresse, nouvellelivraisonAdresse, fenetreDeNouvelleLiv);
+		}
+		
+		return fenetreDeNouvelleLiv;
+	}
+	
+	/**
+	 * Ajoute une livraison à la tournée sans demander la fenetre dans laquelle la livraison doit être ajoutée.
+	 * Seule des objets Adresses sont passées en paramètres en plus du client et de la fenêtre, et non des objets Livraison
+	 * @param client
+	 * @param precLivraisonAdresse
+	 * @param nouvellelivraisonAdresse
+	 * @param fenetre
+	 */
+	public void ajouterLivraisonAvecFenetre(int client, Adresse precLivraisonAdresse, Adresse nouvellelivraisonAdresse, FenetreLivraison fenetre) {
+		Livraison livAAjouter = new Livraison(client,nouvellelivraisonAdresse, fenetre);
+		
+		if(demandeLivraisons.getAllLivraisons().contains(livAAjouter) != false)	{
+			demandeLivraisons.addLivraison(livAAjouter, fenetre);
+			testAjout(precLivraisonAdresse, nouvellelivraisonAdresse);
+			//tournee.ajouterEtape()
+		}
+	}
+	
+	public int testAjout(Adresse precLivraisonAdresse, Adresse livraisonAdresse)	{
+		int indiceEtapePrec = tournee.findIndiceEtape(precLivraisonAdresse);
+		// On verifie si on a suffisamment de plus courts chemins uniquement si la livraison fait partie et n'est pas la seule livraison de la tournee
+		if(indiceEtapePrec != -1 && tournee.getEtapes().size() != 1) {
+			Adresse arrivee;
+			if(indiceEtapePrec == tournee.getEtapes().size()-1) {
+				// On souhaite ajouter après la derniere etape, le chemin retourEntrepot va etre mis a jour
+				arrivee = tournee.getEntrepot();
+			}
+			else {
+				arrivee = tournee.getEtapes().get(indiceEtapePrec+1).getLivraison().getAdresse();
+			}
+			// Calcul de nouveaux plus courts chemins a l'aide de dijkstra si celui dont on a besoin n'a pas ete precedemment
+			if(plusCourtsChemins.get(precLivraisonAdresse.getId()).get(livraisonAdresse.getId()) == null) {
+				nouveauxPlusCourtsChemins(precLivraisonAdresse, livraisonAdresse);
+			}
+			if(plusCourtsChemins.get(livraisonAdresse.getId()).get(arrivee.getId()) == null) {
+				nouveauxPlusCourtsChemins(livraisonAdresse, arrivee);
+			}
+		}
+		return indiceEtapePrec;
 	}
 	
 	public void affichePlan() {
@@ -437,6 +494,4 @@ public class Plan extends Observable {
 			currentAdresse.afficheAdresse();
 		}
 	}
-
-
 }
