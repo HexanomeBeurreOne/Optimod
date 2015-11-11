@@ -79,7 +79,7 @@ public class FactoryDemandeLivraisons implements FactoryBase {
 	 * @param time
 	 * @return
 	 */
-	public int convertTimeToSeconds(String time){
+	private int convertTimeToSeconds(String time){
 		String[] timeSplitted = time.split(":");
 		int hours = Integer.parseInt(timeSplitted[0]);
 		int minutes = Integer.parseInt(timeSplitted[1]);
@@ -102,7 +102,7 @@ public class FactoryDemandeLivraisons implements FactoryBase {
 		return false;
 	}
 	
-	public boolean ajouterEntrepot(Node noeudEntrepot) {
+	private boolean ajouterEntrepot(Node noeudEntrepot) {
 			try {
 				final Element entrepot = (Element) noeudEntrepot;
 				int idEntrepot = Integer.parseInt(((Element) entrepot).getAttribute("adresse"));
@@ -119,44 +119,7 @@ public class FactoryDemandeLivraisons implements FactoryBase {
 			}
 	}
 	
-	public void ajouterFenetreLivraison(Element fenetreLivraison) {
-		try {
-	    	int heureDebutEnSec = this.convertTimeToSeconds(fenetreLivraison.getAttribute("heureDebut"));
-	    	int heureFinEnSec = this.convertTimeToSeconds(fenetreLivraison.getAttribute("heureFin"));
-	        
-	    	// instantiate a new FenetreLivraison object with attributes given in the xml tag
-	        FenetreLivraison newFenetreLivraison = this.getFenetreLivraison(heureDebutEnSec, heureFinEnSec);
-	        
-	    	// add the FenetreLivraison to the list of the DemandeLivraisons and get all children tags from xml if it is not null
-	         if( newFenetreLivraison != null ){
-	        	 this.demandeLivraisons.addFenetreLivraison(newFenetreLivraison);
-	         
-	            // get all Livraison tag from the xml file to instantiate the Livraison objects
-	            final NodeList LivraisonListe = fenetreLivraison.getElementsByTagName("Livraison");
-	            final int nbLivraison = LivraisonListe.getLength();
-				
-			    for(int j = 0; j<nbLivraison; j++) {
-			        final Element livraison = (Element) LivraisonListe.item(j);
-			        
-			        try {
-			        int idClient = Integer.parseInt(livraison.getAttribute("client"));
-			        int idAdresse = Integer.parseInt(livraison.getAttribute("adresse"));
-			        
-			        // instantiate a new Livraison object with attributes given in the xml tag
-			        Livraison newLivraison = this.getLivraison(idClient, idAdresse, newFenetreLivraison);
-			        
-			        // add the Livraison object to the list of the DemandeLivraisons if it is not null
-		            if( newLivraison != null ) this.demandeLivraisons.addLivraison(newLivraison, newFenetreLivraison);
-			        } catch(Exception e) {
-			        	//System.err.println("Missing parameters for Livraison tag #"+j+" of Plage tag #"+i+" in the file "+uriXml);
-			        }
-			    }
-	         }
-	    } catch(Exception e) {
-	    }
-	}
-	
-	public boolean verifierChevauchementFenetreLivraison(int heureDebut, int heureFin) {
+	private boolean verifierChevauchementFenetreLivraison(int heureDebut, int heureFin) {
 		Iterator<FenetreLivraison> iFL = this.demandeLivraisons.getFenetresLivraisons().iterator();
 		FenetreLivraison fenetreLivraison;
 		while(iFL.hasNext()){
