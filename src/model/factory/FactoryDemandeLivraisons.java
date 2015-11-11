@@ -170,11 +170,15 @@ public class FactoryDemandeLivraisons implements FactoryBase {
 		            	int heureDebutEnSec = this.convertTimeToSeconds(fenetreLivraison.getAttribute("heureDebut"));
 		            	int heureFinEnSec = this.convertTimeToSeconds(fenetreLivraison.getAttribute("heureFin"));
 		            	
-		            	// instantiate a new FenetreLivraison object with attributes given in the xml tag
+		            	// on verifie que les heures obtenues ne sont pas fausses
 			            if(heureDebutEnSec!=(-1) && heureFinEnSec!=(-1)) {
-			            	newFenetreLivraison = this.getFenetreLivraison(heureDebutEnSec, heureFinEnSec);
-			            } else if(verifierChevauchementFenetreLivraison(heureDebutEnSec, heureFinEnSec)){
-			            	return null;
+			            	// on vérifie que la fenetre de livraison ne chevauche pas une autre
+			            	if(verifierChevauchementFenetreLivraison(heureDebutEnSec, heureFinEnSec)) {
+			            		// instantiate a new FenetreLivraison object with attributes given in the xml tag
+			            		newFenetreLivraison = this.getFenetreLivraison(heureDebutEnSec, heureFinEnSec);
+			            	} else {
+			            		return null;
+			            	}
 			            } else {
 			            	newFenetreLivraison = null;
 			            }
