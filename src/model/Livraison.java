@@ -22,6 +22,9 @@ public class Livraison extends Observable {
 	/**
 	 * Constructor
 	 */
+	public Livraison() {
+	}
+	
 	public Livraison(int client, Adresse adresse, FenetreLivraison fenetreLivraison) {
 		this.client = client;
 		this.adresse = adresse;

@@ -161,6 +161,17 @@ public class Plan extends Observable {
 		notifyObservers();
 	}
 	
+	public void setObjetSelectionne(Object objet, boolean selectionne) {
+		if (objet.getClass().getName() == "model.Adresse") {
+			Adresse adresse = (Adresse)objet;
+			this.getAdresseById(adresse.getId()).setSelectionnee(selectionne);
+		} else if (objet.getClass().getName() == "model.Livraison") {
+			//TODO
+		}
+		setChanged();
+		notifyObservers();
+	}
+	
 	public void calculTournee()	{
 		calculPlusCourtsChemins();
 
@@ -456,7 +467,7 @@ public class Plan extends Observable {
 			minDist = nextDist<minDist ? nextDist : minDist;
 		}
 		
-		if(minDist<=10) return adressesTrouvees.get(minDist);
+		if(minDist<=15) return adressesTrouvees.get(minDist);
 		
 		return null;
 	}

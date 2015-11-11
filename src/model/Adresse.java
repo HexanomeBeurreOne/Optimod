@@ -21,17 +21,22 @@ public class Adresse extends Observable {
 	private int coordX;
 	private int coordY;
 	private List<Troncon> tronconsSortants;
-	private boolean estSelectionnee;
+	private boolean selectionnee;
 	
 	/**
 	 * Constructor
 	 */
+	
+	// Constructeur par defaut ne pas ENLEVER
+	public Adresse() {
+	}
+	
 	public Adresse(int id, int coordX, int coordY) {
 		this.id = id;
 		this.coordX = coordX;
 		this.coordY = coordY;
 		this.tronconsSortants = new ArrayList<Troncon>();
-		this.estSelectionnee = false;
+		this.selectionnee = false;
 	}
 	
 	public int getId() {
@@ -58,14 +63,12 @@ public class Adresse extends Observable {
 		this.coordY = coordY;
 	}
 
-	public boolean isEstSelectionnee() {
-		return estSelectionnee;
+	public boolean isSelectionnee() {
+		return selectionnee;
 	}
 
-	public void setEstSelectionnee(boolean estSelectionnee) {
-		this.estSelectionnee = estSelectionnee;
-		setChanged();
-		notifyObservers(this);
+	public void setSelectionnee(boolean estSelectionnee) {
+		this.selectionnee = estSelectionnee;
 	}
 
 	public List<Troncon> getTronconsSortants() {
