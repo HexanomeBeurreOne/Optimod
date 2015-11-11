@@ -7,20 +7,19 @@ import java.util.List;
 public class Tournee {
 
 	/**
-	 * Attributes
+	 * Attributs
 	 */
 	private List<Etape> etapes;
-
-	// Chemin qui mene de l'adresse de livraison de la derniere etape a l'entrepot
+	// Chemin qui mene de l'adresse de livraison de la derniere etape a l'entrepot, null si etapes est vide
 	private Chemin retourEntrepot;
 	private Adresse entrepot;
 	private double heureDebut;
 	private double heureFin;
 	
 	/**
-	 * Constructor
+	 * Constructeur
 	 */
-	// Constructeur par défaut, ne pas ENLEVER
+	// Constructeur par defaut, ne pas ENLEVER
 	public Tournee() {
 		
 	}
@@ -39,9 +38,10 @@ public class Tournee {
 			etapes.add(etape);
 			idDepartEtape = idArriveeEtape;
 		}
-		// TODO : Gerer une demande de livraisons vide
-		retourEntrepot = plusCourtsChemins.get(idDepartEtape).get(entrepot.getId());
-		calculHoraires();
+		if(idDepartEtape != entrepot.getId()) {
+			retourEntrepot = plusCourtsChemins.get(idDepartEtape).get(entrepot.getId());
+		}
+		calculerHoraires();
 	}
 	
 	public List<Etape> getEtapes() {
@@ -64,20 +64,20 @@ public class Tournee {
 		return heureFin;
 	}
 	
-	public void calculHoraires() {
+	public void calculerHoraires() {
 		double heureDepartEtape = heureDebut;
 		for(Etape etape : etapes) {
-			etape.calculHeureLivraison(heureDepartEtape);
+			etape.calculerHeureLivraison(heureDepartEtape);
 			// 10 minutes de livraison avant de commencer l'etape suivante
 			heureDepartEtape = etape.getHeureLivraison() + 10*60;
 		}
 		heureFin = heureDepartEtape + retourEntrepot.getTempsDeParcours();
 		if(heureFin > 24*3600) System.out.println("La tournee se termine apr�s minuit.");
 	}
-	
-	public int findIndiceEtape(Livraison livraison) {
+
+	public int trouverIndiceEtape(Adresse adresse) {
 		for(int i = 0; i < etapes.size() ; i++)	{
-			if(etapes.get(i).getLivraison() == livraison) {
+			if(etapes.get(i).getLivraison().getAdresse() == adresse) {
 				return i;
 			}
 		}
@@ -110,24 +110,31 @@ public class Tournee {
 			int idAdresseEtape = etapes.get(indiceEtape).getLivraison().getAdresse().getId();
 			etapes.get(indiceEtape).setChemin(plusCourtsChemins.get(idAdressePrecedente).get(idAdresseEtape));
 		}
-		calculHoraires();
+		calculerHoraires();
 	}
-
-	/*
-	 * Get adresses from the same fenetre of an etape index.
-	 * @param etapeIndex
-	 */
-	public List<Adresse> getAdressesSameFenetre(int etapeIndex)	{
-		List<Adresse> adressesOfTheSameFenetre = new ArrayList<Adresse>();
-		if(etapeIndex < etapes.size())	{
-			FenetreLivraison fenLivraison = etapes.get(etapeIndex).getLivraison().getFenetreLivraison();
-			for(int i = 0; i < etapes.size(); i++)	{
-				if(etapes.get(i).getLivraison().getFenetreLivraison() == fenLivraison)	{
-					adressesOfTheSameFenetre.add(etapes.get(i).getLivraison().getAdresse());
-				}
-			}
+	
+	// TODO : Idee : Pourquoi pas un bouleen dans Etape pour savoir si on respecte sa fenetre
+	
+	// TODO : Reflechit aux adresses et fenetres, ca chie, pcq on compare des fenetres de liv des livraisons associees aux etapes
+	// Donc faut aussi metre a jour les fenetres
+	// Ou alors mettre les heures de debut et fin en attribut
+	
+	public void ajouterEtape(Livraison livraison, Adresse adresseLivraisonPrec, Hashtable<Integer,Hashtable<Integer,Chemin>> plusCourtsChemins) {
+		Chemin aller = plusCourtsChemins.get(adresseLivraisonPrec.getId()).get(livraison.getAdresse().getId());
+		int indiceEtapePrec = trouverIndiceEtape(adresseLivraisonPrec);
+		if(indiceEtapePrec == etapes.size()-1){
+			// Si l'etape precedente est la derniere, le chemin de retour est mis a jour
+			retourEntrepot = plusCourtsChemins.get(livraison.getAdresse().getId()).get(entrepot.getId());
 		}
-		return adressesOfTheSameFenetre;
+		else {
+			// Sinon on met a jour le Chemin de l'etape suivante
+			Etape etapeSuivante = etapes.get(indiceEtapePrec+1);
+			Adresse adresseLivEtapeSuivante = etapeSuivante.getLivraison().getAdresse();
+			etapeSuivante.setChemin(plusCourtsChemins.get(livraison.getAdresse().getId()).get(adresseLivEtapeSuivante.getId()));
+		}
+		Etape etape = new Etape(livraison, aller);
+		etapes.add(indiceEtapePrec+1, etape);
+		calculerHoraires();
 	}
 	
 	public String toString(){
