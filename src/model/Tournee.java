@@ -119,6 +119,23 @@ public class Tournee {
 	// Donc faut aussi metre a jour les fenetres
 	// Ou alors mettre les heures de debut et fin en attribut
 	
+	public void ajouterEtape(Livraison livraison, Adresse adresseLivraisonPrec, Hashtable<Integer,Hashtable<Integer,Chemin>> plusCourtsChemins) {
+		Chemin aller = plusCourtsChemins.get(adresseLivraisonPrec.getId()).get(livraison.getAdresse().getId());
+		int indiceEtapePrec = trouverIndiceEtape(adresseLivraisonPrec);
+		if(indiceEtapePrec == etapes.size()-1){
+			// Si l'etape precedente est la derniere, le chemin de retour est mis a jour
+			retourEntrepot = plusCourtsChemins.get(livraison.getAdresse().getId()).get(entrepot.getId());
+		}
+		else {
+			// Sinon on met a jour le Chemin de l'etape suivante
+			Etape etapeSuivante = etapes.get(indiceEtapePrec+1);
+			Adresse adresseLivEtapeSuivante = etapeSuivante.getLivraison().getAdresse();
+			etapeSuivante.setChemin(plusCourtsChemins.get(livraison.getAdresse().getId()).get(adresseLivEtapeSuivante.getId()));
+		}
+		Etape etape = new Etape(livraison, aller);
+		etapes.add(indiceEtapePrec+1, etape);
+		calculerHoraires();
+	}
 	
 	public String toString(){
 		return "Tournee de " + etapes.size() + " etapes, " + 
