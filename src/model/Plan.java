@@ -380,7 +380,7 @@ public class Plan extends Observable {
 	 * @return Indice de l'etape a supprimer, -1 si la livraison ne fais pas partie de la tournee
 	 */
 	public int testSuppression(Adresse livraisonAdresse){		
-		int indiceEtape = tournee.findIndiceEtape(livraisonAdresse);
+		int indiceEtape = tournee.trouverIndiceEtape(livraisonAdresse);
 		// On verifie si on a suffisamment de plus courts chemins uniquement si la livraison fait partie et n'est pas la seule livraison de la tournee
 		if(indiceEtape != -1 && tournee.getEtapes().size() != 1) {
 			Adresse depart;
