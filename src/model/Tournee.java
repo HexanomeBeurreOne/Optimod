@@ -10,6 +10,7 @@ public class Tournee {
 	 * Attributes
 	 */
 	private List<Etape> etapes;
+
 	// Chemin qui mene de l'adresse de livraison de la derniere etape a l'entrepot
 	private Chemin retourEntrepot;
 	private Adresse entrepot;
@@ -19,7 +20,9 @@ public class Tournee {
 	/**
 	 * Constructor
 	 */
+	// Constructeur par défaut, ne pas ENLEVER
 	public Tournee() {
+		
 	}
 
 	public Tournee(DemandeLivraisons demandeLivraisons, Integer[] ordreLivraisons, Hashtable<Integer,Hashtable<Integer,Chemin>> plusCourtsChemins) {

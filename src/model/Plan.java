@@ -56,7 +56,7 @@ public class Plan extends Observable {
 	public void setDemandeLivraisons(DemandeLivraisons demandeLivraisons) {
 		this.demandeLivraisons = demandeLivraisons;
 		setChanged();
-		notifyObservers(this);
+		notifyObservers();
 	}
 	
 	/**
@@ -100,7 +100,7 @@ public class Plan extends Observable {
 	public void setNom(String nom) {
 		this.nom = nom;
 		setChanged();
-		notifyObservers(this);
+		notifyObservers();
 	}
 
 	public List<Adresse> getAdresses() {
@@ -110,7 +110,7 @@ public class Plan extends Observable {
 	public void setAdresses(List<Adresse> adresses) {
 		this.adresses = adresses;
 		setChanged();
-		notifyObservers(this);
+		notifyObservers();
 	}
 
 	public List<Troncon> getTroncons() {
@@ -120,7 +120,7 @@ public class Plan extends Observable {
 	public void setTroncons(List<Troncon> troncons) {
 		this.troncons = troncons;
 		setChanged();
-		notifyObservers(this);
+		notifyObservers();
 	}
 
 	/**
@@ -146,22 +146,25 @@ public class Plan extends Observable {
 	public void addTroncon(Troncon newTroncon) {
 		this.troncons.add(newTroncon);
 	}
-		
-	public void calculTournee()	{
-		calculPlusCourtsChemins();
-		Integer[] ordreLivraisons = calculOrdreLivraisons();
-		tournee = new Tournee(demandeLivraisons, ordreLivraisons, plusCourtsChemins);
-		System.out.println(tournee);
+
+	
+	public Tournee getTournee() {
+		return tournee;
 	}
 	
 	public void setTournee(Tournee tournee) {
 		this.tournee = tournee;
 		setChanged();
-		notifyObservers(this);
+		notifyObservers();
 	}
 	
-	public Tournee getTournee() {
-		return this.tournee;
+	public void calculTournee()	{
+		calculPlusCourtsChemins();
+
+		Integer[] ordreLivraisons = calculOrdreLivraisons();
+		tournee = new Tournee(demandeLivraisons, ordreLivraisons, plusCourtsChemins);
+		this.setTournee(tournee);
+		//System.out.println(tournee);
 	}
 	
 	private Integer[] calculOrdreLivraisons() {
@@ -169,13 +172,13 @@ public class Plan extends Observable {
 		Graphe g = new GrapheOptimod(demandeLivraisons, plusCourtsChemins);
 		long tempsDebut = System.currentTimeMillis();
 		tsp.chercheSolution(60000, g);
-		System.out.print("Solution de longueur "+tsp.getCoutSolution()+" trouvee en "
-				+(System.currentTimeMillis() - tempsDebut)+"ms : ");
+		//System.out.print("Solution de longueur "+tsp.getCoutSolution()+" trouvee en "
+				//+(System.currentTimeMillis() - tempsDebut)+"ms : ");
 		Integer[] solution = tsp.getSolution();
 		for (Integer i : solution){
-			System.out.print(i + " ");
+			//System.out.print(i + " ");
 		}
-		System.out.println();
+		//System.out.println();
 		return tsp.getSolution();
 	}
 
@@ -222,7 +225,7 @@ public class Plan extends Observable {
 				plusCourtsChemins.put(departId, resDijkstra);
 			}
 		}
-		System.out.println(plusCourtsChemins);
+		//System.out.println(plusCourtsChemins);
 	}
 	
 	private HashSet<Adresse> settledNodes;
