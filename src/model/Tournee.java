@@ -74,7 +74,7 @@ public class Tournee {
 		heureFin = heureDepartEtape + retourEntrepot.getTempsDeParcours();
 		if(heureFin > 24*3600) System.out.println("La tournee se termine apr�s minuit.");
 	}
-	
+
 	public int trouverIndiceEtape(Adresse adresse) {
 		for(int i = 0; i < etapes.size() ; i++)	{
 			if(etapes.get(i).getLivraison().getAdresse() == adresse) {
