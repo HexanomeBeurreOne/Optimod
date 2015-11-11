@@ -35,7 +35,7 @@ public class DemandeLivraisons {
 	 * @param heureDebut
 	 * @return
 	 */
-	public FenetreLivraison getFenetreLivraison(double heureDebut) {
+	public FenetreLivraison getFenetreLivraison(int heureDebut) {
 		Iterator<FenetreLivraison> itFenetresLivraisons = this.fenetresLivraisons.iterator();
 		while(itFenetresLivraisons.hasNext()) {
 			FenetreLivraison fenetreLivraisonCourante = (FenetreLivraison) itFenetresLivraisons.next();
@@ -144,6 +144,15 @@ public class DemandeLivraisons {
 		}
 		return null;
 		
+	}
+	
+	public void setLivraisonSelectionnee(Livraison livraison, boolean selectionnee) {
+		Iterator<FenetreLivraison> itFL = this.fenetresLivraisons.iterator();
+		FenetreLivraison fenetreLivraison;
+		while(itFL.hasNext()){
+			fenetreLivraison = itFL.next();
+			if( fenetreLivraison.getLivraisons().contains(livraison) ) fenetreLivraison.setLivraisonSelectionnee(livraison, selectionnee);
+		}
 	}
 	
 }

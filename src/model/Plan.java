@@ -164,7 +164,8 @@ public class Plan extends Observable {
 			Adresse adresse = (Adresse)objet;
 			this.getAdresseById(adresse.getId()).setSelectionnee(selectionne);
 		} else if (objet.getClass().getName() == "model.Livraison") {
-			//TODO
+			Livraison livraison = (Livraison) objet;
+			this.demandeLivraisons.setLivraisonSelectionnee(livraison, selectionne);
 		}
 		setChanged();
 		notifyObservers();

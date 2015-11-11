@@ -208,5 +208,20 @@ public class Fenetre extends JFrame{
 		this.epaisseursLignes = epaisseursLignes;
 	}
 
-    
+	public int saisirClient() {
+		String resultat = (String)JOptionPane.showInputDialog(
+                this,
+                "Veuillez saisir un identifiant de client",
+                "Ajouter livraison",
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                null,
+                "");
+		
+		try {
+			return Integer.parseInt(resultat);
+		} catch (Exception e) {
+			return -1;
+		}
+	}
 }

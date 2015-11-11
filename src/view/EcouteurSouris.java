@@ -33,7 +33,6 @@ public class EcouteurSouris extends MouseAdapter {
 	    int y=(int) Math.round(evt.getY()/controleur.getEchelle());
 	    
 	    controleur.getObjetSelectionne(x, y);
-	    System.out.println(x+","+y);//these co-ords are relative to the component
 	}
 
 	public void mouseMoved(MouseEvent evt) {
