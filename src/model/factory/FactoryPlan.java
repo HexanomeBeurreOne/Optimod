@@ -96,7 +96,7 @@ public class FactoryPlan implements FactoryBase {
 	 * @param adresse
 	 * @return
 	 */
-	public boolean ajouterAdresse(Element adresse){
+	private boolean ajouterAdresse(Element adresse){
 		try {
             int idAdresse = Integer.parseInt(adresse.getAttribute("id"));
             int coordX = Integer.parseInt(adresse.getAttribute("x"));
@@ -127,7 +127,7 @@ public class FactoryPlan implements FactoryBase {
 	 * @param tronconSortant
 	 * @param adresseCourante
 	 */
-	public void ajouterTroncon (Element tronconSortant, Adresse adresseCourante) {
+	private void ajouterTroncon (Element tronconSortant, Adresse adresseCourante) {
 		try {
     		String nomRue = tronconSortant.getAttribute("nomRue");
     		double vitesse = Double.parseDouble(tronconSortant.getAttribute("vitesse").replace(',', '.'));
