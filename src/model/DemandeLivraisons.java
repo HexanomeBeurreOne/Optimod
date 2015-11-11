@@ -35,7 +35,7 @@ public class DemandeLivraisons {
 	 * @param heureDebut
 	 * @return
 	 */
-	public FenetreLivraison getFenetreLivraison(double heureDebut) {
+	public FenetreLivraison getFenetreLivraison(int heureDebut) {
 		Iterator<FenetreLivraison> itFenetresLivraisons = this.fenetresLivraisons.iterator();
 		while(itFenetresLivraisons.hasNext()) {
 			FenetreLivraison fenetreLivraisonCourante = (FenetreLivraison) itFenetresLivraisons.next();

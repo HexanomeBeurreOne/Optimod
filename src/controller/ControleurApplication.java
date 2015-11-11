@@ -168,7 +168,10 @@ public class ControleurApplication
 						if( client != -1) {
 							Adresse adressePrecedente = ((Livraison)objetSelectionne).getAdresse();
 							ajouterLivraison(client, adresseSelectionnee, adressePrecedente);
+							plan.setObjetSelectionne(adresseSelectionnee, false);
+							fenetre.getBoutons().get(3).setEnabled(false);
 						}
+						fenetre.getZoneMessage().setText("Vous pouvez cliquer sur \"Ajouter livraisons\"");
 						etatAjouterLivraison = false;
 						return;
 					}

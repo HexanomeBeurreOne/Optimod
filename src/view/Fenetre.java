@@ -211,9 +211,8 @@ public class Fenetre extends JFrame{
 	public int saisirClient() {
 		String resultat = (String)JOptionPane.showInputDialog(
                 this,
-                "Complete the sentence:\n"
-                + "\"Green eggs and...\"",
-                "Customized Dialog",
+                "Veuillez saisir un identifiant de client",
+                "Ajouter livraison",
                 JOptionPane.PLAIN_MESSAGE,
                 null,
                 null,
