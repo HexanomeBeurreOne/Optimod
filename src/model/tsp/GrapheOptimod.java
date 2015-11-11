@@ -21,7 +21,7 @@ public class GrapheOptimod implements Graphe {
 	 * @param 
 	 */
 	public GrapheOptimod(DemandeLivraisons demandeLivraison, Hashtable<Integer,Hashtable<Integer,Chemin>> plusCourtsChemins){
-		int idEntrepot = demandeLivraison.getIdEntrepot();
+		int idEntrepot = demandeLivraison.getEntrepot().getId();
 		List<Integer> idAdressesLivraisons = new ArrayList<Integer>();
 		for(Livraison liv : demandeLivraison.getAllLivraisons())
 		{
