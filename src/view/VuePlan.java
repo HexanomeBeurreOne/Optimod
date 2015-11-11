@@ -85,7 +85,14 @@ public class VuePlan extends JPanel implements Observer {
         Iterator<Adresse> itAdresses = adressesPlan.iterator();
         g2.setColor(Color.GRAY);
         while (itAdresses.hasNext()){
-            drawAdresse(g2, itAdresses.next(), 4);
+        	Adresse temp = itAdresses.next();
+        	if(temp.isSelectionnee()) {
+        		System.out.println("LOL");
+        		g2.setColor(Color.BLUE);
+        		drawAdresse(g2, temp, 6);
+        		g2.setColor(Color.GRAY);
+        	}
+            drawAdresse(g2, temp, 4);
         }
         
         // Colorier l'entrepot
@@ -206,8 +213,6 @@ public class VuePlan extends JPanel implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-    	
-    	
 //    	Plan plan = (Plan)arg;
 //    	this.plan = plan;
     	repaint();

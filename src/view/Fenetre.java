@@ -14,8 +14,8 @@ import java.util.Iterator;
  * Created by cyrilcanete on 03/11/15.
  */
 public class Fenetre extends JFrame{
-	private final int hauteurFenetre = 1000;
-	private final int largeurFenetre = 1900;
+	private final int hauteurFenetre = 500;
+	private final int largeurFenetre = 950;
 	
 	private VuePlan vuePlan;
 	private int largeurVuePlan;
@@ -31,7 +31,10 @@ public class Fenetre extends JFrame{
 	protected final static String CHARGER_PLAN = "Charger plan";
 	protected static final String CHARGER_LIVRAISONS = "Charger livraisons";
 	protected static final String CALCULER_TOURNEE = "Calculer tournée";
-	private final String[] intitulesBoutons = new String[]{CHARGER_PLAN, CHARGER_LIVRAISONS, CALCULER_TOURNEE};
+	protected static final String CHANGER = "Calculer tournée";
+	protected static final String AJOUTER_LIVRAISON = "Ajouter livraison";
+	protected static final String SUPPRIMER_LIVRAISON = "Supprimer livraison";
+	private final String[] intitulesBoutons = new String[]{CHARGER_PLAN, CHARGER_LIVRAISONS, CALCULER_TOURNEE, AJOUTER_LIVRAISON, SUPPRIMER_LIVRAISON};
 	private EcouteurBoutons ecouteurDeBoutons;
 	
 	private EcouteurSouris ecouteurSouris;
@@ -67,6 +70,7 @@ public class Fenetre extends JFrame{
         //VueLivraison
         vueLivraison = new VueLivraison(plan, this);
         vueLivraison.setLocation(largeurVuePlan, hauteurBouton+hauteurMessage);
+        vueLivraison.setSize(largeurFenetre-largeurVuePlan, hauteurVuePlan);
         
         //Boutons
         creerBoutons(controller);
@@ -103,8 +107,12 @@ public class Fenetre extends JFrame{
 		
 		//On desactive le bouton "charger livraisons"
 		boutons.get(1).setEnabled(false);
-		//On désactive le bouton "calculer une tournée"
+		//On désactive le bouton "calculer tournée"
 		boutons.get(2).setEnabled(false);
+		//On désactive le bouton "ajouter livraison"
+		boutons.get(3).setEnabled(false);
+		//On désactive le bouton "supprimer livraison"
+		boutons.get(4).setEnabled(false);
     }
     
     public void genererCouleurs(ArrayList<Integer> infosTroncons) {

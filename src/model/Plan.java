@@ -4,6 +4,9 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -154,6 +157,17 @@ public class Plan extends Observable {
 	
 	public void setTournee(Tournee tournee) {
 		this.tournee = tournee;
+		setChanged();
+		notifyObservers();
+	}
+	
+	public void setObjetSelectionne(Object objet, boolean selectionne) {
+		if (objet.getClass().getName() == "model.Adresse") {
+			Adresse adresse = (Adresse)objet;
+			this.getAdresseById(adresse.getId()).setSelectionnee(selectionne);
+		} else if (objet.getClass().getName() == "model.Livraison") {
+			//TODO
+		}
 		setChanged();
 		notifyObservers();
 	}
@@ -430,6 +444,42 @@ public class Plan extends Observable {
 			System.out.print("   ");
 			currentAdresse.afficheAdresse();
 		}
+	}
+	
+	public Adresse chercheAdresse(int x0, int y0) {
+		Iterator<Adresse> itA = this.adresses.iterator();
+		Adresse adresseCourante;
+		int x, y;
+		double dist;
+		Hashtable<Double,Adresse> adressesTrouvees = new Hashtable<Double, Adresse>();
+		while(itA.hasNext()){
+			adresseCourante = itA.next();
+			x = adresseCourante.getCoordX();
+			y = adresseCourante.getCoordY();
+			dist = Math.sqrt( ((x0-x)*(x0-x)+(y0-y)*(y0-y)) );
+			adressesTrouvees.put(dist, adresseCourante);
+		}
+		
+		Enumeration<Double> listeDistances = adressesTrouvees.keys();
+		double minDist = 9999;
+		while(listeDistances.hasMoreElements()) {
+			double nextDist = listeDistances.nextElement();
+			minDist = nextDist<minDist ? nextDist : minDist;
+		}
+		
+		if(minDist<=15) return adressesTrouvees.get(minDist);
+		
+		return null;
+	}
+	
+	public Object cherche(int x0, int y0) {
+		Livraison livraisonTrouvee = this.demandeLivraisons.chercheLivraison(x0, y0);
+		Adresse adresseTrouvee = this.chercheAdresse(x0, y0);
+		
+		if(livraisonTrouvee != null) return livraisonTrouvee;
+		
+		// adresseTrouvee est null si aucune adresse ne correspond 
+		return adresseTrouvee;
 	}
 
 

@@ -6,12 +6,13 @@ package model;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Observable;
 
 /**
  * @author Adrien Menella
  *
  */
-public class Adresse {
+public class Adresse extends Observable {
 
 	/**
 	 * Attributes
@@ -20,15 +21,22 @@ public class Adresse {
 	private int coordX;
 	private int coordY;
 	private List<Troncon> tronconsSortants;
+	private boolean selectionnee;
 	
 	/**
 	 * Constructor
 	 */
+	
+	// Constructeur par defaut ne pas ENLEVER
+	public Adresse() {
+	}
+	
 	public Adresse(int id, int coordX, int coordY) {
 		this.id = id;
 		this.coordX = coordX;
 		this.coordY = coordY;
 		this.tronconsSortants = new ArrayList<Troncon>();
+		this.selectionnee = false;
 	}
 	
 	public int getId() {
@@ -53,6 +61,14 @@ public class Adresse {
 
 	public void setCoordY(int coordY) {
 		this.coordY = coordY;
+	}
+
+	public boolean isSelectionnee() {
+		return selectionnee;
+	}
+
+	public void setSelectionnee(boolean estSelectionnee) {
+		this.selectionnee = estSelectionnee;
 	}
 
 	public List<Troncon> getTronconsSortants() {
@@ -85,5 +101,6 @@ public class Adresse {
 	public String toString() {
 		return "Adresse [id=" + id + "]";
 	}
+	
 	
 }

@@ -4,6 +4,8 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 
@@ -77,6 +79,32 @@ public class FenetreLivraison {
 			System.out.print("      ");
 			currentLivraison.afficheLivraison();
 		}
+	}
+	
+	public Livraison chercheLivraison(int x0, int y0) {
+		Iterator<Livraison> itL = this.livraisons.iterator();
+		Livraison livraisonCourante;
+		int x, y;
+		double dist;
+		Hashtable<Double,Livraison> livraisonsTrouvees = new Hashtable<Double, Livraison>();
+		while(itL.hasNext()){
+			livraisonCourante = itL.next();
+			x = livraisonCourante.getAdresse().getCoordX();
+			y = livraisonCourante.getAdresse().getCoordY();
+			dist = Math.sqrt( ((x0-x)*(x0-x)+(y0-y)*(y0-y)) );
+			livraisonsTrouvees.put(dist, livraisonCourante);
+		}
+		
+		Enumeration<Double> listeDistances = livraisonsTrouvees.keys();
+		double minDist = 9999;
+		while(listeDistances.hasMoreElements()) {
+			double nextDist = listeDistances.nextElement();
+			minDist = nextDist<minDist ? nextDist : minDist;
+		}
+		
+		if(minDist<=10) return livraisonsTrouvees.get(minDist);
+		
+		return null;
 	}
 	
 }
