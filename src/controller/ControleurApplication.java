@@ -84,14 +84,16 @@ public class ControleurApplication
 		if (fichier != null) {
 			DemandeLivraisons dLTemp = factoryDemandeLivraisons.getDemandeLivraisons(fichier, this.plan);
 			
-			ArrayList<Integer> infosCouleurs = new ArrayList<Integer>();
-			List<FenetreLivraison> fenetreLivraisons = dLTemp.getFenetresLivraisons();
-			for (int i = 0; i < fenetreLivraisons.size(); i++) {
-				infosCouleurs.add(fenetreLivraisons.get(i).getLivraisons().size());
-			}
-			
-			fenetre.genererCouleurs(infosCouleurs);
 			if(dLTemp != null) {
+				
+				ArrayList<Integer> infosCouleurs = new ArrayList<Integer>();
+				List<FenetreLivraison> fenetreLivraisons = dLTemp.getFenetresLivraisons();
+				for (int i = 0; i < fenetreLivraisons.size(); i++) {
+					infosCouleurs.add(fenetreLivraisons.get(i).getLivraisons().size());
+				}
+				
+				fenetre.genererCouleurs(infosCouleurs);
+			
 				this.plan.setDemandeLivraisons(dLTemp);
 				this.plan.setTournee(new Tournee());
 				//On active le bouton "calculer tournee

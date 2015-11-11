@@ -124,8 +124,8 @@ public class FactoryDemandeLivraisons implements FactoryBase {
 		FenetreLivraison fenetreLivraison;
 		while(iFL.hasNext()){
 			fenetreLivraison = iFL.next();
-			if( (fenetreLivraison.getHeureDebut()<=heureDebut && fenetreLivraison.getHeureFin()>=heureDebut)
-					|| (heureFin<=fenetreLivraison.getHeureFin() && heureFin>=fenetreLivraison.getHeureDebut())){
+			if( (fenetreLivraison.getHeureDebut()<=heureDebut && fenetreLivraison.getHeureFin()>heureDebut)
+					|| (heureFin<=fenetreLivraison.getHeureFin() && heureFin>fenetreLivraison.getHeureDebut())){
 				return false;
 			}
 		}
