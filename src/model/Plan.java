@@ -4,6 +4,9 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -432,22 +435,35 @@ public class Plan extends Observable {
 		}
 	}
 	
-	public Adresse chercheAdresse(int x1, int y1, int x2, int y2) {
+	public Adresse chercheAdresse(int x0, int y0) {
 		Iterator<Adresse> itA = this.adresses.iterator();
 		Adresse adresseCourante;
 		int x, y;
+		double dist;
+		Hashtable<Double,Adresse> adressesTrouvees = new Hashtable<Double, Adresse>();
 		while(itA.hasNext()){
 			adresseCourante = itA.next();
 			x = adresseCourante.getCoordX();
 			y = adresseCourante.getCoordY();
-			if(x>=x1 && x<=x2 && y>=y1 && y<=y2) return adresseCourante;
+			dist = Math.sqrt( ((x0-x)*(x0-x)+(y0-y)*(y0-y)) );
+			adressesTrouvees.put(dist, adresseCourante);
 		}
+		
+		Enumeration<Double> listeDistances = adressesTrouvees.keys();
+		double minDist = 9999;
+		while(listeDistances.hasMoreElements()) {
+			double nextDist = listeDistances.nextElement();
+			minDist = nextDist<minDist ? nextDist : minDist;
+		}
+		
+		if(minDist<=10) return adressesTrouvees.get(minDist);
+		
 		return null;
 	}
 	
-	public Object cherche(int x1, int y1, int x2, int y2) {
-		Livraison livraisonTrouvee = this.demandeLivraisons.chercheLivraison(x1, y1, x2, y2);
-		Adresse adresseTrouvee = this.chercheAdresse(x1, y1, x2, y2);
+	public Object cherche(int x0, int y0) {
+		Livraison livraisonTrouvee = this.demandeLivraisons.chercheLivraison(x0, y0);
+		Adresse adresseTrouvee = this.chercheAdresse(x0, y0);
 		
 		if(livraisonTrouvee != null) return livraisonTrouvee;
 		
