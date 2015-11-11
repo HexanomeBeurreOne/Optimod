@@ -208,5 +208,21 @@ public class Fenetre extends JFrame{
 		this.epaisseursLignes = epaisseursLignes;
 	}
 
-    
+	public int saisirClient() {
+		String resultat = (String)JOptionPane.showInputDialog(
+                this,
+                "Complete the sentence:\n"
+                + "\"Green eggs and...\"",
+                "Customized Dialog",
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                null,
+                "");
+		
+		try {
+			return Integer.parseInt(resultat);
+		} catch (Exception e) {
+			return -1;
+		}
+	}
 }
