@@ -12,7 +12,6 @@ public class Tournee {
 	private List<Etape> etapes;
 
 	// Chemin qui mene de l'adresse de livraison de la derniere etape a l'entrepot
-
 	private Chemin retourEntrepot;
 	private Adresse entrepot;
 	private double heureDebut;
@@ -27,7 +26,6 @@ public class Tournee {
 	}
 
 	public Tournee(DemandeLivraisons demandeLivraisons, Integer[] ordreLivraisons, Hashtable<Integer,Hashtable<Integer,Chemin>> plusCourtsChemins) {
-
 		this.etapes = new ArrayList<Etape>();
 		this.entrepot = demandeLivraisons.getEntrepot();
 		this.heureDebut = demandeLivraisons.getHeureDepart();
@@ -41,7 +39,6 @@ public class Tournee {
 			etapes.add(etape);
 			idDepartEtape = idArriveeEtape;
 		}
-
 		// TODO : Gerer une demande de livraisons vide
 		retourEntrepot = plusCourtsChemins.get(idDepartEtape).get(entrepot.getId());
 		calculHoraires();

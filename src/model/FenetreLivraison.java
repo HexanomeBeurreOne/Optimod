@@ -16,14 +16,14 @@ public class FenetreLivraison {
 	/**
 	 * Attributes
 	 */
-	private double heureDebut;
-	private double heureFin;
+	private int heureDebut;
+	private int heureFin;
 	private List<Livraison> livraisons;
 	
 	/**
 	 * Constructor
 	 */
-	public FenetreLivraison(double heureDebut, double heureFin) {
+	public FenetreLivraison(int heureDebut, int heureFin) {
 		this.heureDebut = heureDebut;
 		this.heureFin = heureFin;
 		this.livraisons = new ArrayList<Livraison>();
@@ -42,22 +42,22 @@ public class FenetreLivraison {
 	 * @param oldLivraison
 	 */
 	public void removeLivraison(Livraison oldLivraison) {
-		this.livraisons.remove(oldLivraison);
+		if (this.livraisons.contains(oldLivraison) ) this.livraisons.remove(oldLivraison);
 	}
 
-	public double getHeureDebut() {
+	public int getHeureDebut() {
 		return heureDebut;
 	}
 
-	public void setHeureDebut(double heureDebut) {
+	public void setHeureDebut(int heureDebut) {
 		this.heureDebut = heureDebut;
 	}
 
-	public double getHeureFin() {
+	public int getHeureFin() {
 		return heureFin;
 	}
 
-	public void setHeureFin(double heureFin) {
+	public void setHeureFin(int heureFin) {
 		this.heureFin = heureFin;
 	}
 

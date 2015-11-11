@@ -146,6 +146,7 @@ public class Plan extends Observable {
 	public void addTroncon(Troncon newTroncon) {
 		this.troncons.add(newTroncon);
 	}
+
 	
 	public Tournee getTournee() {
 		return tournee;
@@ -156,7 +157,7 @@ public class Plan extends Observable {
 		setChanged();
 		notifyObservers();
 	}
-		
+	
 	public void calculTournee()	{
 		calculPlusCourtsChemins();
 
