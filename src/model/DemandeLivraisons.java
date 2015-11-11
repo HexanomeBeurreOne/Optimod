@@ -73,6 +73,14 @@ public class DemandeLivraisons {
 	public void addFenetreLivraison(FenetreLivraison nouvelleFenetreLivraison) {
 		this.fenetresLivraisons.add(nouvelleFenetreLivraison);
 	}
+	
+	/**
+	 * remove a FenetreLivraison to the list fenetresLivraisons
+	 * @param fenetreLivraison
+	 */
+	public void removeFenetreLivraison(FenetreLivraison fenetreLivraison) {
+		if( this.fenetresLivraisons.contains(fenetreLivraison) ) this.fenetresLivraisons.remove(fenetreLivraison);
+	}
 
 	public Adresse getEntrepot() {
 		return entrepot;
@@ -123,6 +131,19 @@ public class DemandeLivraisons {
 			System.out.print("   ");
 			fenetreLivraisonCourante.afficheFenetreLivraison();
 		}
+	}
+	
+	public Livraison chercheLivraison(int x0, int y0) {
+		Iterator<FenetreLivraison> itFL = this.fenetresLivraisons.iterator();
+		FenetreLivraison fenetreLivraisonCourante;
+		Livraison livraisonTrouvee;
+		while(itFL.hasNext()){
+			fenetreLivraisonCourante = itFL.next();
+			livraisonTrouvee = fenetreLivraisonCourante.chercheLivraison(x0, y0);
+			if(livraisonTrouvee!=null) return livraisonTrouvee;
+		}
+		return null;
+		
 	}
 	
 }

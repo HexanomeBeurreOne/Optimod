@@ -1,9 +1,10 @@
 /**
  * 
  */
-package model;
+package model.factory;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 
 /**
  * @author Adrien Menella
@@ -12,5 +13,7 @@ import org.w3c.dom.Document;
 public interface FactoryBase {
 	
 	public Document getDomTree(String uriXml);
+	
+	public boolean checkNodeTypeAndName(Node currentNode, String correctNodeName);
 
 }

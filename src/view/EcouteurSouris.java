@@ -8,7 +8,7 @@ import javax.swing.SwingUtilities;
 import controller.ControleurApplication;
 
 import model.Adresse;
-import model.FactoryPlan;
+import model.factory.FactoryPlan;
 
 public class EcouteurSouris extends MouseAdapter {
 
@@ -29,8 +29,10 @@ public class EcouteurSouris extends MouseAdapter {
 //------------------------------------------------- METHODS
 	@Override
 	public void mouseClicked(MouseEvent evt) {
-		int x=evt.getX();
-	    int y=evt.getY();
+		int x=(int) Math.round(evt.getX()/controleur.getEchelle());
+	    int y=(int) Math.round(evt.getY()/controleur.getEchelle());
+	    
+	    controleur.getObjetSelectionne(x, y);
 	    System.out.println(x+","+y);//these co-ords are relative to the component
 	}
 

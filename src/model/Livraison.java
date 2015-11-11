@@ -3,11 +3,13 @@
  */
 package model;
 
+import java.util.Observable;
+
 /**
  * @author Adrien Menella
  *
  */
-public class Livraison {
+public class Livraison extends Observable {
 
 	/**
 	 * Attributes
@@ -15,14 +17,19 @@ public class Livraison {
 	private int client;
 	private Adresse adresse;
 	private FenetreLivraison fenetreLivraison;
+	private boolean estSelectionnee;
 	
 	/**
 	 * Constructor
 	 */
+	public Livraison() {
+	}
+	
 	public Livraison(int client, Adresse adresse, FenetreLivraison fenetreLivraison) {
 		this.client = client;
 		this.adresse = adresse;
 		this.fenetreLivraison = fenetreLivraison;
+		this.estSelectionnee = false;
 	}
 
 	public int getClient() {
@@ -47,6 +54,16 @@ public class Livraison {
 
 	public void setFenetreLivraison(FenetreLivraison fenetreLivraison) {
 		this.fenetreLivraison = fenetreLivraison;
+	}
+
+	public boolean isEstSelectionnee() {
+		return estSelectionnee;
+	}
+
+	public void setEstSelectionnee(boolean estSelectionnee) {
+		this.estSelectionnee = estSelectionnee;
+		setChanged();
+		notifyObservers(this);
 	}
 
 	public void afficheLivraison() {
