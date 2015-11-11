@@ -356,9 +356,9 @@ public class Plan extends Observable {
 			cibles.add(arrivee);
 		}
 		else {
-			List<Adresse> adressesMemeFenetre = tournee.getAdressesMemeFenetre(arrivee);
-			for(Adresse cible : adressesMemeFenetre) {
-				cibles.add(cible);
+			List<Livraison> livraisonsMemeFenetre = demandeLivraisons.getLivraison(arrivee).getFenetreLivraison().getLivraisons();
+			for(Livraison liv : livraisonsMemeFenetre) {
+				cibles.add(liv.getAdresse());
 			}
 		}
 		Hashtable<Integer, Chemin> resDijkstra = dijkstra(depart, cibles);
@@ -411,7 +411,10 @@ public class Plan extends Observable {
 	public void supprimerLivraison(Adresse adresseLivraison) {
 		int indiceEtape = testSuppression(adresseLivraison);
 		if(indiceEtape != -1) {
+			// Suppression de l'etape dans tournee
 			tournee.supprimerEtape(indiceEtape, plusCourtsChemins);
+			// Suppression de la livraison dans demandeLivraisons
+			demandeLivraisons.supprimerLivraison(adresseLivraison);
 		}
 		else {
 			System.out.println("La livraison ne fait pas partie de la tournee.");

@@ -10,9 +10,7 @@ public class Tournee {
 	 * Attributes
 	 */
 	private List<Etape> etapes;
-
 	// Chemin qui mene de l'adresse de livraison de la derniere etape a l'entrepot
-
 	private Chemin retourEntrepot;
 	private Adresse entrepot;
 	private double heureDebut;
@@ -77,6 +75,17 @@ public class Tournee {
 		if(heureFin > 24*3600) System.out.println("La tournee se termine apr�s minuit.");
 	}
 	
+	public int findIndiceEtape(Livraison livraison) {
+		for(int i = 0; i < etapes.size() ; i++)	{
+			if(etapes.get(i).getLivraison() == livraison) {
+				return i;
+			}
+		}
+		return -1;
+	}
+	
+	// TODO : supprimer redondance
+	
 	public int findIndiceEtape(Adresse adresse) {
 		for(int i = 0; i < etapes.size() ; i++)	{
 			if(etapes.get(i).getLivraison().getAdresse() == adresse) {
@@ -115,28 +124,12 @@ public class Tournee {
 		calculHoraires();
 	}
 	
-	public void ajouterEtape(int indiceEtape, Hashtable<Integer,Hashtable<Integer,Chemin>> plusCourtsChemins) {
-		
-	}
-
-	/**
-	 * Trouve toutes les adresses des livraisons de la fenetre de livraison d'une livraison dont on fournis l'adresse en parametre
-	 * @param adresse
-	 * @return adressesMemeFenetre
-	 */
-	public List<Adresse> getAdressesMemeFenetre(Adresse adresse)	{
-		List<Adresse> adressesMemeFenetre = new ArrayList<Adresse>();
-		int etapeIndex = findIndiceEtape(adresse);
-		if(etapeIndex < etapes.size())	{
-			FenetreLivraison fenLivraison = etapes.get(etapeIndex).getLivraison().getFenetreLivraison();
-			for(int i = 0; i < etapes.size(); i++)	{
-				if(etapes.get(i).getLivraison().getFenetreLivraison() == fenLivraison)	{
-					adressesMemeFenetre.add(etapes.get(i).getLivraison().getAdresse());
-				}
-			}
-		}
-		return adressesMemeFenetre;
-	}
+	// TODO : Idee : Pourquoi pas un bouleen dans Etape pour savoir si on respecte sa fenetre
+	
+	// TODO : Reflechit aux adresses et fenetres, ca chie, pcq on compare des fenetres de liv des livraisons associees aux etapes
+	// Donc faut aussi metre a jour les fenetres
+	// Ou alors mettre les heures de debut et fin en attribut
+	
 	
 	public String toString(){
 		return "Tournee de " + etapes.size() + " etapes, " + 
