@@ -78,6 +78,17 @@ public class Tournee {
 		return -1;
 	}
 	
+	// TODO : supprimer redondance
+	
+	public int findIndiceEtape(Adresse adresse) {
+		for(int i = 0; i < etapes.size() ; i++)	{
+			if(etapes.get(i).getLivraison().getAdresse() == adresse) {
+				return i;
+			}
+		}
+		return -1;
+	}
+	
 	//TODO : besoin de deux plus courts chemins si on remet une livraison dans une tournee vide
 		
 	public void supprimerEtape(int indiceEtape, Hashtable<Integer,Hashtable<Integer,Chemin>> plusCourtsChemins) {
@@ -106,22 +117,28 @@ public class Tournee {
 		}
 		calculHoraires();
 	}
+	
+	public void ajouterEtape(int indiceEtape, Hashtable<Integer,Hashtable<Integer,Chemin>> plusCourtsChemins) {
+		
+	}
 
-	/*
-	 * Get adresses from the same fenetre of an etape index.
-	 * @param etapeIndex
+	/**
+	 * Trouve toutes les adresses des livraisons de la fenetre de livraison d'une livraison dont on fournis l'adresse en parametre
+	 * @param adresse
+	 * @return adressesMemeFenetre
 	 */
-	public List<Adresse> getAdressesSameFenetre(int etapeIndex)	{
-		List<Adresse> adressesOfTheSameFenetre = new ArrayList<Adresse>();
+	public List<Adresse> getAdressesMemeFenetre(Adresse adresse)	{
+		List<Adresse> adressesMemeFenetre = new ArrayList<Adresse>();
+		int etapeIndex = findIndiceEtape(adresse);
 		if(etapeIndex < etapes.size())	{
 			FenetreLivraison fenLivraison = etapes.get(etapeIndex).getLivraison().getFenetreLivraison();
 			for(int i = 0; i < etapes.size(); i++)	{
 				if(etapes.get(i).getLivraison().getFenetreLivraison() == fenLivraison)	{
-					adressesOfTheSameFenetre.add(etapes.get(i).getLivraison().getAdresse());
+					adressesMemeFenetre.add(etapes.get(i).getLivraison().getAdresse());
 				}
 			}
 		}
-		return adressesOfTheSameFenetre;
+		return adressesMemeFenetre;
 	}
 	
 	public String toString(){

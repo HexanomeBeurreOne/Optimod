@@ -22,6 +22,10 @@ public class main {
 			plan.supprimerLivraison(liv);
 			System.out.println(tournee);
 		}
-		
+		/*
+		liv = tournee.getEtapes().get(10).getLivraison();
+		plan.supprimerLivraison(liv);
+		plan.ajouterLivraison(liv, liv.getFenetreLivraison(), 10);
+		System.out.println(tournee);*/
 	}
 }

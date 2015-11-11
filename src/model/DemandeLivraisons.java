@@ -69,7 +69,7 @@ public class DemandeLivraisons {
 	}
 	
 	/**
-	 * add a new FenetreLivraison to the list fenetresLivraisons
+	 * Add a new FenetreLivraison to the list fenetresLivraisons
 	 * @param newFenetreLivraison
 	 */
 	public void addFenetreLivraison(FenetreLivraison newFenetreLivraison) {

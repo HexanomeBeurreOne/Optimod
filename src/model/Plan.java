@@ -32,8 +32,8 @@ public class Plan extends Observable {
 	private List<Troncon> troncons;
 	private DemandeLivraisons demandeLivraisons;
 	// Hashmap better than Hashtable in single threaded environment.
-	// The Key of the outer Hashtable is the id of the starting Adresse, 
-	// The Key of the inner Hashtable is the id of the ending Adresse, 
+	// The key of the outer Hashtable is the id of the starting Adresse, 
+	// The key of the inner Hashtable is the id of the ending Adresse, 
 	private Hashtable<Integer,Hashtable<Integer,Chemin>> plusCourtsChemins;
 	private Tournee tournee;
 	
@@ -209,7 +209,7 @@ public class Plan extends Observable {
 				//On met dans ciblesDijkstra les adresses de cette premiere fenetre de livraison et de la suivante
 				ciblesDijkstra = new ArrayList<Adresse>(adressesFenList.get(i));
 				ciblesDijkstra.addAll(adressesFenList.get(i-1));
-				//On retire des ciblesDijkstra le departDijkstra
+				//On retire de ciblesDijkstra le departDijkstra
 				ciblesDijkstra.remove(departDijkstra);
 				Hashtable<Integer, Chemin> resDijkstra = dijkstra(departDijkstra, ciblesDijkstra);
 				plusCourtsChemins.put(departId, resDijkstra);
@@ -342,60 +342,59 @@ public class Plan extends Observable {
 		return null;
 	}
 	
+	public void nouveauxPlusCourtsChemins(Adresse depart, Adresse arrivee) {
+		List<Adresse> cibles = new ArrayList<Adresse>();
+		if(arrivee == tournee.getEntrepot()) {
+			cibles.add(arrivee);
+		}
+		else {
+			List<Adresse> adressesMemeFenetre = tournee.getAdressesMemeFenetre(arrivee);
+			for(Adresse cible : adressesMemeFenetre) {
+				cibles.add(cible);
+			}
+		}
+		Hashtable<Integer, Chemin> resDijkstra = dijkstra(depart, cibles);
+		Set<Entry<Integer, Chemin>> entrySet = resDijkstra.entrySet();
+		Iterator<Entry<Integer, Chemin>> it = entrySet.iterator();
+		while(it.hasNext())	{
+			Entry<Integer, Chemin> entry = it.next();
+			int idAdresseCible = entry.getKey();
+			Chemin dureePlusCourtChemin = entry.getValue();
+			System.out.println("Calcul plus court chemin de "+depart.getId()
+								+" a "+idAdresseCible);
+			plusCourtsChemins.get(depart.getId()).put(idAdresseCible, dureePlusCourtChemin);
+		}
+	}
+	
 	/**
 	 * Verifie que la livraison existe, puis calcul, si besoin, le plus court chemin dont on aura besoin pour corriger la tournee apres suppression
 	 * @param Livraison a supprimer
 	 * @return Indice de l'etape a supprimer, -1 si la livraison ne fais pas partie de la tournee
 	 */
-	public int testSuppression(Livraison livraison){
-		
-		// TODO : On n'utilise pas la demande de livraisons ici que la tournee 
-		
+	public int testSuppression(Livraison livraison){		
 		int indiceEtape = tournee.findIndiceEtape(livraison);
-		if(indiceEtape != -1) {
-			if(tournee.getEtapes().size() == 1)	{
-				// On souhaite supprimer l'unique livraison de la tournee
-				return indiceEtape;
-			}
+		// On verifie si on a suffisamment de plus courts chemins uniquement si la livraison fait partie et n'est pas la seule livraison de la tournee
+		if(indiceEtape != -1 && tournee.getEtapes().size() != 1) {
 			Adresse depart;
 			Adresse arrivee;
 			if(indiceEtape == tournee.getEtapes().size()-1) {
 				// On souhaite supprimer la derniere etape, le chemin retourEntrepot va etre mis a jour
 				depart = tournee.getEtapes().get(indiceEtape-1).getLivraison().getAdresse();
-				arrivee = demandeLivraisons.getEntrepot();
+				arrivee = tournee.getEntrepot();
 			}
 			else {
 				if(indiceEtape == 0){
 					// On souhaite supprimer la premiere etape, on met a jour le chemin de la nouvelle premiere etape en partant de l'entrepot
-					depart = demandeLivraisons.getEntrepot();
+					depart = tournee.getEntrepot();
 				}
 				else {
 					depart = tournee.getEtapes().get(indiceEtape-1).getLivraison().getAdresse();
 				}
 				arrivee = tournee.getEtapes().get(indiceEtape+1).getLivraison().getAdresse();
 			}
-			// Calcul 
+			// Calcul de nouveaux plus courts chemins a l'aide de dijkstra si celui dont on a besoin n'a pas ete precedemment
 			if(plusCourtsChemins.get(depart.getId()).get(arrivee.getId()) == null) {
-				List<Adresse> cibles = new ArrayList<Adresse>();
-				if(arrivee == demandeLivraisons.getEntrepot()) {
-					cibles.add(arrivee);
-				}
-				else {
-					for(Livraison liv : demandeLivraisons.getLivraison(arrivee).getFenetreLivraison().getLivraisons()) {
-						cibles.add(liv.getAdresse());
-					}
-				}
-				Hashtable<Integer, Chemin> resDijkstra = dijkstra(depart, cibles);
-				Set<Entry<Integer, Chemin>> entrySet = resDijkstra.entrySet();
-				Iterator<Entry<Integer, Chemin>> it = entrySet.iterator();
-				while(it.hasNext())	{
-					Entry<Integer, Chemin> entry = it.next();
-					int idAdresseCible = entry.getKey();
-					Chemin dureePlusCourtChemin = entry.getValue();
-					System.out.println("Calcul plus court chemin de "+depart.getId()
-										+" a "+idAdresseCible);
-					plusCourtsChemins.get(depart.getId()).put(idAdresseCible, dureePlusCourtChemin);
-				}
+				nouveauxPlusCourtsChemins(depart, arrivee);
 			}
 		}
 		return indiceEtape;
@@ -409,6 +408,12 @@ public class Plan extends Observable {
 		else {
 			System.out.println("La livraison ne fait pas partie de la tournee.");
 		}
+	}
+	
+	public void ajouterLivraison(Livraison livraison, FenetreLivraison fenetre, int indiceNouvelleEtape) {
+		// TODO : testAjout(...)
+		// tester l'indice, validite fenetre, pas deja de livraison a la meme adresse, 
+		//tournee.ajouterEtape
 	}
 	
 	public void affichePlan() {

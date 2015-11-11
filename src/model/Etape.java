@@ -29,6 +29,7 @@ public class Etape {
 		calculHeureLivraison(heureDepart);
 	}
 	
+	
 	public void calculHeureLivraison(double heureDepart){
 		heureLivraison = heureDepart + chemin.getTempsDeParcours();
 		// Si on est en avance sur le debut de la fenetre horaire, on attend.
