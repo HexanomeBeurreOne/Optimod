@@ -207,8 +207,10 @@ public class VuePlan extends JPanel implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-    	Plan plan = (Plan)arg;
-    	this.plan = plan;
+    	
+    	
+//    	Plan plan = (Plan)arg;
+//    	this.plan = plan;
     	repaint();
     }
 }

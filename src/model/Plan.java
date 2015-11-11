@@ -56,7 +56,7 @@ public class Plan extends Observable {
 	public void setDemandeLivraisons(DemandeLivraisons demandeLivraisons) {
 		this.demandeLivraisons = demandeLivraisons;
 		setChanged();
-		notifyObservers(this);
+		notifyObservers();
 	}
 	
 	/**
@@ -100,7 +100,7 @@ public class Plan extends Observable {
 	public void setNom(String nom) {
 		this.nom = nom;
 		setChanged();
-		notifyObservers(this);
+		notifyObservers();
 	}
 
 	public List<Adresse> getAdresses() {
@@ -110,7 +110,7 @@ public class Plan extends Observable {
 	public void setAdresses(List<Adresse> adresses) {
 		this.adresses = adresses;
 		setChanged();
-		notifyObservers(this);
+		notifyObservers();
 	}
 
 	public List<Troncon> getTroncons() {
@@ -120,7 +120,7 @@ public class Plan extends Observable {
 	public void setTroncons(List<Troncon> troncons) {
 		this.troncons = troncons;
 		setChanged();
-		notifyObservers(this);
+		notifyObservers();
 	}
 
 	/**
@@ -157,7 +157,7 @@ public class Plan extends Observable {
 	public void setTournee(Tournee tournee) {
 		this.tournee = tournee;
 		setChanged();
-		notifyObservers(this);
+		notifyObservers();
 	}
 	
 	public Tournee getTournee() {

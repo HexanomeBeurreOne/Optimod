@@ -66,6 +66,7 @@ public class ControleurApplication
 				this.plan.setDemandeLivraisons(new DemandeLivraisons());
 				this.plan.setTournee(new Tournee());
 				fenetre.getBoutons().get(1).setEnabled(true);
+				fenetre.getBoutons().get(2).setEnabled(false);
 				fenetre.getZoneMessage().setText("Vous pouvez charger une demande de livraisons");
 	    	} else {
 	    		JOptionPane.showMessageDialog(fenetre,
@@ -122,6 +123,8 @@ public class ControleurApplication
 	/**
 	 * Créé une livraison à une adresse
 	 */
+	
+	//Passé en parametre Adresse, Adresse, client, fenetre 
 	public void addLivraison()
 	{
 //		AjouterLivraison ajout = new AjouterLivraison(plan, livraison, fenetre);
