@@ -17,23 +17,18 @@ public class main {
 		plan.calculTournee();
 		Tournee tournee = plan.getTournee();
 		
-		Livraison liv;
+		// _________
 		
+		Livraison liv, livPrec;
 		liv = tournee.getEtapes().get(10).getLivraison();
+		livPrec = tournee.getEtapes().get(9).getLivraison();
 		plan.supprimerLivraison(liv.getAdresse());
-		
-		for(int i = 0; i<11 ; i++) {
-			liv = tournee.getEtapes().get(0).getLivraison();
-			plan.supprimerLivraison(liv.getAdresse());
-			System.out.println(tournee);
-		}
-		
-		/*
-		liv = tournee.getEtapes().get(10).getLivraison();
-		plan.supprimerLivraison(liv);
-		plan.ajouterLivraison(liv, liv.getFenetreLivraison(), 10);
 		System.out.println(tournee);
-		*/
+
+		plan.ajouterLivraison(800, livPrec.getAdresse(), liv.getAdresse());
+		System.out.println(tournee);
+		
+		// _________
 /*
 		Plan plan = new Plan();
 		ControleurApplication controleur = new ControleurApplication(plan);

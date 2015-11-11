@@ -454,10 +454,10 @@ public class Plan extends Observable {
 	public void ajouterLivraisonAvecFenetre(int client, Adresse precLivraisonAdresse, Adresse nouvellelivraisonAdresse, FenetreLivraison fenetre) {
 		Livraison livAAjouter = new Livraison(client,nouvellelivraisonAdresse, fenetre);
 		
-		if(demandeLivraisons.getAllLivraisons().contains(livAAjouter) != false)	{
+		if(demandeLivraisons.getAllLivraisons().contains(livAAjouter) == false)	{
 			demandeLivraisons.addLivraison(livAAjouter, fenetre);
 			testAjout(precLivraisonAdresse, nouvellelivraisonAdresse);
-			//tournee.ajouterEtape()
+			tournee.ajouterEtape(livAAjouter, precLivraisonAdresse, plusCourtsChemins);
 		}
 	}
 	
