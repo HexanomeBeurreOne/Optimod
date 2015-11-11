@@ -79,4 +79,17 @@ public class FenetreLivraison {
 		}
 	}
 	
+	public Livraison chercheLivraison(int x1, int y1, int x2, int y2) {
+		Iterator<Livraison> itL = this.livraisons.iterator();
+		Livraison livraisonCourante;
+		int x, y;
+		while(itL.hasNext()){
+			livraisonCourante = itL.next();
+			x = livraisonCourante.getAdresse().getCoordX();
+			y = livraisonCourante.getAdresse().getCoordY();
+			if(x>=x1 && x<=x2 && y>=y1 && y<=y2) return livraisonCourante;
+		}
+		return null;
+	}
+	
 }

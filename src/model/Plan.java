@@ -431,6 +431,29 @@ public class Plan extends Observable {
 			currentAdresse.afficheAdresse();
 		}
 	}
+	
+	public Adresse chercheAdresse(int x1, int y1, int x2, int y2) {
+		Iterator<Adresse> itA = this.adresses.iterator();
+		Adresse adresseCourante;
+		int x, y;
+		while(itA.hasNext()){
+			adresseCourante = itA.next();
+			x = adresseCourante.getCoordX();
+			y = adresseCourante.getCoordY();
+			if(x>=x1 && x<=x2 && y>=y1 && y<=y2) return adresseCourante;
+		}
+		return null;
+	}
+	
+	public Object cherche(int x1, int y1, int x2, int y2) {
+		Livraison livraisonTrouvee = this.demandeLivraisons.chercheLivraison(x1, y1, x2, y2);
+		Adresse adresseTrouvee = this.chercheAdresse(x1, y1, x2, y2);
+		
+		if(livraisonTrouvee != null) return livraisonTrouvee;
+		
+		// adresseTrouvee est null si aucune adresse ne correspond 
+		return adresseTrouvee;
+	}
 
 
 }

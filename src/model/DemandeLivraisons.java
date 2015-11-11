@@ -135,4 +135,17 @@ public class DemandeLivraisons {
 		}
 	}
 	
+	public Livraison chercheLivraison(int x1, int y1, int x2, int y2) {
+		Iterator<FenetreLivraison> itFL = this.fenetresLivraisons.iterator();
+		FenetreLivraison fenetreLivraisonCourante;
+		Livraison livraisonTrouvee;
+		while(itFL.hasNext()){
+			fenetreLivraisonCourante = itFL.next();
+			livraisonTrouvee = fenetreLivraisonCourante.chercheLivraison(x1, y1, x2, y2);
+			if(livraisonTrouvee!=null) return livraisonTrouvee;
+		}
+		return null;
+		
+	}
+	
 }
