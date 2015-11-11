@@ -1,7 +1,5 @@
 package model.tsp;
 
-import java.util.List;
-
 public interface TSP {
 	
 	/**
