@@ -19,6 +19,9 @@ public class VuePlan extends JPanel implements Observer {
 
     private double echelle;
     private Plan plan;
+    private boolean couleursDefinies;
+    private ArrayList<Color> couleurs;
+    private Fenetre fenetre;
     
     public VuePlan(Plan plan, double echelle, Fenetre fenetre) {
         super();
@@ -37,8 +40,11 @@ public class VuePlan extends JPanel implements Observer {
         setLocation(5, 40);
         
         fenetre.getContentPane().add(this);
+        this.fenetre = fenetre;
         this.plan = plan;
         this.echelle=echelle;
+        this.couleursDefinies = false;
+        this.couleurs = new ArrayList<Color>();
     }
     
 
@@ -71,6 +77,9 @@ public class VuePlan extends JPanel implements Observer {
             drawTroncon(g2, itTroncons.next());
         }
         
+        // Colorier les chemins
+        colorierChemins(g2);
+        
         // Récupérer adresses du plan
         List<Adresse>  adressesPlan = plan.getAdresses();
         Iterator<Adresse> itAdresses = adressesPlan.iterator();
@@ -79,14 +88,14 @@ public class VuePlan extends JPanel implements Observer {
             drawAdresse(g2, itAdresses.next(), 4);
         }
         
-        // colorier l'entrepot
+        // Colorier l'entrepot
 		colorierEntrepot(g2);
         
         // Colorier les livraisons
         colorierLivraisons(g2);
     }
 
-    private int scaleIt(int coordonnee) {
+	private int scaleIt(int coordonnee) {
         return (int) Math.round(coordonnee*this.echelle);
     }
     
@@ -107,26 +116,23 @@ public class VuePlan extends JPanel implements Observer {
     }
 
 	private void colorierLivraisons(Graphics2D g2) {
-		float R, G, B;
+		
+		int indiceCouleur=0;
 		List<FenetreLivraison> fenetreLivraisons = plan.getDemandeLivraisons().getFenetresLivraisons();
 		Iterator<FenetreLivraison> itFL = fenetreLivraisons.iterator();
 		while (itFL.hasNext()) {
-			R=(float)Math.random();
-			
-			G=(float)Math.random();
-			
-			B=(float)Math.random();
-			
 			
 			FenetreLivraison fenetreLivraisonActuelle = itFL.next();
 			Iterator<Livraison> itL = fenetreLivraisonActuelle.getLivraisons().iterator();
 			while (itL.hasNext()) {
-				g2.setColor(new Color(R, G, B));
 				Adresse adresseTemp = itL.next().getAdresse();
+				g2.setColor(fenetre.getCouleurs().get(indiceCouleur));
 				this.drawAdresse(g2, adresseTemp, 8);
 				g2.setColor(Color.WHITE);
 				this.drawAdresse(g2, adresseTemp, 4);
+				indiceCouleur++;
 			}
+			
 		}
 	}
 	
@@ -136,6 +142,39 @@ public class VuePlan extends JPanel implements Observer {
 			//entrepot.afficheAdresse();
 			g2.setColor(Color.RED);
 			this.drawAdresse(g2, entrepot, 8);
+		}
+	}
+	
+    private void colorierChemins(Graphics2D g2) {
+    	
+    	int indicesTroncons = 0;
+    	List<Troncon> troncons;
+		List<Etape> etapes = plan.getTournee().getEtapes();
+		
+		if (etapes != null) {
+//			Iterator<Etape> itE = etapes.iterator();
+//			
+//			while (itE.hasNext()) {
+			for (int i = etapes.size()-1; i >= 0; i--) {
+				troncons = etapes.get(i).getChemin().getTroncons();
+				Iterator<Troncon> itT = troncons.iterator();
+				g2.setColor(fenetre.getCouleurs().get(indicesTroncons));
+				g2.setStroke(new BasicStroke(fenetre.getEpaisseursLignes().get(indicesTroncons)));
+				
+				while (itT.hasNext()) {
+					drawTroncon(g2, itT.next());
+				}
+				
+				indicesTroncons++;
+			}
+			
+			g2.setColor(Color.RED);
+			troncons = plan.getTournee().getRetourEntrepot().getTroncons();
+			Iterator<Troncon> itT = troncons.iterator();
+			
+			while (itT.hasNext()) {
+				drawTroncon(g2, itT.next());
+			}
 		}
 	}
 	

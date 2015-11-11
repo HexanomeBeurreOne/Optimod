@@ -5,7 +5,7 @@ package test;
 
 import static org.junit.Assert.*;
 import model.Plan;
-import model.FactoryPlan;
+import model.factory.FactoryPlan;
 
 import org.junit.Test;
 

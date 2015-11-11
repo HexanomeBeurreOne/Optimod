@@ -19,6 +19,9 @@ public class Tournee {
 	/**
 	 * Constructor
 	 */
+	public Tournee() {
+	}
+
 	public Tournee(DemandeLivraisons demandeLivraisons, Integer[] ordreLivraisons, Hashtable<Integer,Hashtable<Integer,Chemin>> plusCourtsChemins) {
 		this.etapes = new ArrayList<Etape>();
 		this.entrepot = demandeLivraisons.getEntrepot();

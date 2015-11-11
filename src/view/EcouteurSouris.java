@@ -8,7 +8,7 @@ import javax.swing.SwingUtilities;
 import controller.ControleurApplication;
 
 import model.Adresse;
-import model.FactoryPlan;
+import model.factory.FactoryPlan;
 
 public class EcouteurSouris extends MouseAdapter {
 

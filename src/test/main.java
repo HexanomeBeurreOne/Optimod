@@ -2,6 +2,7 @@ package test;
 
 import controller.ControleurApplication;
 import model.*;
+import model.factory.*;
 import view.*;
 
 public class main {
