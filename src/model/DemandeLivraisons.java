@@ -57,9 +57,8 @@ public class DemandeLivraisons {
 	}
 	
 	/**
-	 * Remove a Livraison from the specified fenetreLivraison passed in parameters
-	 * @param oldLivraison
-	 * @param fenetreLivraison
+	 * Supprime une Livraison a partir de son Adresse passee en parametre
+	 * @param adresseLivraison
 	 */
 	public void supprimerLivraison(Adresse adresseLivraison) {
 		Livraison livraisonASupprimer = getLivraison(adresseLivraison);
@@ -68,11 +67,11 @@ public class DemandeLivraisons {
 	}
 	
 	/**
-	 * Add a new FenetreLivraison to the list fenetresLivraisons
-	 * @param newFenetreLivraison
+	 * Ajoute une nouvelle FenetreLivraison a la liste fenetresLivraisons
+	 * @param nouvelleFenetreLivraison
 	 */
-	public void addFenetreLivraison(FenetreLivraison newFenetreLivraison) {
-		this.fenetresLivraisons.add(newFenetreLivraison);
+	public void addFenetreLivraison(FenetreLivraison nouvelleFenetreLivraison) {
+		this.fenetresLivraisons.add(nouvelleFenetreLivraison);
 	}
 
 	public Adresse getEntrepot() {
@@ -118,11 +117,11 @@ public class DemandeLivraisons {
 	public void afficheDemandeLivraisons() {
 		System.out.println("DemandeLivraison : idEntrepot="+this.entrepot.getId());
 		System.out.println("Liste livraisons : ");
-		Iterator<FenetreLivraison> fenetresLivraisonsIterator = this.fenetresLivraisons.iterator();
-		while(fenetresLivraisonsIterator.hasNext()) {
-			FenetreLivraison currentFenetreLivraison = (FenetreLivraison) fenetresLivraisonsIterator.next();
+		Iterator<FenetreLivraison> itFenetresLivraisons = this.fenetresLivraisons.iterator();
+		while(itFenetresLivraisons.hasNext()) {
+			FenetreLivraison fenetreLivraisonCourante = (FenetreLivraison) itFenetresLivraisons.next();
 			System.out.print("   ");
-			currentFenetreLivraison.afficheFenetreLivraison();
+			fenetreLivraisonCourante.afficheFenetreLivraison();
 		}
 	}
 	

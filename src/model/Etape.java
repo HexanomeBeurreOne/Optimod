@@ -3,7 +3,7 @@ package model;
 public class Etape {
 
 	/**
-	 * Attributes
+	 * Attributs
 	 */
 	private Livraison livraison;
 	// Chemin qui mene au lieu de livraison
@@ -14,7 +14,7 @@ public class Etape {
 	private double retard;
 	
 	/**
-	 * Constructor
+	 * Constructeur
 	 */
 	public Etape(Livraison livraison, Chemin chemin) {
 		this.livraison = livraison;
@@ -26,11 +26,11 @@ public class Etape {
 	public Etape(Livraison livraison, Chemin chemin, double heureDepart) {
 		this.livraison = livraison;
 		this.chemin = chemin;
-		calculHeureLivraison(heureDepart);
+		calculerHeureLivraison(heureDepart);
 	}
 	
 	
-	public void calculHeureLivraison(double heureDepart){
+	public void calculerHeureLivraison(double heureDepart){
 		heureLivraison = heureDepart + chemin.getTempsDeParcours();
 		// Si on est en avance sur le debut de la fenetre horaire, on attend.
 		if(heureLivraison < livraison.getFenetreLivraison().getHeureDebut())
