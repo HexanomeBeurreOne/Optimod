@@ -155,7 +155,7 @@ public class VuePlan extends JPanel implements Observer {
 //			Iterator<Etape> itE = etapes.iterator();
 //			
 //			while (itE.hasNext()) {
-			for (int i = etapes.size()-1; i >= 0; i--) {
+			for (int i = 0; i < etapes.size(); i++) {
 				troncons = etapes.get(i).getChemin().getTroncons();
 				Iterator<Troncon> itT = troncons.iterator();
 				g2.setColor(fenetre.getCouleurs().get(indicesTroncons));
