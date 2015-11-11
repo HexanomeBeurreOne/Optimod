@@ -55,6 +55,7 @@ public class FactoryPlanTest {
 
 	/**
 	 * Test method for {@link model.FactoryPlan#getPlan(java.lang.String)}.
+	 * Test not well formed XLM files
 	 */
 	@Test
 	public void testsGetPlanNotWellXML() {
@@ -66,6 +67,7 @@ public class FactoryPlanTest {
 
 	/**
 	 * Test method for {@link model.FactoryPlan#getPlan(java.lang.String)}.
+	 * Test XML files with errors in nodes (adresses)
 	 */
 	@Test
 	public void testsGetPlanWrongNodes() {
@@ -80,25 +82,46 @@ public class FactoryPlanTest {
 
 	/**
 	 * Test method for {@link model.FactoryPlan#getPlan(java.lang.String)}.
+	 * Test XML files with errors in Troncon (should ignore the troncon, but not the file)
 	 */
 	@Test
 	public void testsGetPlanWrongTroncon() {
 		FactoryPlan factoryPlan = new FactoryPlan();
 		int sizeAdresse0, sizeAdresse1, sizeAdresse2;
+		
 		Plan plan1 = factoryPlan.getPlan("data/plan20x20-error10.xml");
-		plan1.affichePlan();
+		sizeAdresse0 = 0;
+		sizeAdresse1 = 0;
+		sizeAdresse2 = 0;
 		sizeAdresse0 = plan1.getAdresseById(0).getTronconsSortants().size();
 		sizeAdresse1 = plan1.getAdresseById(1).getTronconsSortants().size();
 		sizeAdresse2 = plan1.getAdresseById(2).getTronconsSortants().size();
+		
 		assertTrue("FAIL 10 : TRONCON WITHOUT ID", 
 				sizeAdresse0 == 1 && sizeAdresse1 == 2 && sizeAdresse2 == 3
 				);
+
 		Plan plan2 = factoryPlan.getPlan("data/plan20x20-error11.xml");
-		plan2.affichePlan();
+		sizeAdresse0 = 0;
+		sizeAdresse1 = 0;
+		sizeAdresse2 = 0;
 		sizeAdresse0 = plan2.getAdresseById(0).getTronconsSortants().size();
 		sizeAdresse1 = plan2.getAdresseById(1).getTronconsSortants().size();
 		sizeAdresse2 = plan2.getAdresseById(2).getTronconsSortants().size();
+
 		assertTrue("FAIL 11 : TRONCON WITH WRONG SPEED", 
+				sizeAdresse0 == 1 && sizeAdresse1 == 2 && sizeAdresse2 == 3
+				);
+		
+		Plan plan3 = factoryPlan.getPlan("data/plan20x20-error12.xml");
+		sizeAdresse0 = 0;
+		sizeAdresse1 = 0;
+		sizeAdresse2 = 0;
+		sizeAdresse0 = plan3.getAdresseById(0).getTronconsSortants().size();
+		sizeAdresse1 = plan3.getAdresseById(1).getTronconsSortants().size();
+		sizeAdresse2 = plan3.getAdresseById(2).getTronconsSortants().size();
+
+		assertTrue("FAIL 12 : TRONCON WITH ADRESS THAT DOES NOT EXIST", 
 				sizeAdresse0 == 1 && sizeAdresse1 == 2 && sizeAdresse2 == 3
 				);
 	}
