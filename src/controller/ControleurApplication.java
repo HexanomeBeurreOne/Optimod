@@ -41,6 +41,7 @@ public class ControleurApplication
 	public ControleurApplication(Plan p, double echelle)
 	{
 		adresseSelectionnee = new Adresse();
+		livraisonSelectionnee = new Livraison();
 		tourneeCalculee = false;
 		undoRedo = new PilesEtats();
 		plan = p;
@@ -163,6 +164,7 @@ public class ControleurApplication
 					fenetre.getBoutons().get(4).setEnabled(true);
 					fenetre.getZoneMessage().setText("Vous pouvez cliquer sur \"Supprimer livraisons\"");
 					
+					miseAJourObjetSelectionnee(objetSelectionne);
 					
 					//livraisonSelectionnee = (Livraison) livraisonSelectionnee;
 					return;
@@ -174,17 +176,31 @@ public class ControleurApplication
 			fenetre.getBoutons().get(3).setEnabled(false);
 			fenetre.getBoutons().get(4).setEnabled(false);
 			fenetre.getZoneMessage().setText("");
+			miseAJourObjetSelectionnee(objetSelectionne);
 		}
 	}
 	
 	private void miseAJourObjetSelectionnee(Object objet) {
-		if (objet.getClass().getName() == "model.Adresse") {
-			plan.setObjetSelectionne(adresseSelectionnee, false);
-			adresseSelectionnee = (Adresse) objet;
-			plan.setObjetSelectionne(adresseSelectionnee, true);
-			System.out.println("LOL CONTROLEUR");
-		} else if (objet.getClass().getName() == "model.Livraison") {
-			
+		if (objet!=null) {
+			if (objet.getClass().getName() == "model.Adresse") {
+				plan.setObjetSelectionne(adresseSelectionnee, false);
+				adresseSelectionnee = (Adresse) objet;
+				plan.setObjetSelectionne(adresseSelectionnee, true);
+				// on deselectionne la livraison selectionnée
+				plan.setObjetSelectionne(this.livraisonSelectionnee, false);
+			} else if (objet.getClass().getName() == "model.Livraison") {
+				plan.setObjetSelectionne(livraisonSelectionnee, false);
+				livraisonSelectionnee = (Livraison) objet;
+				plan.setObjetSelectionne(livraisonSelectionnee, true);
+				// on deselectionne l'adresse selectionnée
+				plan.setObjetSelectionne(this.adresseSelectionnee, false);
+				System.out.println("LOL CONTROLEUR");
+			}
+		} else {
+			// on deselectionne la livraison selectionnée
+			plan.setObjetSelectionne(this.livraisonSelectionnee, false);
+			// on deselectionne l'adresse selectionnée
+			plan.setObjetSelectionne(this.adresseSelectionnee, false);
 		}
 	}
 	

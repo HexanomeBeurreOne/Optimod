@@ -17,7 +17,7 @@ public class Livraison extends Observable {
 	private int client;
 	private Adresse adresse;
 	private FenetreLivraison fenetreLivraison;
-	private boolean estSelectionnee;
+	private boolean selectionnee;
 	
 	/**
 	 * Constructor
@@ -29,7 +29,7 @@ public class Livraison extends Observable {
 		this.client = client;
 		this.adresse = adresse;
 		this.fenetreLivraison = fenetreLivraison;
-		this.estSelectionnee = false;
+		this.selectionnee = false;
 	}
 
 	public int getClient() {
@@ -56,14 +56,12 @@ public class Livraison extends Observable {
 		this.fenetreLivraison = fenetreLivraison;
 	}
 
-	public boolean isEstSelectionnee() {
-		return estSelectionnee;
+	public boolean isSelectionnee() {
+		return selectionnee;
 	}
 
-	public void setEstSelectionnee(boolean estSelectionnee) {
-		this.estSelectionnee = estSelectionnee;
-		setChanged();
-		notifyObservers(this);
+	public void setSelectionnee(boolean selectionnee) {
+		this.selectionnee = selectionnee;
 	}
 
 	public void afficheLivraison() {

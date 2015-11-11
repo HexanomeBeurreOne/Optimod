@@ -81,6 +81,12 @@ public class FenetreLivraison {
 		}
 	}
 	
+	public void setLivraisonSelectionnee(Livraison livraison, boolean selectionnee) {
+		if(this.livraisons.contains(livraison)) {
+			this.livraisons.get(this.livraisons.indexOf(livraison)).setSelectionnee(selectionnee);
+		}
+	}
+	
 	public Livraison chercheLivraison(int x0, int y0) {
 		Iterator<Livraison> itL = this.livraisons.iterator();
 		Livraison livraisonCourante;

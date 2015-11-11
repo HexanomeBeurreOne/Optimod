@@ -127,16 +127,25 @@ public class VuePlan extends JPanel implements Observer {
 		int indiceCouleur=0;
 		List<FenetreLivraison> fenetreLivraisons = plan.getDemandeLivraisons().getFenetresLivraisons();
 		Iterator<FenetreLivraison> itFL = fenetreLivraisons.iterator();
+		Livraison livraisonTemp;
+		Adresse adresseTemp;
+		
 		while (itFL.hasNext()) {
 			
 			FenetreLivraison fenetreLivraisonActuelle = itFL.next();
 			Iterator<Livraison> itL = fenetreLivraisonActuelle.getLivraisons().iterator();
 			while (itL.hasNext()) {
-				Adresse adresseTemp = itL.next().getAdresse();
+				livraisonTemp = itL.next();
+				adresseTemp = livraisonTemp.getAdresse();
 				g2.setColor(fenetre.getCouleurs().get(indiceCouleur));
 				this.drawAdresse(g2, adresseTemp, 8);
-				g2.setColor(Color.WHITE);
-				this.drawAdresse(g2, adresseTemp, 4);
+				if(livraisonTemp.isSelectionnee()) {
+					g2.setColor(Color.BLUE);
+					this.drawAdresse(g2, adresseTemp, 4);
+				} else {
+					g2.setColor(Color.WHITE);
+					this.drawAdresse(g2, adresseTemp, 4);
+				}
 				indiceCouleur++;
 			}
 			

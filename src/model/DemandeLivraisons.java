@@ -148,4 +148,13 @@ public class DemandeLivraisons {
 		
 	}
 	
+	public void setLivraisonSelectionnee(Livraison livraison, boolean selectionnee) {
+		Iterator<FenetreLivraison> itFL = this.fenetresLivraisons.iterator();
+		FenetreLivraison fenetreLivraison;
+		while(itFL.hasNext()){
+			fenetreLivraison = itFL.next();
+			if( fenetreLivraison.getLivraisons().contains(livraison) ) fenetreLivraison.setLivraisonSelectionnee(livraison, selectionnee);
+		}
+	}
+	
 }
