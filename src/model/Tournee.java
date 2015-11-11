@@ -77,17 +77,6 @@ public class Tournee {
 		if(heureFin > 24*3600) System.out.println("La tournee se termine apr�s minuit.");
 	}
 	
-	public int findIndiceEtape(Livraison livraison) {
-		for(int i = 0; i < etapes.size() ; i++)	{
-			if(etapes.get(i).getLivraison() == livraison) {
-				return i;
-			}
-		}
-		return -1;
-	}
-	
-	// TODO : supprimer redondance
-	
 	public int findIndiceEtape(Adresse adresse) {
 		for(int i = 0; i < etapes.size() ; i++)	{
 			if(etapes.get(i).getLivraison().getAdresse() == adresse) {

@@ -7,7 +7,7 @@ import view.*;
 public class main {
 
 	public static void main(String[] args) {
-		/*
+
 		FactoryPlan factoryPlan = new FactoryPlan();
 		Plan plan = factoryPlan.getPlan("data/plan20x20.xml");
 		FactoryDemandeLivraisons factoryDemandeLivraisons = new FactoryDemandeLivraisons();
@@ -20,9 +20,9 @@ public class main {
 		Livraison liv;
 		for(int i = 0; i<12 ; i++) {
 			liv = tournee.getEtapes().get(0).getLivraison();
-			plan.supprimerLivraison(liv);
+			plan.supprimerLivraison(liv.getAdresse());
 			System.out.println(tournee);
-		}*/
+		}
 		
 		/*
 		liv = tournee.getEtapes().get(10).getLivraison();
@@ -30,8 +30,8 @@ public class main {
 		plan.ajouterLivraison(liv, liv.getFenetreLivraison(), 10);
 		System.out.println(tournee);*/
 
-		Plan plan = new Plan();
-		ControleurApplication controleur = new ControleurApplication(plan);
+		//Plan plan = new Plan();
+		//ControleurApplication controleur = new ControleurApplication(plan);
 
 	}
 }

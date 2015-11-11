@@ -379,8 +379,8 @@ public class Plan extends Observable {
 	 * @param Livraison a supprimer
 	 * @return Indice de l'etape a supprimer, -1 si la livraison ne fais pas partie de la tournee
 	 */
-	public int testSuppression(Livraison livraison){		
-		int indiceEtape = tournee.findIndiceEtape(livraison);
+	public int testSuppression(Adresse livraisonAdresse){		
+		int indiceEtape = tournee.findIndiceEtape(livraisonAdresse);
 		// On verifie si on a suffisamment de plus courts chemins uniquement si la livraison fait partie et n'est pas la seule livraison de la tournee
 		if(indiceEtape != -1 && tournee.getEtapes().size() != 1) {
 			Adresse depart;
@@ -408,8 +408,8 @@ public class Plan extends Observable {
 		return indiceEtape;
 	}	
 	
-	public void supprimerLivraison(Livraison livraison) {
-		int indiceEtape = testSuppression(livraison);
+	public void supprimerLivraison(Adresse adresseLivraison) {
+		int indiceEtape = testSuppression(adresseLivraison);
 		if(indiceEtape != -1) {
 			tournee.supprimerEtape(indiceEtape, plusCourtsChemins);
 		}
@@ -418,7 +418,7 @@ public class Plan extends Observable {
 		}
 	}
 	
-	public void ajouterLivraison(Livraison livraison, FenetreLivraison fenetre, int indiceNouvelleEtape) {
+	public void ajouterLivraison(Adresse livraison, FenetreLivraison fenetre, int indiceNouvelleEtape) {
 		// TODO : testAjout(...)
 		// tester l'indice, validite fenetre, pas deja de livraison a la meme adresse, 
 		//tournee.ajouterEtape
