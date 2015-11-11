@@ -8,8 +8,7 @@ import controller.ControleurApplication;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.Iterator;
 
 /**
  * Created by cyrilcanete on 03/11/15.
@@ -39,9 +38,15 @@ public class Fenetre extends JFrame{
 	
 	private JLabel zoneMessage;
 	private final int hauteurMessage = 50;
+	
+	private ArrayList<Color> couleurs;
+	private ArrayList<Integer> epaisseursLignes;
 
     public Fenetre(Plan plan, double echelle, ControleurApplication controller) throws HeadlessException {
 
+    	couleurs = new ArrayList<Color>();
+    	epaisseursLignes = new ArrayList<Integer>();
+    	
         //Fenetre
         this.setTitle("Optimod");
         this.setSize(largeurFenetre, hauteurFenetre);
@@ -101,6 +106,21 @@ public class Fenetre extends JFrame{
 		//On désactive le bouton "calculer une tournée"
 		boutons.get(2).setEnabled(false);
     }
+    
+    public void genererCouleurs(ArrayList<Integer> infosTroncons) {
+    	float R = 0.0f, G = 0.0f, B = 0.0f;
+    	
+    	for (int i = 0; i < infosTroncons.size(); i++) {
+    		R=(float)Math.random();
+    		G=(float)Math.random();
+    		B=(float)Math.random();
+    		
+    		for (int j = 0; j < infosTroncons.get(i); j++) {
+    			couleurs.add(new Color(R, G, B));
+    			epaisseursLignes.add((infosTroncons.size()-i)*3);
+    		}
+    	}
+    }
 
 	public int getHauteurFenetre() {
 		return hauteurFenetre;
@@ -150,6 +170,34 @@ public class Fenetre extends JFrame{
 	 */
 	public void setZoneMessage(JLabel zoneMessage) {
 		this.zoneMessage = zoneMessage;
+	}
+
+	/**
+	 * @return the couleurs
+	 */
+	public ArrayList<Color> getCouleurs() {
+		return couleurs;
+	}
+
+	/**
+	 * @param couleurs the couleurs to set
+	 */
+	public void setCouleurs(ArrayList<Color> couleurs) {
+		this.couleurs = couleurs;
+	}
+
+	/**
+	 * @return the epaisseursLignes
+	 */
+	public ArrayList<Integer> getEpaisseursLignes() {
+		return epaisseursLignes;
+	}
+
+	/**
+	 * @param epaisseursLignes the epaisseursLignes to set
+	 */
+	public void setEpaisseursLignes(ArrayList<Integer> epaisseursLignes) {
+		this.epaisseursLignes = epaisseursLignes;
 	}
 
     
