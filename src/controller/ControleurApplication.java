@@ -1,6 +1,7 @@
 package controller;
 
 import model.Plan;
+import model.Tournee;
 import view.Fenetre;
 import model.DemandeLivraisons;
 import model.FactoryDemandeLivraisons;
@@ -11,6 +12,8 @@ import model.FenetreLivraison;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -33,7 +36,7 @@ public class ControleurApplication
 	public ControleurApplication(Plan p)
 	{
 		plan = p;
-		fenetre = new Fenetre(plan, 1.14, this);
+		fenetre = new Fenetre(plan, 0.83, this);
 		undoRedo = new PilesEtats();
 	}
 		
@@ -49,18 +52,21 @@ public class ControleurApplication
 		undoRedo.redo();
 	}
 	
-	public void chargerPlan() throws IOException {
-		
+	public void chargerPlan() {
 		FactoryPlan factoryPlan = new FactoryPlan();
 		String fichier = chargerFichier("./data");
-		if (fichier!=null) {
+		
+		if (fichier != null) {
 	    	Plan planTemp  = factoryPlan.getPlan(fichier);
+	    	
 		    if (planTemp != null) {
 		    	this.plan.setAdresses(planTemp.getAdresses());
 				this.plan.setTroncons(planTemp.getTroncons());
 				this.plan.setNom(planTemp.getNom());
 				this.plan.setDemandeLivraisons(new DemandeLivraisons());
+				this.plan.setTournee(new Tournee());
 				fenetre.getBoutons().get(1).setEnabled(true);
+				fenetre.getBoutons().get(2).setEnabled(false);
 				fenetre.getZoneMessage().setText("Vous pouvez charger une demande de livraisons");
 	    	} else {
 	    		JOptionPane.showMessageDialog(fenetre,
@@ -74,10 +80,23 @@ public class ControleurApplication
 	public void chargerDemandeLivraisons() {
 		FactoryDemandeLivraisons factoryDemandeLivraisons = new FactoryDemandeLivraisons();
 		String fichier = chargerFichier("./data");
-		if (fichier!=null) {
+		
+		if (fichier != null) {
 			DemandeLivraisons dLTemp = factoryDemandeLivraisons.getDemandeLivraisons(fichier, this.plan);
-			if(dLTemp!=null) {
+			
+			ArrayList<Integer> infosCouleurs = new ArrayList<Integer>();
+			List<FenetreLivraison> fenetreLivraisons = dLTemp.getFenetresLivraisons();
+			for (int i = 0; i < fenetreLivraisons.size(); i++) {
+				infosCouleurs.add(fenetreLivraisons.get(i).getLivraisons().size());
+			}
+			
+			fenetre.genererCouleurs(infosCouleurs);
+			if(dLTemp != null) {
 				this.plan.setDemandeLivraisons(dLTemp);
+				this.plan.setTournee(new Tournee());
+				//On active le bouton "calculer tournee
+				fenetre.getBoutons().get(2).setEnabled(true);
+				fenetre.getZoneMessage().setText("Vous pouvez calculer une tournée");
 			} else {
 				JOptionPane.showMessageDialog(fenetre,
 					    "Le fichier de demande de livraisons est mal formé",
@@ -87,7 +106,7 @@ public class ControleurApplication
 		}
 	}
 	
-	public String chargerFichier(String path) {
+	private String chargerFichier(String path) {
 		JFileChooser chooser = new JFileChooser(path);
 	    int returnVal = chooser.showOpenDialog(new JFrame());
 	    if(returnVal == JFileChooser.APPROVE_OPTION) {
@@ -96,9 +115,16 @@ public class ControleurApplication
 	    return null;
 	}
 	
+	public void calculerTournee () {
+		plan.calculTournee();
+		fenetre.getZoneMessage().setText("");
+	}
+	
 	/**
 	 * Créé une livraison à une adresse
 	 */
+	
+	//Passé en parametre Adresse, Adresse, client, fenetre 
 	public void addLivraison()
 	{
 //		AjouterLivraison ajout = new AjouterLivraison(plan, livraison, fenetre);

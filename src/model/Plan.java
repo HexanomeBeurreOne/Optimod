@@ -46,6 +46,7 @@ public class Plan extends Observable {
 		this.troncons = new ArrayList<Troncon>();
 		this.demandeLivraisons = new DemandeLivraisons();
 		this.plusCourtsChemins = new Hashtable<Integer,Hashtable<Integer,Chemin>>();
+		this.tournee = new Tournee();
 	}
 	
 	public DemandeLivraisons getDemandeLivraisons() {
@@ -55,7 +56,7 @@ public class Plan extends Observable {
 	public void setDemandeLivraisons(DemandeLivraisons demandeLivraisons) {
 		this.demandeLivraisons = demandeLivraisons;
 		setChanged();
-		notifyObservers(this);
+		notifyObservers();
 	}
 	
 	/**
@@ -99,7 +100,7 @@ public class Plan extends Observable {
 	public void setNom(String nom) {
 		this.nom = nom;
 		setChanged();
-		notifyObservers(this);
+		notifyObservers();
 	}
 
 	public List<Adresse> getAdresses() {
@@ -109,7 +110,7 @@ public class Plan extends Observable {
 	public void setAdresses(List<Adresse> adresses) {
 		this.adresses = adresses;
 		setChanged();
-		notifyObservers(this);
+		notifyObservers();
 	}
 
 	public List<Troncon> getTroncons() {
@@ -119,7 +120,7 @@ public class Plan extends Observable {
 	public void setTroncons(List<Troncon> troncons) {
 		this.troncons = troncons;
 		setChanged();
-		notifyObservers(this);
+		notifyObservers();
 	}
 
 	/**
@@ -149,11 +150,18 @@ public class Plan extends Observable {
 	public Tournee getTournee() {
 		return tournee;
 	}
+	
+	public void setTournee(Tournee tournee) {
+		this.tournee = tournee;
+		setChanged();
+		notifyObservers();
+	}
 		
 	public void calculTournee()	{
 		calculPlusCourtsChemins();
 		Integer[] ordreLivraisons = calculOrdreLivraisons();
 		tournee = new Tournee(demandeLivraisons, ordreLivraisons, plusCourtsChemins);
+		this.setTournee(tournee);
 		System.out.println(tournee);
 	}
 	
@@ -215,7 +223,7 @@ public class Plan extends Observable {
 				plusCourtsChemins.put(departId, resDijkstra);
 			}
 		}
-		System.out.println(plusCourtsChemins);
+		//System.out.println(plusCourtsChemins);
 	}
 	
 	private HashSet<Adresse> settledNodes;
