@@ -29,14 +29,11 @@ public class FactoryDemandeLivraisons implements FactoryBase {
 	private DemandeLivraisons demandeLivraisons = null;
 	private Plan plan = null;
 	
-	/**
-	 * parse a xml file and return its domTree, return null otherwise 
-	 */
-	public Document getDomTree(String uriXml) {
+	public Document getDomTree(String pathXml) {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		try {
 			DocumentBuilder builder = factory.newDocumentBuilder();		
-		    Document domTree= builder.parse(new File(uriXml));
+		    Document domTree= builder.parse(new File(pathXml));
 		    return domTree;
 		} catch(Exception e) {
 			//e.printStackTrace();
@@ -45,12 +42,12 @@ public class FactoryDemandeLivraisons implements FactoryBase {
 	}
 	
 	/**
-	 * Return a new Livraison object with given parameters if its corresponding Adresse has been added to the list of Plan object
-	 * and if the FenetreLivraison object has been added to the DemandeLivraisons object
-	 * return null otherwise
-	 * @param client
-	 * @param idAdresse
-	 * @param fenetreLivraison
+	 * Retourne un objet Livraison instancié avec les paramètres si l'Adresse passée en paramètre n'appartient pas déjà à la liste d'adresses du plan
+	 * et si l'objet FenetreLivraison a été ajouté à la liste de FenetreLivraison de demandeLivraison
+	 * retourne null en cas d'erreur
+	 * @param client est l'id du client
+	 * @param idAdresse est l'id de l'adresse que l'on veut créée
+	 * @param fenetreLivraison est la fenetreLivraison dans laquelle on veut ajouter cette livraison
 	 * @return
 	 */
 	public Livraison getLivraison(int client, int idAdresse, FenetreLivraison fenetreLivraison) {
@@ -61,10 +58,10 @@ public class FactoryDemandeLivraisons implements FactoryBase {
 	}
 	
 	/**
-	 * Return a new FenetreLivraison object with given parameters if it has not already been instantiated and added to the FenetreLivraison list of DemandeLivraison object
-	 * return null otherwise
-	 * @param heureDebut
-	 * @param heureFin
+	 * Retourne un objet FenetreLivraison instancié avec les paramètres si cette nouvelle FenetreLivraison n'appartient pas déjà à la liste de fentres de livraisons de la demande de livraison.
+	 * retourne null en cas d'erreur
+	 * @param heureDebut est l'heure de début de la nouvelle FenetreLivraison
+	 * @param heureFin est l'heure de fin de la nouvelle FenetreLivraison
 	 * @return
 	 */
 	public FenetreLivraison getFenetreLivraison(int heureDebut, int heureFin) {
@@ -75,8 +72,10 @@ public class FactoryDemandeLivraisons implements FactoryBase {
 	}
 	
 	/**
-	 * Convert a time format hh:mm:ss to its equivalent number of seconds since 00:00:00
-	 * @param time
+	 * Converti un temps au format hh:mm:ss à son nombre équvalent de secondes depuis 00:00:00
+	 * si les heures, minutes et secondes correspondent à des chiffres valides pour un horaire
+	 * retorune -1 en cas d'erreur
+	 * @param time est la chaine de caractère représentant le temps
 	 * @return
 	 */
 	private int convertTimeToSeconds(String time){
@@ -90,18 +89,18 @@ public class FactoryDemandeLivraisons implements FactoryBase {
 		return -1;
 	}
 	
-	
-	/**
-	 * check if the current node of a node list is a node of type ELEMENT_NODE and if its name is equals to correctNodeName
-	 * @param currentNode
-	 * @param correctNodeName
-	 * @return
-	 */
 	public boolean checkNodeTypeAndName(Node currentNode, String correctNodeName) {
 		if ( currentNode.getNodeType() == Node.ELEMENT_NODE && currentNode.getNodeName().equalsIgnoreCase(correctNodeName)) return true;
 		return false;
 	}
 	
+	/**
+	 * Ajoute l'entrepot à la demande de livraisons si la balise XMl correspondante est bien formée et si l'adresse correspondant à cet entrepot existe dans le plan
+	 * retourne true si l'ajout s'est bien déroulé
+	 * retourne false en cas d'erreur
+	 * @param noeudEntrepot est la balise XML correspondante 
+	 * @return
+	 */
 	private boolean ajouterEntrepot(Node noeudEntrepot) {
 			try {
 				final Element entrepot = (Element) noeudEntrepot;
@@ -119,6 +118,14 @@ public class FactoryDemandeLivraisons implements FactoryBase {
 			}
 	}
 	
+	/**
+	 * vérifie qu'il n'existe aucune FenetreLivraison dont la plage horaire ne chevauche la plage horaire correspondante aux paramètres heureDebut - heureFin
+	 * retourne true si ca ne se chevauche pas
+	 * retourne false en cas d'erreur
+	 * @param heureDebut est l'heure de début de la plage horaire à vérifier
+	 * @param heureFin est l'heure de fin de la plage horaire à vérifier
+	 * @return
+	 */
 	private boolean verifierChevauchementFenetreLivraison(int heureDebut, int heureFin) {
 		Iterator<FenetreLivraison> iFL = this.demandeLivraisons.getFenetresLivraisons().iterator();
 		FenetreLivraison fenetreLivraison;
@@ -133,19 +140,20 @@ public class FactoryDemandeLivraisons implements FactoryBase {
 	}
 	
 	/**
-	 * Instantiate and return a DemandeLivraison object basing to the XML file passed in parameters
-	 * @param uriXml
+	 * Instantie et retourne un objet DemandeLivraison à partir du fichier XML passé en paramètre
+	 * retourne null en cas d'erreur
+	 * @param pathXml
 	 * @param plan
 	 * @return
 	 */
-	public DemandeLivraisons getDemandeLivraisons(String uriXml, Plan plan) {
+	public DemandeLivraisons getDemandeLivraisons(String pathXml, Plan plan) {
 		
 		// on passe le plan en paramètre pour pouvoir aller récupérer les adresses à partir de leur id
 		this.plan = plan;
 		
 		try {
 			// get the domTree of the XML file
-			final Document domTree = this.getDomTree(uriXml);
+			final Document domTree = this.getDomTree(pathXml);
 			final Element racine = domTree.getDocumentElement();
 			
 			// instantiate the demandeLivraisons to a new DemandeLivraisons
