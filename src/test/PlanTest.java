@@ -5,6 +5,9 @@ package test;
 
 import static org.junit.Assert.*;
 
+import java.util.Iterator;
+import java.util.List;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -41,111 +44,7 @@ public class PlanTest {
 		DemandeLivraisons demandeLivraisons = new DemandeLivraisons();
 		plan.setDemandeLivraisons(demandeLivraisons);
 
-		assertTrue("FAIL 1 : getDemandeLivraisons not working", demandeLivraisons.equals(plan.getDemandeLivraisons()));
-	}
-
-	/**
-	 * Test method for {@link model.Plan#removeLivraison(model.Livraison, model.FenetreLivraison)}.
-	 */
-	@Test
-	public void testRemoveLivraison() {
-		fail("Not yet implemented");
-	}
-
-	/**
-	 * Test method for {@link model.Plan#addFenetreLivraison(model.FenetreLivraison)}.
-	 */
-	@Test
-	public void testAddFenetreLivraison() {
-		fail("Not yet implemented");
-	}
-
-	/**
-	 * Test method for {@link model.Plan#getNom()}.
-	 */
-	@Test
-	public void testGetNom() {
-		fail("Not yet implemented");
-	}
-
-	/**
-	 * Test method for {@link model.Plan#setNom(java.lang.String)}.
-	 */
-	@Test
-	public void testSetNom() {
-		fail("Not yet implemented");
-	}
-
-	/**
-	 * Test method for {@link model.Plan#getAdresses()}.
-	 */
-	@Test
-	public void testGetAdresses() {
-		fail("Not yet implemented");
-	}
-
-	/**
-	 * Test method for {@link model.Plan#setAdresses(java.util.List)}.
-	 */
-	@Test
-	public void testSetAdresses() {
-		fail("Not yet implemented");
-	}
-
-	/**
-	 * Test method for {@link model.Plan#getTroncons()}.
-	 */
-	@Test
-	public void testGetTroncons() {
-		fail("Not yet implemented");
-	}
-
-	/**
-	 * Test method for {@link model.Plan#setTroncons(java.util.List)}.
-	 */
-	@Test
-	public void testSetTroncons() {
-		fail("Not yet implemented");
-	}
-
-	/**
-	 * Test method for {@link model.Plan#addAdresse(model.Adresse)}.
-	 */
-	@Test
-	public void testAddAdresse() {
-		fail("Not yet implemented");
-	}
-
-	/**
-	 * Test method for {@link model.Plan#removeAdresse(model.Adresse)}.
-	 */
-	@Test
-	public void testRemoveAdresse() {
-		fail("Not yet implemented");
-	}
-
-	/**
-	 * Test method for {@link model.Plan#addTroncon(model.Troncon)}.
-	 */
-	@Test
-	public void testAddTroncon() {
-		fail("Not yet implemented");
-	}
-
-	/**
-	 * Test method for {@link model.Plan#getTournee()}.
-	 */
-	@Test
-	public void testGetTournee() {
-		fail("Not yet implemented");
-	}
-
-	/**
-	 * Test method for {@link model.Plan#setTournee(model.Tournee)}.
-	 */
-	@Test
-	public void testSetTournee() {
-		fail("Not yet implemented");
+		assertEquals("FAIL 1 : getDemandeLivraisons not working", demandeLivraisons, plan.getDemandeLivraisons());
 	}
 
 	/**
@@ -298,7 +197,34 @@ public class PlanTest {
 	 */
 	@Test
 	public void testCherche() {
-		fail("Not yet implemented");
+		FactoryPlan factoryPlan = new FactoryPlan();
+		Plan plan = factoryPlan.getPlan("data/plan20x20.xml");
+		FactoryDemandeLivraisons factoryDemandeLivraisons = new FactoryDemandeLivraisons();
+		DemandeLivraisons demandeLivraisons = factoryDemandeLivraisons.getDemandeLivraisons("data/livraison20x20-1.xml", plan);
+		plan.setDemandeLivraisons(demandeLivraisons);
+		
+		plan.calculTournee();
+		
+		int x, y;
+		Adresse adresse;
+		List<Adresse> adresses = plan.getAdresses();
+		Iterator<Adresse> it = adresses.iterator();
+		
+		while(it.hasNext())	{
+			adresse = it.next();
+			x = adresse.getCoordX();
+			y = adresse.getCoordY();
+			if(plan.getDemandeLivraisons().getLivraison(adresse) == null)	{
+				assertEquals("FAIL 5 : cherche(), adresse not recognized in plan with its coordinates", adresse, plan.cherche(x, y));
+			}
+			else	{
+				assertEquals("FAIL 6 : cherche(), livraison not recognized in plan with its coordinates", plan.getDemandeLivraisons().getLivraison(adresse), plan.cherche(x, y));
+			}
+		}
+		
+		x=0;
+		y=0;
+		assertNull("FAIL 7 : cherche(), livraison not recognized in plan with its coordinates", plan.cherche(x, y));
 	}
 
 }

@@ -331,7 +331,7 @@ public class Plan extends Observable {
 	}
 	
 	/**
-	 * retourne la coordonnée x minimale du plan
+	 * retourne la coordonnï¿½e x minimale du plan
 	 * @return minX
 	 */
 	public int getMinX() {
@@ -346,7 +346,7 @@ public class Plan extends Observable {
 	}
 	
 	/**
-	 * retourne la coordonnée x maximale du plan
+	 * retourne la coordonnï¿½e x maximale du plan
 	 * @return
 	 */
 	public int getMaxX() {
@@ -361,7 +361,7 @@ public class Plan extends Observable {
 	}
 	
 	/**
-	 * retourne la coordonnée y minimale du plan
+	 * retourne la coordonnï¿½e y minimale du plan
 	 * @return
 	 */
 	public int getMinY() {
@@ -376,7 +376,7 @@ public class Plan extends Observable {
 	}
 	
 	/**
-	 * retourne la coordonnée y maximale du plan
+	 * retourne la coordonnï¿½e y maximale du plan
 	 * @return
 	 */
 	public int getMaxY() {
