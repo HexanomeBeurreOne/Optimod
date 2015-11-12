@@ -45,14 +45,6 @@ public class PlanTest {
 	}
 
 	/**
-	 * Test method for {@link model.Plan#addLivraison(model.Livraison, model.FenetreLivraison)}.
-	 */
-	@Test
-	public void testAddLivraison() {
-		
-	}
-
-	/**
 	 * Test method for {@link model.Plan#removeLivraison(model.Livraison, model.FenetreLivraison)}.
 	 */
 	@Test
