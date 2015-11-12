@@ -23,6 +23,7 @@ public class PilesEtats
 	{
 		c.execute();
 		undoStack.push(c);
+		redoStack.clear();
 	}
 	
 	public void undo()

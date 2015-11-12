@@ -108,7 +108,7 @@ public class FenetreLivraison {
 			minDist = nextDist<minDist ? nextDist : minDist;
 		}
 		
-		if(minDist<=10) return livraisonsTrouvees.get(minDist);
+		if(minDist<=15) return livraisonsTrouvees.get(minDist);
 		
 		return null;
 	}

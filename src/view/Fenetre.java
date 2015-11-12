@@ -35,7 +35,9 @@ public class Fenetre extends JFrame{
 	protected static final String CHANGER = "Calculer tournée";
 	protected static final String AJOUTER_LIVRAISON = "Ajouter livraison";
 	protected static final String SUPPRIMER_LIVRAISON = "Supprimer livraison";
-	private final String[] intitulesBoutons = new String[]{CHARGER_PLAN, CHARGER_LIVRAISONS, CALCULER_TOURNEE, AJOUTER_LIVRAISON, SUPPRIMER_LIVRAISON};
+	protected static final String UNDO = "Undo";
+	protected static final String REDO = "Redo";
+	private final String[] intitulesBoutons = new String[]{CHARGER_PLAN, CHARGER_LIVRAISONS, CALCULER_TOURNEE, AJOUTER_LIVRAISON, SUPPRIMER_LIVRAISON, UNDO, REDO};
 	private EcouteurBoutons ecouteurDeBoutons;
 	private EcouteurClavier ecouteurClavier;
 	private EcouteurSouris ecouteurSouris;
@@ -109,7 +111,7 @@ public class Fenetre extends JFrame{
 			boutons.add(bouton);
 			bouton.setForeground(Color.DARK_GRAY);
 			bouton.setSize(largeurBouton,hauteurBouton);
-			bouton.setLocation((boutons.size()-1)*largeurBouton+5, 0);
+			bouton.setLocation((boutons.size()-1)*largeurBouton+4, 0);
 			bouton.setFocusable(false);
 			bouton.setFocusPainted(false);
 			bouton.addActionListener(ecouteurDeBoutons);
@@ -249,5 +251,10 @@ public class Fenetre extends JFrame{
 		} catch (Exception e) {
 			return -1;
 		}
+	}
+	
+	public String secondeToHeure (int heureEnSeconde) {
+		if (heureEnSeconde < 0) return "0";
+		return (int)heureEnSeconde/3600 + ":"+ ((int)heureEnSeconde%3600)/60 + ":"+ (int)heureEnSeconde%60;
 	}
 }
