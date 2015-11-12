@@ -286,9 +286,8 @@ public class ControleurApplication
 	 */
 	public void supprimerLivraison(int client, Adresse adresseSelectionnee, Adresse adressePrecedente, FenetreLivraison fenetre)
 	{
-		//TODO
-//		SupprimerLivraison suppression = new SupprimerLivraison(plan, client, adressePrecedente, adresseSelectionnee, fenetre);
-//		undoRedo.addCommand(suppression);
+		SupprimerLivraison suppression = new SupprimerLivraison(plan, client, adressePrecedente, adresseSelectionnee, fenetre);
+		undoRedo.addCommand(suppression);
 	}
 	
 	/**
