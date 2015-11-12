@@ -25,15 +25,11 @@ public class FactoryPlan implements FactoryBase {
 	
 	private Plan plan = null;
 	
-	
-	/**
-	 * parse a xml file and return its domTree, return null otherwise 
-	 */
-	public Document getDomTree(String uriXml) {
+	public Document getDomTree(String pathXml) {
 		final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		try {
 			final DocumentBuilder builder = factory.newDocumentBuilder();		
-		    final Document domTree= builder.parse(new File(uriXml));
+		    final Document domTree= builder.parse(new File(pathXml));
 		    return domTree;
 		} catch(Exception e) {
 			//e.printStackTrace();
@@ -42,11 +38,11 @@ public class FactoryPlan implements FactoryBase {
 	}
 	
 	/**
-	 * Return a new Adresse object with given parameters if it has not already been instantiated and added to the adresseList of plan
-	 * return null otherwise
-	 * @param id
-	 * @param coordX
-	 * @param coordY
+	 * Retourne un objet Adresse avec les paramètres correspondants si cette nouvelle adresse n'a pas déjà été ajoutée à la liste d'adresses du plan
+	 * retourne null en cas d'erreur
+	 * @param id est l'id de l'adresse que l'on veut ajouter
+	 * @param coordX est la coordonnée X de l'adresse que l'on veut ajouter
+	 * @param coordY est la coordonnée Y de l'adresse que l'on veut ajouter
 	 * @return
 	 */
 	public Adresse getAdresse(int id, int coordX, int coordY){
@@ -58,12 +54,12 @@ public class FactoryPlan implements FactoryBase {
 	}
 	
 	/**
-	 * Return a new Troncon object with given parameters if its destination adresse has been added to the list of plan
-	 * return null otherwise
-	 * @param nomRue
-	 * @param vitesseMoyenne
-	 * @param longueur
-	 * @param idDestination
+	 * Retourne un nouvel objet Troncon avec les paramètres correspondants si son adresse de destination a été ajoutée à la liste d'adresses du plan
+	 * retourne null en cas d'erreur
+	 * @param nomRue est le nom de la rue correspondante au nouveau troncon
+	 * @param vitesseMoyenne est la vitesse moyenne de la rue correspondante au nouveau troncon
+	 * @param longueur est la longueur de la rue correspondante au nouveau troncon
+	 * @param idDestination est l'id de l'adresse de destination de la rue correspondante au nouveau troncon
 	 * @return
 	 */
 	public Troncon getTroncon(String nomRue, double vitesseMoyenne, double longueur, int idOrigine, int idDestination){
@@ -77,12 +73,6 @@ public class FactoryPlan implements FactoryBase {
 		return null;
 	}
 	
-	/**
-	 * check if the current node of a node list is a node of type ELEMENT_NODE and if its name is equals to correctNodeName
-	 * @param currentNode
-	 * @param correctNodeName
-	 * @return
-	 */
 	public boolean checkNodeTypeAndName(Node currentNode, String correctNodeName) {
 		if ( currentNode.getNodeType() == Node.ELEMENT_NODE && currentNode.getNodeName().equalsIgnoreCase(correctNodeName)) return true;
 		return false;
@@ -90,7 +80,7 @@ public class FactoryPlan implements FactoryBase {
 	
 	/**
 	 * vérifie si l'element considéré est valide syntaxiquement, par rapport à notre définition
-	 * instancie un nouvel object Adresse
+	 * instancie un nouvel objet Adresse
 	 * insère cet objet au sein de l'objet Plan
 	 * 
 	 * @param adresse
@@ -149,15 +139,16 @@ public class FactoryPlan implements FactoryBase {
 	}
 	
 	/**
-	 * Instantiate and return a Plan object basing to the XML file passed in parameters
-	 * @param uriXml
+	 * Instancie et retourne un objet Plan à partir du fichier XML passé en paramètre
+	 * retourne null en cas d'erreur
+	 * @param pathXml
 	 * @return
 	 */
-	public Plan getPlan(String uriXml) {
+	public Plan getPlan(String pathXml) {
 		
 		try {
 			// get the domTree of the XML file
-			final Document domTree = this.getDomTree(uriXml);
+			final Document domTree = this.getDomTree(pathXml);
 			final Element racine = domTree.getDocumentElement();
 			
 			// instantiate the plan to a new Plan

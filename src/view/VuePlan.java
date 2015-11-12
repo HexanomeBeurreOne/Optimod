@@ -176,37 +176,40 @@ public class VuePlan extends JPanel implements Observer {
 		
 		if (etapes != null) {
 			
-			FenetreLivraison fenetreL = etapes.get(0).getLivraison().getFenetreLivraison();
-			
-//			Iterator<Etape> itE = etapes.iterator();
-//			
-//			while (itE.hasNext()) {
-			
-			for (int i = 0; i < etapes.size(); i++) {
+			if (!etapes.isEmpty()) {
+				FenetreLivraison fenetreL = etapes.get(0).getLivraison().getFenetreLivraison();
 				
-				if(etapes.get(i).getLivraison().getFenetreLivraison() != fenetreL) {
-					indiceFenetre++;
-					fenetreL = etapes.get(i).getLivraison().getFenetreLivraison();
+	//			Iterator<Etape> itE = etapes.iterator();
+	//			
+	//			while (itE.hasNext()) {
+				
+				for (int i = 0; i < etapes.size(); i++) {
+					
+					if(etapes.get(i).getLivraison().getFenetreLivraison() != fenetreL) {
+						indiceFenetre++;
+						fenetreL = etapes.get(i).getLivraison().getFenetreLivraison();
+					}
+					
+					troncons = etapes.get(i).getChemin().getTroncons();
+					Iterator<Troncon> itT = troncons.iterator();
+					g2.setColor(fenetre.getCouleurs().get(indiceFenetre));
+					g2.setStroke(new BasicStroke(fenetre.getEpaisseursLignes().get(indiceFenetre)));
+					
+					while (itT.hasNext()) {
+						drawTroncon(g2, itT.next());
+					}
+					
+					
 				}
 				
-				troncons = etapes.get(i).getChemin().getTroncons();
+				g2.setStroke(new BasicStroke(1));
+				g2.setColor(Color.RED);
+				troncons = plan.getTournee().getRetourEntrepot().getTroncons();
 				Iterator<Troncon> itT = troncons.iterator();
-				g2.setColor(fenetre.getCouleurs().get(indiceFenetre));
-				g2.setStroke(new BasicStroke(fenetre.getEpaisseursLignes().get(indiceFenetre)));
 				
 				while (itT.hasNext()) {
 					drawTroncon(g2, itT.next());
 				}
-				
-				
-			}
-			
-			g2.setColor(Color.RED);
-			troncons = plan.getTournee().getRetourEntrepot().getTroncons();
-			Iterator<Troncon> itT = troncons.iterator();
-			
-			while (itT.hasNext()) {
-				drawTroncon(g2, itT.next());
 			}
 		}
 	}
