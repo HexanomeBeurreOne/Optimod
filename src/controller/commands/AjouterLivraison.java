@@ -3,23 +3,27 @@ package controller.commands;
 import model.Livraison;
 import model.FenetreLivraison;
 import model.Plan;
-
+import model.Adresse;
 
 public class AjouterLivraison implements Commande 
 {
 //------------------------------------------------- ATTRIBUTES	
 
-	protected Livraison livraison;
-	protected FenetreLivraison fenetre;
 	protected Plan plan;
+	protected int client;
+	protected Adresse precLivraisonAdresse;
+	protected Adresse nouvellelivraisonAdresse;
+	protected FenetreLivraison fenetreLivraison;
 
 //------------------------------------------------- CONSTRUCTORS
 		
-	public AjouterLivraison(Plan p,Livraison l, FenetreLivraison f)
+	public AjouterLivraison(Plan unPlan, int unClient, Adresse precAdresse, Adresse nvLivraison, FenetreLivraison fenetre)
 	{
-		plan = p;
-		livraison = l;
-		fenetre = f;
+		plan = unPlan;
+		client = unClient;
+		precLivraisonAdresse = precAdresse;
+		nouvellelivraisonAdresse = nvLivraison;
+		fenetreLivraison = fenetre;
 	}
 	
 //------------------------------------------------- METHODS
@@ -29,7 +33,7 @@ public class AjouterLivraison implements Commande
 	@Override
 	public void execute() 
 	{
-		plan.addLivraison(livraison, fenetre);
+		plan.ajouterLivraisonAvecFenetre(client, precLivraisonAdresse, nouvellelivraisonAdresse, fenetreLivraison);
 	}
 
 	/**
@@ -38,7 +42,7 @@ public class AjouterLivraison implements Commande
 	@Override
 	public void unExecute() 
 	{
-		plan.removeLivraison(livraison, fenetre);
+		plan.supprimerLivraison(nouvellelivraisonAdresse);
 	}
 	
 }

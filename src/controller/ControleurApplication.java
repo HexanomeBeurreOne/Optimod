@@ -5,6 +5,7 @@ import model.Tournee;
 import view.Fenetre;
 import model.Adresse;
 import model.DemandeLivraisons;
+import model.Etape;
 import model.factory.FactoryDemandeLivraisons;
 import model.factory.FactoryPlan;
 import model.Livraison;
@@ -103,11 +104,12 @@ public class ControleurApplication
 			
 			if(dLTemp != null) {
 				
-				ArrayList<Integer> infosCouleurs = new ArrayList<Integer>();
-				List<FenetreLivraison> fenetreLivraisons = dLTemp.getFenetresLivraisons();
-				for (int i = 0; i < fenetreLivraisons.size(); i++) {
-					infosCouleurs.add(fenetreLivraisons.get(i).getLivraisons().size());
-				}
+//				ArrayList<Integer> infosCouleurs = new ArrayList<Integer>();
+//				List<FenetreLivraison> fenetreLivraisons = dLTemp.getFenetresLivraisons();
+//				for (int i = 0; i < fenetreLivraisons.size(); i++) {
+//					infosCouleurs.add(fenetreLivraisons.get(i).getLivraisons().size());
+//				}
+				int infosCouleurs = dLTemp.getFenetresLivraisons().size();
 				
 				fenetre.genererCouleurs(infosCouleurs);
 			
@@ -143,7 +145,7 @@ public class ControleurApplication
 	
 	public void calculerTournee () {
 		plan.calculTournee();
-		fenetre.getZoneMessage().setText("");
+		fenetre.getZoneMessage().setText("Vous pouvez cliquer sur une adresse ou une livraison");
 		tourneeCalculee = true;
 	}
 	
@@ -152,26 +154,45 @@ public class ControleurApplication
 		if (tourneeCalculee) {
 			objetSelectionne = plan.cherche(x, y);
 			
+			//Si l'utilisateur clique sur une Adresse ou une Livraison
 			if (objetSelectionne != null) {
 				
+				//Si l'utilisateur clique sur une adresse
 				if (objetSelectionne.getClass().getName() == "model.Adresse") {
+					
 					// On active le bouton pour ajouter une livraison
 					fenetre.getBoutons().get(3).setEnabled(true);
 					// On desactive le bouton pour supprimer une livraison
 					fenetre.getBoutons().get(4).setEnabled(false);
 					
-					fenetre.getZoneMessage().setText("Vous pouvez cliquer sur \"Ajouter livraisons\"");
+					fenetre.getZoneMessage().setText("Vous pouvez cliquer sur \"Ajouter livraison\"");
 					
+				//Si l'utilisateur clique sur une Livraison
 				} else if (objetSelectionne.getClass().getName() == "model.Livraison") {
+					
+					//Si l'utilisateur est dans une action d'action d'ajouter une Livraison
 					if (etatAjouterLivraison) {
+						
 						int client = fenetre.saisirClient();
+						
+						//Si l'ajout d'une Livraison est un succes
 						if( client != -1) {
+							Livraison livraison = (Livraison)objetSelectionne;
+							FenetreLivraison fenetreL = livraison.getFenetreLivraison();
 							Adresse adressePrecedente = ((Livraison)objetSelectionne).getAdresse();
-							ajouterLivraison(client, adresseSelectionnee, adressePrecedente);
+							ajouterLivraison(client, adresseSelectionnee, adressePrecedente, fenetreL);
+							
 							plan.setObjetSelectionne(adresseSelectionnee, false);
+							//On desactive le bouton "Ajouter livraison"
 							fenetre.getBoutons().get(3).setEnabled(false);
+							
+							fenetre.getZoneMessage().setText("Vous pouvez cliquer sur une adresse ou une livraison");
+							etatAjouterLivraison = false;
+							return;
 						}
-						fenetre.getZoneMessage().setText("Vous pouvez cliquer sur \"Ajouter livraisons\"");
+						
+						//Si l'ajout d'une livraison echoue
+						fenetre.getZoneMessage().setText("Vous pouvez cliquer sur \"Ajouter livraison\"");
 						etatAjouterLivraison = false;
 						return;
 					}
@@ -191,7 +212,8 @@ public class ControleurApplication
 			//Si objetSelectionne est null
 			fenetre.getBoutons().get(3).setEnabled(false);
 			fenetre.getBoutons().get(4).setEnabled(false);
-			fenetre.getZoneMessage().setText("");
+			fenetre.getZoneMessage().setText("Vous pouvez cliquer sur une adresse ou une livraison");
+			etatAjouterLivraison = false;
 			miseAJourObjetSelectionnee(objetSelectionne);
 		}
 	}
@@ -226,26 +248,44 @@ public class ControleurApplication
 		fenetre.getZoneMessage().setText("Veuillez sélectionner la livraison existante après laquelle placer votre nouvelle livraison");
 	}
 	
-	public void actionSuprimerLivraison () {
+	public void actionSupprimerLivraison () {
+		FenetreLivraison fenetreL = livraisonSelectionnee.getFenetreLivraison();
+		Adresse AdresseLivraison = livraisonSelectionnee.getAdresse();
+		int client = livraisonSelectionnee.getClient();
+		int indiceEtapeLivraisonSelectionnee = plan.getTournee().trouverIndiceEtape(AdresseLivraison);
 		
+		Adresse adressePrecedente;
+		if(indiceEtapeLivraisonSelectionnee>0) {
+			Etape etapePrecedente = plan.getTournee().getEtapes().get( indiceEtapeLivraisonSelectionnee-1);
+			adressePrecedente = etapePrecedente.getLivraison().getAdresse(); 
+		} else {
+			adressePrecedente = plan.getTournee().getEntrepot();
+		}
+		
+		supprimerLivraison(client, adresseSelectionnee, adressePrecedente, fenetreL);
+			
 	}
+		
+	
 	
 	/**
 	 * Créé une livraison à une adresse
 	 */
 	//Passé en parametre Adresse, Adresse, client, fenetre 
-	public void ajouterLivraison(int client, Adresse adresseSelectionnee, Adresse adressePrecedente)
+	public void ajouterLivraison(int client, Adresse adresseSelectionnee, Adresse adressePrecedente, FenetreLivraison fenetre)
 	{
 		System.out.println(client+" "+adressePrecedente+" "+adresseSelectionnee);
-		//TODO
+		AjouterLivraison ajout = new AjouterLivraison(plan, client, adressePrecedente, adresseSelectionnee, fenetre);
+		undoRedo.addCommand(ajout);
 	}
 	
 	/**
 	 * Supprime une livraison de la tournee
 	 */
-	public void removeLivraison()
+	public void supprimerLivraison(int client, Adresse adresseSelectionnee, Adresse adressePrecedente, FenetreLivraison fenetre)
 	{
-//		SupprimerLivraison suppression = new SupprimerLivraison(plan, livraison, fenetre);
+		//TODO
+//		SupprimerLivraison suppression = new SupprimerLivraison(plan, client, adressePrecedente, adresseSelectionnee, fenetre);
 //		undoRedo.addCommand(suppression);
 	}
 
