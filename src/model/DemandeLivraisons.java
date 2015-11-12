@@ -30,6 +30,48 @@ public class DemandeLivraisons {
 	}
 	
 	/**
+	 * @return the entrepot
+	 */
+	public Adresse getEntrepot() {
+		return entrepot;
+	}
+
+	/**
+	 * @param entrepot the entrepot to set
+	 */
+	public void setEntrepot(Adresse entrepot) {
+		this.entrepot = entrepot;
+	}
+
+	/**
+	 * @return the fenetresLivraisons
+	 */
+	public List<FenetreLivraison> getFenetresLivraisons() {
+		return fenetresLivraisons;
+	}
+
+	/**
+	 * @param fenetresLivraisons the fenetresLivraisons to set
+	 */
+	public void setFenetresLivraisons(List<FenetreLivraison> fenetresLivraisons) {
+		this.fenetresLivraisons = fenetresLivraisons;
+	}
+
+	/**
+	 * @return the heureDepart
+	 */
+	public int getHeureDepart() {
+		return heureDepart;
+	}
+
+	/**
+	 * @param heureDepart the heureDepart to set
+	 */
+	public void setHeureDepart(int heureDepart) {
+		this.heureDepart = heureDepart;
+	}
+
+	/**
 	 * Retourne l'objet FenetreLivraison dont heureDebut correspond avec le parametre passe
 	 * Retourne null sinon
 	 * @param heureDebut
@@ -75,36 +117,14 @@ public class DemandeLivraisons {
 	}
 	
 	/**
-	 * remove a FenetreLivraison to the list fenetresLivraisons
+	 * Enleve une FenetreLivraison de la liste fenetresLivraisons
 	 * @param fenetreLivraison
 	 */
 	public void removeFenetreLivraison(FenetreLivraison fenetreLivraison) {
 		if( this.fenetresLivraisons.contains(fenetreLivraison) ) this.fenetresLivraisons.remove(fenetreLivraison);
 	}
 
-	public Adresse getEntrepot() {
-		return entrepot;
-	}
-
-	public void setEntrepot(Adresse entrepot) {
-		this.entrepot = entrepot;
-	}
 	
-	public int getHeureDepart() {
-		return heureDepart;
-	}
-
-	public void setHeureDepart(int heureDepart) {
-		this.heureDepart = heureDepart;
-	}
-
-	public List<FenetreLivraison> getFenetresLivraisons() {
-		return fenetresLivraisons;
-	}
-
-	public void setFenetresLivraisons(List<FenetreLivraison> fenetresLivraisons) {
-		this.fenetresLivraisons = fenetresLivraisons;
-	}
 	
 	public List<Livraison> getAllLivraisons() {
 		List<Livraison> livraisons = new ArrayList<Livraison>();
@@ -122,30 +142,42 @@ public class DemandeLivraisons {
 		return null;
 	}
 
-	public void afficheDemandeLivraisons() {
-		System.out.println("DemandeLivraison : idEntrepot="+this.entrepot.getId());
-		System.out.println("Liste livraisons : ");
-		Iterator<FenetreLivraison> itFenetresLivraisons = this.fenetresLivraisons.iterator();
-		while(itFenetresLivraisons.hasNext()) {
-			FenetreLivraison fenetreLivraisonCourante = (FenetreLivraison) itFenetresLivraisons.next();
-			System.out.print("   ");
-			fenetreLivraisonCourante.afficheFenetreLivraison();
-		}
-	}
+//	public void afficheDemandeLivraisons() {
+//		System.out.println("DemandeLivraison : idEntrepot="+this.entrepot.getId());
+//		System.out.println("Liste livraisons : ");
+//		Iterator<FenetreLivraison> itFenetresLivraisons = this.fenetresLivraisons.iterator();
+//		while(itFenetresLivraisons.hasNext()) {
+//			FenetreLivraison fenetreLivraisonCourante = (FenetreLivraison) itFenetresLivraisons.next();
+//			System.out.print("   ");
+//			fenetreLivraisonCourante.afficheFenetreLivraison();
+//		}
+//	}
 	
-	public Livraison chercheLivraison(int x0, int y0) {
+	/**
+	 * retourne la Livraison dont les coordonnées sont les plus proche des points x0 et y0 dans un cercle de rayon pixels
+	 * @param x0
+	 * @param y0
+	 * @param rayon
+	 * @return
+	 */
+	public Livraison chercheLivraison(int x0, int y0, int rayon) {
 		Iterator<FenetreLivraison> itFL = this.fenetresLivraisons.iterator();
 		FenetreLivraison fenetreLivraisonCourante;
 		Livraison livraisonTrouvee;
 		while(itFL.hasNext()){
 			fenetreLivraisonCourante = itFL.next();
-			livraisonTrouvee = fenetreLivraisonCourante.chercheLivraison(x0, y0);
+			livraisonTrouvee = fenetreLivraisonCourante.chercheLivraison(x0, y0, rayon);
 			if(livraisonTrouvee!=null) return livraisonTrouvee;
 		}
 		return null;
 		
 	}
 	
+	/**
+	 * définie l'attribut selectionnee de l'objet Livraison livraison à la valeur du booleen selectionnee passé en paramètre
+	 * @param livraison est la livraison que l'on doit modifier
+	 * @param selectionnee est la nouvelle valeur de l'attribut de la livraison
+	 */
 	public void setLivraisonSelectionnee(Livraison livraison, boolean selectionnee) {
 		Iterator<FenetreLivraison> itFL = this.fenetresLivraisons.iterator();
 		FenetreLivraison fenetreLivraison;

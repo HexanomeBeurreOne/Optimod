@@ -240,16 +240,16 @@ public class PlanTest {
 			x = adresse.getCoordX();
 			y = adresse.getCoordY();
 			if(plan.getDemandeLivraisons().getLivraison(adresse) == null)	{
-				assertEquals("FAIL 5 : cherche(), adresse not recognized in plan with its coordinates", adresse, plan.cherche(x, y));
+				assertEquals("FAIL 5 : cherche(), adresse not recognized in plan with its coordinates", adresse, plan.cherche(x, y, 2));
 			}
 			else	{
-				assertEquals("FAIL 6 : cherche(), livraison not recognized in plan with its coordinates", plan.getDemandeLivraisons().getLivraison(adresse), plan.cherche(x, y));
+				assertEquals("FAIL 6 : cherche(), livraison not recognized in plan with its coordinates", plan.getDemandeLivraisons().getLivraison(adresse), plan.cherche(x, y, 2));
 			}
 		}
 		
 		x=0;
 		y=0;
-		assertNull("FAIL 7 : cherche(), livraison not recognized in plan with its coordinates", plan.cherche(x, y));
+		assertNull("FAIL 7 : cherche(), livraison not recognized in plan with its coordinates", plan.cherche(x, y, 2));
 	}
 
 }

@@ -12,7 +12,7 @@ import java.util.Observable;
 public class Livraison extends Observable {
 
 	/**
-	 * Attributes
+	 * Attributs
 	 */
 	private int client;
 	private Adresse adresse;
@@ -32,40 +32,64 @@ public class Livraison extends Observable {
 		this.selectionnee = false;
 	}
 
+	/**
+	 * @return the client
+	 */
 	public int getClient() {
 		return client;
 	}
 
+	/**
+	 * @param client the client to set
+	 */
 	public void setClient(int client) {
 		this.client = client;
 	}
 
+	/**
+	 * @return the adresse
+	 */
 	public Adresse getAdresse() {
 		return adresse;
 	}
 
+	/**
+	 * @param adresse the adresse to set
+	 */
 	public void setAdresse(Adresse adresse) {
 		this.adresse = adresse;
 	}
 
+	/**
+	 * @return the fenetreLivraison
+	 */
 	public FenetreLivraison getFenetreLivraison() {
 		return fenetreLivraison;
 	}
 
+	/**
+	 * @param fenetreLivraison the fenetreLivraison to set
+	 */
 	public void setFenetreLivraison(FenetreLivraison fenetreLivraison) {
 		this.fenetreLivraison = fenetreLivraison;
 	}
 
+	/**
+	 * @return the selectionnee
+	 */
 	public boolean isSelectionnee() {
 		return selectionnee;
 	}
 
+	/**
+	 * @param selectionnee the selectionnee to set
+	 */
 	public void setSelectionnee(boolean selectionnee) {
 		this.selectionnee = selectionnee;
 	}
 
-	public void afficheLivraison() {
-		System.out.println("Livraison : client : "+this.client);
-	}
+//	public void afficheLivraison() {
+//		System.out.println("Livraison : client : "+this.client);
+//	}
 	
 }

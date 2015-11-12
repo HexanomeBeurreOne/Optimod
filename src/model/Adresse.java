@@ -39,63 +39,93 @@ public class Adresse extends Observable {
 		this.selectionnee = false;
 	}
 	
+	/**
+	 * @return the id
+	 */
 	public int getId() {
 		return id;
 	}
 
+	/**
+	 * @param id the id to set
+	 */
 	public void setId(int id) {
 		this.id = id;
 	}
 
+	/**
+	 * @return the coordX
+	 */
 	public int getCoordX() {
 		return coordX;
 	}
 
+	/**
+	 * @param coordX the coordX to set
+	 */
 	public void setCoordX(int coordX) {
 		this.coordX = coordX;
 	}
 
+	/**
+	 * @return the coordY
+	 */
 	public int getCoordY() {
 		return coordY;
 	}
 
+	/**
+	 * @param coordY the coordY to set
+	 */
 	public void setCoordY(int coordY) {
 		this.coordY = coordY;
 	}
 
-	public boolean isSelectionnee() {
-		return selectionnee;
-	}
-
-	public void setSelectionnee(boolean estSelectionnee) {
-		this.selectionnee = estSelectionnee;
-	}
-
+	/**
+	 * @return the tronconsSortants
+	 */
 	public List<Troncon> getTronconsSortants() {
 		return tronconsSortants;
 	}
 
 	/**
-	 * Add a new TronconSortant to the list tronconsSortants of the current Adresse
+	 * @param tronconsSortants the tronconsSortants to set
+	 */
+	public void setTronconsSortants(List<Troncon> tronconsSortants) {
+		this.tronconsSortants = tronconsSortants;
+	}
+
+	/**
+	 * @return the selectionnee
+	 */
+	public boolean isSelectionnee() {
+		return selectionnee;
+	}
+
+	/**
+	 * @param selectionnee the selectionnee to set
+	 */
+	public void setSelectionnee(boolean selectionnee) {
+		this.selectionnee = selectionnee;
+	}
+
+	/**
+	 * Ajoute un nouveau Troncon à la liste tronconSortant de l'Adresse courante
 	 * @param newTronconSortant
 	 */
 	public void addTroncon(Troncon newTronconSortant) {
 		this.tronconsSortants.add(newTronconSortant);
 	}
 	
-	public List<Troncon> getTroncons() {
-		return this.tronconsSortants;
-	}
-	
-	public void afficheAdresse() {
-		System.out.println("Adresse "+this.id+" | x="+this.coordX+" y="+this.coordY+" selectionnee="+selectionnee);
-		Iterator<Troncon> tronconsSortantsIterator = this.tronconsSortants.iterator();
-		while(tronconsSortantsIterator.hasNext()) {
-			Troncon currentTroncon = (Troncon) tronconsSortantsIterator.next();
-			System.out.print("      ");
-			currentTroncon.afficheTroncon();
-		}
-	}
+//	public void afficheAdresse() {
+//		System.out.println("Adresse "+this.id+" | x="+this.coordX+" y="+this.coordY+" selectionnee="+selectionnee);
+//		Iterator<Troncon> tronconsSortantsIterator = this.tronconsSortants.iterator();
+//		while(tronconsSortantsIterator.hasNext()) {
+//			Troncon currentTroncon = (Troncon) tronconsSortantsIterator.next();
+//			System.out.print("      ");
+//			currentTroncon.afficheTroncon();
+//		}
+//	}
 
 	@Override
 	public String toString() {

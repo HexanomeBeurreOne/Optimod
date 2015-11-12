@@ -86,7 +86,7 @@ public class FactoryPlanTest {
 		FactoryPlan factoryPlan = new FactoryPlan();
 		int sizeAdresse0, sizeAdresse1, sizeAdresse2;
 		Plan plan1 = factoryPlan.getPlan("data/plan20x20-error10.xml");
-		plan1.affichePlan();
+		//plan1.affichePlan();
 		sizeAdresse0 = plan1.getAdresseById(0).getTronconsSortants().size();
 		sizeAdresse1 = plan1.getAdresseById(1).getTronconsSortants().size();
 		sizeAdresse2 = plan1.getAdresseById(2).getTronconsSortants().size();
@@ -94,7 +94,7 @@ public class FactoryPlanTest {
 				sizeAdresse0 == 1 && sizeAdresse1 == 2 && sizeAdresse2 == 3
 				);
 		Plan plan2 = factoryPlan.getPlan("data/plan20x20-error11.xml");
-		plan2.affichePlan();
+		//plan2.affichePlan();
 		sizeAdresse0 = plan2.getAdresseById(0).getTronconsSortants().size();
 		sizeAdresse1 = plan2.getAdresseById(1).getTronconsSortants().size();
 		sizeAdresse2 = plan2.getAdresseById(2).getTronconsSortants().size();
