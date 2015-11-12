@@ -252,9 +252,9 @@ public class ControleurApplication
 	
 	public void actionSupprimerLivraison () {
 		FenetreLivraison fenetreL = livraisonSelectionnee.getFenetreLivraison();
-		Adresse AdresseLivraison = livraisonSelectionnee.getAdresse();
+		Adresse adresseLivraison = livraisonSelectionnee.getAdresse();
 		int client = livraisonSelectionnee.getClient();
-		int indiceEtapeLivraisonSelectionnee = plan.getTournee().trouverIndiceEtape(AdresseLivraison);
+		int indiceEtapeLivraisonSelectionnee = plan.getTournee().trouverIndiceEtape(adresseLivraison);
 		
 		Adresse adressePrecedente;
 		if(indiceEtapeLivraisonSelectionnee>0) {
@@ -264,7 +264,7 @@ public class ControleurApplication
 			adressePrecedente = plan.getTournee().getEntrepot();
 		}
 		
-		supprimerLivraison(client, adresseSelectionnee, adressePrecedente, fenetreL);
+		supprimerLivraison(client, adresseLivraison, adressePrecedente, fenetreL);
 			
 	}
 		
