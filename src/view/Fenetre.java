@@ -37,7 +37,7 @@ public class Fenetre extends JFrame{
 	protected static final String SUPPRIMER_LIVRAISON = "Supprimer livraison";
 	private final String[] intitulesBoutons = new String[]{CHARGER_PLAN, CHARGER_LIVRAISONS, CALCULER_TOURNEE, AJOUTER_LIVRAISON, SUPPRIMER_LIVRAISON};
 	private EcouteurBoutons ecouteurDeBoutons;
-	
+	private EcouteurClavier ecouteurClavier;
 	private EcouteurSouris ecouteurSouris;
 	
 	private JLabel zoneMessage;
@@ -88,6 +88,11 @@ public class Fenetre extends JFrame{
 		zoneMessage.setText("Vous pouvez charger un plan");
 		
 		getContentPane().add(zoneMessage);
+		
+		//Clavier
+		ecouteurClavier = new EcouteurClavier(controller);
+		this.addKeyListener(ecouteurClavier);
+		this.setFocusable(true);
 		
 		//Souris
         ecouteurSouris = new EcouteurSouris(controller, vuePlan, this);
@@ -219,6 +224,14 @@ public class Fenetre extends JFrame{
 	 */
 	public void setEpaisseursLignes(ArrayList<Integer> epaisseursLignes) {
 		this.epaisseursLignes = epaisseursLignes;
+	}
+
+	public int getLargeurVuePlan() {
+		return largeurVuePlan;
+	}
+
+	public int getHauteurVuePlan() {
+		return hauteurVuePlan;
 	}
 
 	public int saisirClient() {

@@ -28,7 +28,7 @@ public class main {
 		*/
 
 		Plan plan = new Plan();
-		ControleurApplication controleur = new ControleurApplication(plan, 0.53);
+		ControleurApplication controleur = new ControleurApplication(plan, 1);
 		
 	}
 }

@@ -6,7 +6,6 @@ import java.awt.event.MouseEvent;
 import javax.swing.SwingUtilities;
 
 import controller.ControleurApplication;
-
 import model.Adresse;
 import model.factory.FactoryPlan;
 
@@ -29,6 +28,7 @@ public class EcouteurSouris extends MouseAdapter {
 //------------------------------------------------- METHODS
 	@Override
 	public void mouseClicked(MouseEvent evt) {
+		System.out.println("mouseclicked");
 		int x=(int) Math.round(evt.getX()/controleur.getEchelle());
 	    int y=(int) Math.round(evt.getY()/controleur.getEchelle());
 	    

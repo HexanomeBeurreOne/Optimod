@@ -62,7 +62,12 @@ public class VuePlan extends JPanel implements Observer {
 		this.plan = plan;
 	}
 
-    @Override
+    public void setEchelle(double echelle) {
+		this.echelle = echelle;
+	}
+
+
+	@Override
     public void paintComponent(Graphics g) {
     	
     	super.paintComponent(g);

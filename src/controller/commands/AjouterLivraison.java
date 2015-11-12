@@ -43,6 +43,7 @@ public class AjouterLivraison implements Commande
 	public void unExecute() 
 	{
 		plan.supprimerLivraison(nouvellelivraisonAdresse);
+		System.out.println("unexecute");
 	}
 	
 }
