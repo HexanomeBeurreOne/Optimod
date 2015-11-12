@@ -330,6 +330,66 @@ public class Plan extends Observable {
 		return null;
 	}
 	
+	/**
+	 * retourne la coordonnée x minimale du plan
+	 * @return minX
+	 */
+	public int getMinX() {
+		Iterator<Adresse> adressesIterator = this.adresses.iterator();
+		Adresse currentAdresse;
+		int minX = 9999999;
+		while(adressesIterator.hasNext()) {
+			currentAdresse = (Adresse) adressesIterator.next();
+			if(currentAdresse.getCoordX()<=minX) minX = currentAdresse.getCoordX();
+		}
+		return minX;
+	}
+	
+	/**
+	 * retourne la coordonnée x maximale du plan
+	 * @return
+	 */
+	public int getMaxX() {
+		Iterator<Adresse> adressesIterator = this.adresses.iterator();
+		Adresse currentAdresse;
+		int maxX = -1;
+		while(adressesIterator.hasNext()) {
+			currentAdresse = (Adresse) adressesIterator.next();
+			if(currentAdresse.getCoordX()>=maxX) maxX = currentAdresse.getCoordX();
+		}
+		return maxX;
+	}
+	
+	/**
+	 * retourne la coordonnée y minimale du plan
+	 * @return
+	 */
+	public int getMinY() {
+		Iterator<Adresse> adressesIterator = this.adresses.iterator();
+		Adresse currentAdresse;
+		int minY = 9999999;
+		while(adressesIterator.hasNext()) {
+			currentAdresse = (Adresse) adressesIterator.next();
+			if(currentAdresse.getCoordY()<=minY) minY = currentAdresse.getCoordY();
+		}
+		return minY;
+	}
+	
+	/**
+	 * retourne la coordonnée y maximale du plan
+	 * @return
+	 */
+	public int getMaxY() {
+		Iterator<Adresse> adressesIterator = this.adresses.iterator();
+		Adresse currentAdresse;
+		int maxY = -1;
+		while(adressesIterator.hasNext()) {
+			currentAdresse = (Adresse) adressesIterator.next();
+			if(currentAdresse.getCoordY()>=maxY) maxY = currentAdresse.getCoordY();
+		}
+		return maxY;
+	}
+	
 	public void nouveauxPlusCourtsChemins(Adresse depart, Adresse arrivee) {
 		List<Adresse> cibles = new ArrayList<Adresse>();
 		if(arrivee == tournee.getEntrepot()) {

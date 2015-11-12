@@ -88,7 +88,7 @@ public class Adresse extends Observable {
 	}
 	
 	public void afficheAdresse() {
-		System.out.println("Adresse "+this.id+" | x="+this.coordX+" y="+this.coordY);
+		System.out.println("Adresse "+this.id+" | x="+this.coordX+" y="+this.coordY+" selectionnee="+selectionnee);
 		Iterator<Troncon> tronconsSortantsIterator = this.tronconsSortants.iterator();
 		while(tronconsSortantsIterator.hasNext()) {
 			Troncon currentTroncon = (Troncon) tronconsSortantsIterator.next();

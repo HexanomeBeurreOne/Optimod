@@ -226,6 +226,14 @@ public class Fenetre extends JFrame{
 		this.epaisseursLignes = epaisseursLignes;
 	}
 
+	public int getLargeurVuePlan() {
+		return largeurVuePlan;
+	}
+
+	public int getHauteurVuePlan() {
+		return hauteurVuePlan;
+	}
+
 	public int saisirClient() {
 		String resultat = (String)JOptionPane.showInputDialog(
                 this,

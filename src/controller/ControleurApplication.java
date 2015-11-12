@@ -68,6 +68,28 @@ public class ControleurApplication
 		System.out.println("redo");
 	}
 	
+	/**
+	 * recalcule l'echelle de la vuePlan pour que le plan soit toujours affiché dans son intégralité
+	 */
+	private void changerEchelle() {
+		double largeurPlan = (double) this.fenetre.getLargeurVuePlan();
+		double hauteurPlan = (double) this.fenetre.getHauteurVuePlan();
+		
+		double minX = (double) this.plan.getMinX();
+		double maxX = (double) this.plan.getMaxX();
+		double minY = (double) this.plan.getMinY();
+		double maxY = (double) this.plan.getMaxY();
+		
+		double echX = largeurPlan/(maxY-minY);
+		double echY = hauteurPlan/(maxX-minX);
+		
+		double newEchelle = echX<=echY ? echX : echY;
+		newEchelle = newEchelle>1 ? newEchelle*0.7 : newEchelle*0.9;
+		
+		this.fenetre.getVuePlan().setEchelle(newEchelle);
+		this.echelle = newEchelle;
+	}
+	
 	public void chargerPlan() {
 		FactoryPlan factoryPlan = new FactoryPlan();
 		String fichier = chargerFichier("./data");
@@ -76,16 +98,28 @@ public class ControleurApplication
 	    	Plan planTemp  = factoryPlan.getPlan(fichier);
 	    	
 		    if (planTemp != null) {
+		    	
 		    	this.plan.setAdresses(planTemp.getAdresses());
 				this.plan.setTroncons(planTemp.getTroncons());
 				this.plan.setNom(planTemp.getNom());
 				this.plan.setDemandeLivraisons(new DemandeLivraisons());
 				this.plan.setTournee(new Tournee());
+				
+				// on adapte l'echelle pour qu'elle corresponde parfaitement à la vue du plan
+				this.changerEchelle();
+				
 				fenetre.getBoutons().get(1).setEnabled(true);
 				fenetre.getBoutons().get(2).setEnabled(false);
 				fenetre.getBoutons().get(3).setEnabled(false);
 				fenetre.getBoutons().get(4).setEnabled(false);
+				
+				// on passe tous les anciens attributs d'état à leurs valeurs initiales
 				tourneeCalculee = false;
+				objetSelectionne = new Object();
+				adresseSelectionnee = new Adresse();
+				livraisonSelectionnee = new Livraison();
+				etatAjouterLivraison = false;
+				
 				fenetre.getZoneMessage().setText("Vous pouvez charger une demande de livraisons");
 	    	} else {
 	    		JOptionPane.showMessageDialog(fenetre,
@@ -123,7 +157,12 @@ public class ControleurApplication
 				fenetre.getBoutons().get(3).setEnabled(false);
 				fenetre.getBoutons().get(4).setEnabled(false);
 				
+				// on passe tous les anciens attributs d'état à leurs valeurs initiales
 				tourneeCalculee = false;
+				objetSelectionne = new Object();
+				adresseSelectionnee = new Adresse();
+				livraisonSelectionnee = new Livraison();
+				etatAjouterLivraison = false;
 				
 				fenetre.getZoneMessage().setText("Vous pouvez calculer une tournÃ©e");
 			} else {
