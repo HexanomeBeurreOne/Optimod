@@ -64,6 +64,7 @@ public class VuePlan extends JPanel implements Observer {
 
     @Override
     public void paintComponent(Graphics g) {
+    	
     	super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
@@ -85,7 +86,13 @@ public class VuePlan extends JPanel implements Observer {
         Iterator<Adresse> itAdresses = adressesPlan.iterator();
         g2.setColor(Color.GRAY);
         while (itAdresses.hasNext()){
-            drawAdresse(g2, itAdresses.next(), 4);
+        	Adresse temp = itAdresses.next();
+        	if(temp.isSelectionnee()) {
+        		g2.setColor(Color.BLUE);
+        		drawAdresse(g2, temp, 6);
+        		g2.setColor(Color.GRAY);
+        	}
+            drawAdresse(g2, temp, 4);
         }
         
         // Colorier l'entrepot
@@ -120,16 +127,25 @@ public class VuePlan extends JPanel implements Observer {
 		int indiceCouleur=0;
 		List<FenetreLivraison> fenetreLivraisons = plan.getDemandeLivraisons().getFenetresLivraisons();
 		Iterator<FenetreLivraison> itFL = fenetreLivraisons.iterator();
+		Livraison livraisonTemp;
+		Adresse adresseTemp;
+		
 		while (itFL.hasNext()) {
 			
 			FenetreLivraison fenetreLivraisonActuelle = itFL.next();
 			Iterator<Livraison> itL = fenetreLivraisonActuelle.getLivraisons().iterator();
 			while (itL.hasNext()) {
-				Adresse adresseTemp = itL.next().getAdresse();
+				livraisonTemp = itL.next();
+				adresseTemp = livraisonTemp.getAdresse();
 				g2.setColor(fenetre.getCouleurs().get(indiceCouleur));
 				this.drawAdresse(g2, adresseTemp, 8);
-				g2.setColor(Color.WHITE);
-				this.drawAdresse(g2, adresseTemp, 4);
+				if(livraisonTemp.isSelectionnee()) {
+					g2.setColor(Color.BLUE);
+					this.drawAdresse(g2, adresseTemp, 4);
+				} else {
+					g2.setColor(Color.WHITE);
+					this.drawAdresse(g2, adresseTemp, 4);
+				}
 				indiceCouleur++;
 			}
 			
@@ -155,7 +171,7 @@ public class VuePlan extends JPanel implements Observer {
 //			Iterator<Etape> itE = etapes.iterator();
 //			
 //			while (itE.hasNext()) {
-			for (int i = etapes.size()-1; i >= 0; i--) {
+			for (int i = 0; i < etapes.size(); i++) {
 				troncons = etapes.get(i).getChemin().getTroncons();
 				Iterator<Troncon> itT = troncons.iterator();
 				g2.setColor(fenetre.getCouleurs().get(indicesTroncons));
@@ -206,8 +222,9 @@ public class VuePlan extends JPanel implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-    	Plan plan = (Plan)arg;
-    	this.plan = plan;
+//    	Plan plan = (Plan)arg;
+//    	this.plan = plan;
+    	
     	repaint();
     }
 }

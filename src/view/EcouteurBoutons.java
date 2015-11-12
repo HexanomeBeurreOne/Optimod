@@ -24,6 +24,8 @@ public class EcouteurBoutons implements ActionListener {
 			case Fenetre.CHARGER_PLAN: controleur.chargerPlan(); break;
 			case Fenetre.CHARGER_LIVRAISONS: controleur.chargerDemandeLivraisons(); break;
 			case Fenetre.CALCULER_TOURNEE: controleur.calculerTournee(); break;
+			case Fenetre.AJOUTER_LIVRAISON: controleur.actionAjouterLivraison(); break;
+			case Fenetre.SUPPRIMER_LIVRAISON: controleur.actionSuprimerLivraison(); break;
 		}
 	}
 }

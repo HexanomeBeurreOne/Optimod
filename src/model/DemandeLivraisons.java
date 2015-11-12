@@ -14,14 +14,14 @@ import java.util.List;
 public class DemandeLivraisons {
 
 	/**
-	 * Attributes
+	 * Attributs
 	 */
 	private Adresse entrepot;
 	private List<FenetreLivraison> fenetresLivraisons;
 	private int heureDepart;
 	
 	/**
-	 * Constructor
+	 * Constructeur
 	 */
 	public DemandeLivraisons() {
 		this.entrepot = null;
@@ -30,50 +30,48 @@ public class DemandeLivraisons {
 	}
 	
 	/**
-	 * Return the FenetreLivraison object which heureDebut corresponds with the given parameter
-	 * Return null otherwise
+	 * Retourne l'objet FenetreLivraison dont heureDebut correspond avec le parametre passe
+	 * Retourne null sinon
 	 * @param heureDebut
 	 * @return
 	 */
 	public FenetreLivraison getFenetreLivraison(int heureDebut) {
-		Iterator<FenetreLivraison> fenetresLivraisonsIterator = this.fenetresLivraisons.iterator();
-		while(fenetresLivraisonsIterator.hasNext()) {
-			FenetreLivraison currentFenetreLivraison = (FenetreLivraison) fenetresLivraisonsIterator.next();
-			if(currentFenetreLivraison.getHeureDebut()==heureDebut) return currentFenetreLivraison;
+		Iterator<FenetreLivraison> itFenetresLivraisons = this.fenetresLivraisons.iterator();
+		while(itFenetresLivraisons.hasNext()) {
+			FenetreLivraison fenetreLivraisonCourante = (FenetreLivraison) itFenetresLivraisons.next();
+			if(fenetreLivraisonCourante.getHeureDebut()==heureDebut) return fenetreLivraisonCourante;
 		}
 		return null;
 	}
 	
 	/**
-	 * Add a new Livraison to the specified fenetreLivraison passed in parameters
-	 * @param newLivraison
+	 * Ajoute une nouvelle Livraison a la fenetreLivraison passee en parametre 
+	 * @param nouvelleLivraison
 	 * @param fenetreLivraison
 	 */
-	public void addLivraison(Livraison newLivraison, FenetreLivraison fenetreLivraison) {
+	public void addLivraison(Livraison nouvelleLivraison, FenetreLivraison fenetreLivraison) {
 		if (this.fenetresLivraisons.contains(fenetreLivraison)) {
-			FenetreLivraison fenetreLivraisonFounded = this.fenetresLivraisons.get(this.fenetresLivraisons.indexOf(fenetreLivraison));
-			fenetreLivraisonFounded.addLivraison(newLivraison);
+			FenetreLivraison fenetreLivraisonTrouvee = this.fenetresLivraisons.get(this.fenetresLivraisons.indexOf(fenetreLivraison));
+			fenetreLivraisonTrouvee.addLivraison(nouvelleLivraison);
 		}
 	}
 	
 	/**
-	 * Remove a Livraison from the specified fenetreLivraison passed in parameters
-	 * @param oldLivraison
-	 * @param fenetreLivraison
+	 * Supprime une Livraison a partir de son Adresse passee en parametre
+	 * @param adresseLivraison
 	 */
-	public void removeLivraison(Livraison oldLivraison, FenetreLivraison fenetreLivraison) {
-		if (this.fenetresLivraisons.contains(fenetreLivraison)) {
-			FenetreLivraison fenetreLivraisonFounded = this.fenetresLivraisons.get(this.fenetresLivraisons.indexOf(fenetreLivraison));
-			fenetreLivraisonFounded.removeLivraison(oldLivraison);
-		}
+	public void supprimerLivraison(Adresse adresseLivraison) {
+		Livraison livraisonASupprimer = getLivraison(adresseLivraison);
+		FenetreLivraison fenetre = livraisonASupprimer.getFenetreLivraison();
+		fenetre.getLivraisons().remove(livraisonASupprimer);
 	}
 	
 	/**
-	 * add a new FenetreLivraison to the list fenetresLivraisons
-	 * @param newFenetreLivraison
+	 * Ajoute une nouvelle FenetreLivraison a la liste fenetresLivraisons
+	 * @param nouvelleFenetreLivraison
 	 */
-	public void addFenetreLivraison(FenetreLivraison newFenetreLivraison) {
-		this.fenetresLivraisons.add(newFenetreLivraison);
+	public void addFenetreLivraison(FenetreLivraison nouvelleFenetreLivraison) {
+		this.fenetresLivraisons.add(nouvelleFenetreLivraison);
 	}
 	
 	/**
@@ -127,11 +125,33 @@ public class DemandeLivraisons {
 	public void afficheDemandeLivraisons() {
 		System.out.println("DemandeLivraison : idEntrepot="+this.entrepot.getId());
 		System.out.println("Liste livraisons : ");
-		Iterator<FenetreLivraison> fenetresLivraisonsIterator = this.fenetresLivraisons.iterator();
-		while(fenetresLivraisonsIterator.hasNext()) {
-			FenetreLivraison currentFenetreLivraison = (FenetreLivraison) fenetresLivraisonsIterator.next();
+		Iterator<FenetreLivraison> itFenetresLivraisons = this.fenetresLivraisons.iterator();
+		while(itFenetresLivraisons.hasNext()) {
+			FenetreLivraison fenetreLivraisonCourante = (FenetreLivraison) itFenetresLivraisons.next();
 			System.out.print("   ");
-			currentFenetreLivraison.afficheFenetreLivraison();
+			fenetreLivraisonCourante.afficheFenetreLivraison();
+		}
+	}
+	
+	public Livraison chercheLivraison(int x0, int y0) {
+		Iterator<FenetreLivraison> itFL = this.fenetresLivraisons.iterator();
+		FenetreLivraison fenetreLivraisonCourante;
+		Livraison livraisonTrouvee;
+		while(itFL.hasNext()){
+			fenetreLivraisonCourante = itFL.next();
+			livraisonTrouvee = fenetreLivraisonCourante.chercheLivraison(x0, y0);
+			if(livraisonTrouvee!=null) return livraisonTrouvee;
+		}
+		return null;
+		
+	}
+	
+	public void setLivraisonSelectionnee(Livraison livraison, boolean selectionnee) {
+		Iterator<FenetreLivraison> itFL = this.fenetresLivraisons.iterator();
+		FenetreLivraison fenetreLivraison;
+		while(itFL.hasNext()){
+			fenetreLivraison = itFL.next();
+			if( fenetreLivraison.getLivraisons().contains(livraison) ) fenetreLivraison.setLivraisonSelectionnee(livraison, selectionnee);
 		}
 	}
 	
