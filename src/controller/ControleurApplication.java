@@ -105,11 +105,12 @@ public class ControleurApplication
 			
 			if(dLTemp != null) {
 				
-				ArrayList<Integer> infosCouleurs = new ArrayList<Integer>();
-				List<FenetreLivraison> fenetreLivraisons = dLTemp.getFenetresLivraisons();
-				for (int i = 0; i < fenetreLivraisons.size(); i++) {
-					infosCouleurs.add(fenetreLivraisons.get(i).getLivraisons().size());
-				}
+//				ArrayList<Integer> infosCouleurs = new ArrayList<Integer>();
+//				List<FenetreLivraison> fenetreLivraisons = dLTemp.getFenetresLivraisons();
+//				for (int i = 0; i < fenetreLivraisons.size(); i++) {
+//					infosCouleurs.add(fenetreLivraisons.get(i).getLivraisons().size());
+//				}
+				int infosCouleurs = dLTemp.getFenetresLivraisons().size();
 				
 				fenetre.genererCouleurs(infosCouleurs);
 			
@@ -177,8 +178,10 @@ public class ControleurApplication
 						
 						//Si l'ajout d'une Livraison est un succes
 						if( client != -1) {
+							Livraison livraison = (Livraison)objetSelectionne;
+							FenetreLivraison fenetreL = livraison.getFenetreLivraison();
 							Adresse adressePrecedente = ((Livraison)objetSelectionne).getAdresse();
-							ajouterLivraison(client, adresseSelectionnee, adressePrecedente);
+							ajouterLivraison(client, adresseSelectionnee, adressePrecedente, fenetreL);
 							
 							plan.setObjetSelectionne(adresseSelectionnee, false);
 							//On desactive le bouton "Ajouter livraison"
@@ -254,10 +257,10 @@ public class ControleurApplication
 	 * Créé une livraison à une adresse
 	 */
 	//Passé en parametre Adresse, Adresse, client, fenetre 
-	public void ajouterLivraison(int client, Adresse adresseSelectionnee, Adresse adressePrecedente)
+	public void ajouterLivraison(int client, Adresse adresseSelectionnee, Adresse adressePrecedente, FenetreLivraison fenetre)
 	{
 		System.out.println(client+" "+adressePrecedente+" "+adresseSelectionnee);
-		AjouterLivraison ajout = new AjouterLivraison(plan, client, adresseSelectionnee, adressePrecedente);
+		AjouterLivraison ajout = new AjouterLivraison(plan, client, adressePrecedente, adresseSelectionnee, fenetre);
 		undoRedo.addCommand(ajout);
 	}
 	

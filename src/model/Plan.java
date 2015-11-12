@@ -384,6 +384,10 @@ public class Plan extends Observable {
 			Chemin dureePlusCourtChemin = entry.getValue();
 			System.out.println("Calcul plus court chemin de "+depart.getId()
 								+" a "+idAdresseCible);
+			if(plusCourtsChemins.get(depart.getId()) == null) {
+				Hashtable<Integer, Chemin> innerHashtableVide = new Hashtable<Integer, Chemin>();
+				plusCourtsChemins.put(depart.getId(), innerHashtableVide);
+			}
 			plusCourtsChemins.get(depart.getId()).put(idAdresseCible, dureePlusCourtChemin);
 		}
 	}
@@ -491,7 +495,7 @@ public class Plan extends Observable {
 			if(plusCourtsChemins.get(precLivraisonAdresse.getId()).get(livraisonAdresse.getId()) == null) {
 				nouveauxPlusCourtsChemins(precLivraisonAdresse, livraisonAdresse);
 			}
-			if(plusCourtsChemins.get(livraisonAdresse.getId()).get(arrivee.getId()) == null) {
+			if(plusCourtsChemins.get(livraisonAdresse.getId()) == null || plusCourtsChemins.get(livraisonAdresse.getId()).get(arrivee.getId()) == null) {
 				nouveauxPlusCourtsChemins(livraisonAdresse, arrivee);
 			}
 		}

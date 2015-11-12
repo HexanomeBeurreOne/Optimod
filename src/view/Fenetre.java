@@ -126,19 +126,26 @@ public class Fenetre extends JFrame{
 		boutons.get(4).setEnabled(false);
     }
     
-    public void genererCouleurs(ArrayList<Integer> infosTroncons) {
+    public void genererCouleurs(int infosTroncons) {
     	float R = 0.0f, G = 0.0f, B = 0.0f;
     	
-    	for (int i = 0; i < infosTroncons.size(); i++) {
+//    	for (int i = 0; i < infosTroncons.size(); i++) {
+//    		
+//    		
+//    		for (int j = 0; j < infosTroncons.get(i); j++) {
+//    			couleurs.add(new Color(R, G, B));
+//    			epaisseursLignes.add((infosTroncons.size()-i)*3);
+//    		}
+//    	}
+    	for (int i = 0; i < infosTroncons; i++) {
     		R=(float)Math.random();
     		G=(float)Math.random();
     		B=(float)Math.random();
-    		
-    		for (int j = 0; j < infosTroncons.get(i); j++) {
-    			couleurs.add(new Color(R, G, B));
-    			epaisseursLignes.add((infosTroncons.size()-i)*3);
-    		}
+    		couleurs.add(new Color(R, G, B));
+    		epaisseursLignes.add((infosTroncons-i)*3);
     	}
+    	System.out.println(couleurs.size());
+    	System.out.println(epaisseursLignes.size());
     }
 
 	public int getHauteurFenetre() {

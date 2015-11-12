@@ -13,15 +13,17 @@ public class AjouterLivraison implements Commande
 	protected int client;
 	protected Adresse precLivraisonAdresse;
 	protected Adresse nouvellelivraisonAdresse;
+	protected FenetreLivraison fenetreLivraison;
 
 //------------------------------------------------- CONSTRUCTORS
 		
-	public AjouterLivraison(Plan unPlan, int unClient, Adresse precAdresse, Adresse nvLivraison)
+	public AjouterLivraison(Plan unPlan, int unClient, Adresse precAdresse, Adresse nvLivraison, FenetreLivraison fenetre)
 	{
 		plan = unPlan;
 		client = unClient;
 		precLivraisonAdresse = precAdresse;
 		nouvellelivraisonAdresse = nvLivraison;
+		fenetreLivraison = fenetre;
 	}
 	
 //------------------------------------------------- METHODS
@@ -31,7 +33,7 @@ public class AjouterLivraison implements Commande
 	@Override
 	public void execute() 
 	{
-		plan.ajouterLivraison(client, precLivraisonAdresse, nouvellelivraisonAdresse);
+		plan.ajouterLivraisonAvecFenetre(client, precLivraisonAdresse, nouvellelivraisonAdresse, fenetreLivraison);
 	}
 
 	/**
