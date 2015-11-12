@@ -207,9 +207,11 @@ public class ControleurApplication
 					fenetre.getBoutons().get(4).setEnabled(false);
 					
 					fenetre.getZoneMessage().setText("Vous pouvez cliquer sur \"Ajouter livraison\"");
-					
+
+				} 
 				//Si l'utilisateur clique sur une Livraison
-				} else if (objetSelectionne.getClass().getName() == "model.Livraison") {
+				if (objetSelectionne.getClass().getName() == "model.Livraison" || 
+						(objetSelectionne.getClass().getName() == "model.Adresse" && ((Adresse)objetSelectionne) == plan.getDemandeLivraisons().getEntrepot())) {
 					
 					//Si l'utilisateur est dans une action d'action d'ajouter une Livraison
 					if (etatAjouterLivraison) {
@@ -218,11 +220,21 @@ public class ControleurApplication
 						
 						//Si l'ajout d'une Livraison est un succes
 						if( client != -1) {
-							Livraison livraison = (Livraison)objetSelectionne;
-							FenetreLivraison fenetreL = livraison.getFenetreLivraison();
-							Adresse adressePrecedente = ((Livraison)objetSelectionne).getAdresse();
+							FenetreLivraison fenetreL;
+							Adresse adressePrecedente;
+							if(objetSelectionne.getClass().getName() == "model.Adresse"){
+								//Si on ajoute apres l'entrepot
+								fenetreL = plan.getTournee().getEtapes().get(0).getLivraison().getFenetreLivraison();
+								// TODO : si y a pas d'etapes !!
+								adressePrecedente = plan.getDemandeLivraisons().getEntrepot();
+							} else {
+								//Si on ajoute apres une livraison
+								Livraison livraison = (Livraison)objetSelectionne;
+								fenetreL = livraison.getFenetreLivraison();
+								adressePrecedente = livraison.getAdresse();
+							}
 							ajouterLivraison(client, adresseSelectionnee, adressePrecedente, fenetreL);
-							
+
 							plan.setObjetSelectionne(adresseSelectionnee, false);
 							//On desactive le bouton "Ajouter livraison"
 							fenetre.getBoutons().get(3).setEnabled(false);
