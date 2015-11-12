@@ -135,6 +135,8 @@ public class ControleurApplication
 		FactoryDemandeLivraisons factoryDemandeLivraisons = new FactoryDemandeLivraisons();
 		String fichier = chargerFichier("./data");
 		
+		// on deselectionne tous les objets selectionnés au chargement d'un nouveau fichier de demande livraison
+		miseAJourObjetSelectionnee(null);
 		if (fichier != null) {
 			DemandeLivraisons dLTemp = factoryDemandeLivraisons.getDemandeLivraisons(fichier, this.plan);
 			
@@ -200,7 +202,7 @@ public class ControleurApplication
 				
 				//Si l'utilisateur clique sur une adresse
 				if (objetSelectionne.getClass().getName() == "model.Adresse") {
-					
+					etatAjouterLivraison = false;
 					// On active le bouton pour ajouter une livraison
 					fenetre.getBoutons().get(3).setEnabled(true);
 					// On desactive le bouton pour supprimer une livraison
