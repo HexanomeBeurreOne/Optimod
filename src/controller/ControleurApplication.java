@@ -5,6 +5,7 @@ import model.Tournee;
 import view.Fenetre;
 import model.Adresse;
 import model.DemandeLivraisons;
+import model.Etape;
 import model.factory.FactoryDemandeLivraisons;
 import model.factory.FactoryPlan;
 import model.Livraison;
@@ -247,9 +248,25 @@ public class ControleurApplication
 		fenetre.getZoneMessage().setText("Veuillez sélectionner la livraison existante après laquelle placer votre nouvelle livraison");
 	}
 	
-	public void actionSuprimerLivraison () {
-		supprimerLivraison();
+	public void actionSupprimerLivraison () {
+		FenetreLivraison fenetreL = livraisonSelectionnee.getFenetreLivraison();
+		Adresse AdresseLivraison = livraisonSelectionnee.getAdresse();
+		int client = livraisonSelectionnee.getClient();
+		int indiceEtapeLivraisonSelectionnee = plan.getTournee().trouverIndiceEtape(AdresseLivraison);
+		
+		Adresse adressePrecedente;
+		if(indiceEtapeLivraisonSelectionnee>0) {
+			Etape etapePrecedente = plan.getTournee().getEtapes().get( indiceEtapeLivraisonSelectionnee-1);
+			adressePrecedente = etapePrecedente.getLivraison().getAdresse(); 
+		} else {
+			adressePrecedente = plan.getTournee().getEntrepot();
+		}
+		
+		supprimerLivraison(client, adresseSelectionnee, adressePrecedente, fenetreL);
+			
 	}
+		
+	
 	
 	/**
 	 * Créé une livraison à une adresse
@@ -265,10 +282,10 @@ public class ControleurApplication
 	/**
 	 * Supprime une livraison de la tournee
 	 */
-	public void supprimerLivraison()
+	public void supprimerLivraison(int client, Adresse adresseSelectionnee, Adresse adressePrecedente, FenetreLivraison fenetre)
 	{
 		//TODO
-//		SupprimerLivraison suppression = new SupprimerLivraison(plan, livraison, fenetre);
+//		SupprimerLivraison suppression = new SupprimerLivraison(plan, client, adressePrecedente, adresseSelectionnee, fenetre);
 //		undoRedo.addCommand(suppression);
 	}
 
