@@ -29,7 +29,66 @@ public class Etape {
 		calculerHeureLivraison(heureDepart);
 	}
 	
-	
+	/**
+	 * @return the livraison
+	 */
+	public Livraison getLivraison() {
+		return livraison;
+	}
+
+	/**
+	 * @param livraison the livraison to set
+	 */
+	public void setLivraison(Livraison livraison) {
+		this.livraison = livraison;
+	}
+
+	/**
+	 * @return the chemin
+	 */
+	public Chemin getChemin() {
+		return chemin;
+	}
+
+	/**
+	 * @param chemin the chemin to set
+	 */
+	public void setChemin(Chemin chemin) {
+		this.chemin = chemin;
+	}
+
+	/**
+	 * @return the heureLivraison
+	 */
+	public double getHeureLivraison() {
+		return heureLivraison;
+	}
+
+	/**
+	 * @param heureLivraison the heureLivraison to set
+	 */
+	public void setHeureLivraison(double heureLivraison) {
+		this.heureLivraison = heureLivraison;
+	}
+
+	/**
+	 * @return the retard
+	 */
+	public double getRetard() {
+		return retard;
+	}
+
+	/**
+	 * @param retard the retard to set
+	 */
+	public void setRetard(double retard) {
+		this.retard = retard;
+	}
+
+	/**
+	 * calcule l'heure de livraison de la livraison à partir de l'heure de départ de la fenêtre de livraison
+	 * @param heureDepart
+	 */
 	public void calculerHeureLivraison(double heureDepart){
 		heureLivraison = heureDepart + chemin.getTempsDeParcours();
 		// Si on est en avance sur le debut de la fenetre horaire, on attend.
@@ -44,24 +103,5 @@ public class Etape {
 		}
 	}
 	
-	public Livraison getLivraison() {
-		return livraison;
-	}
-
-	public Chemin getChemin() {
-		return chemin;
-	}
-	
-	public void setChemin(Chemin chemin) {
-		this.chemin = chemin;
-	}
-	
-	public double getHeureLivraison() {
-		return heureLivraison;
-	}
-	
-	public double getHeureRetard() {
-		return retard;
-	}
 	
 }

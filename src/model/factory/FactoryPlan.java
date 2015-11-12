@@ -211,7 +211,7 @@ public class FactoryPlan implements FactoryBase {
 					    	}
 					    }
 					    // on enlève l'adresseCourante de la liste des adresses du plan si finalement celle ci ne possède aucun tronconSortant
-				    	if(adresseCourante.getTroncons().isEmpty()) this.plan.removeAdresse(adresseCourante);
+				    	if(adresseCourante.getTronconsSortants().isEmpty()) this.plan.removeAdresse(adresseCourante);
 		            }
 		        }
 		    }
