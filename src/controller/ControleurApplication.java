@@ -304,6 +304,9 @@ public class ControleurApplication
 		}
 		
 		supprimerLivraison(client, adresseLivraison, adressePrecedente, fenetreL);
+		livraisonSelectionnee = new Livraison();
+		fenetre.getBoutons().get(4).setEnabled(false);
+		
 			
 	}
 		
