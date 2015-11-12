@@ -255,7 +255,7 @@ public class ControleurApplication
 	public void ajouterLivraison(int client, Adresse adresseSelectionnee, Adresse adressePrecedente)
 	{
 		System.out.println(client+" "+adressePrecedente+" "+adresseSelectionnee);
-		AjouterLivraison ajout = new AjouterLivraison(plan,client, adresseSelectionnee, adressePrecedente);
+		AjouterLivraison ajout = new AjouterLivraison(plan, client, adresseSelectionnee, adressePrecedente);
 		undoRedo.addCommand(ajout);
 	}
 	

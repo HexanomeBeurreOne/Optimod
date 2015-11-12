@@ -16,8 +16,9 @@ public class AjouterLivraison implements Commande
 
 //------------------------------------------------- CONSTRUCTORS
 		
-	public AjouterLivraison(Plan plan, int unClient, Adresse precAdresse, Adresse nvLivraison)
+	public AjouterLivraison(Plan unPlan, int unClient, Adresse precAdresse, Adresse nvLivraison)
 	{
+		plan = unPlan;
 		client = unClient;
 		precLivraisonAdresse = precAdresse;
 		nouvellelivraisonAdresse = nvLivraison;
