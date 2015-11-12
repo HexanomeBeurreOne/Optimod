@@ -59,40 +59,6 @@ public class Plan extends Observable {
 		setChanged();
 		notifyObservers();
 	}
-	
-	/**
-	 * Add a new Livraison to the specified fenetreLivraison passed in parameters
-	 * @param newLivraison
-	 * @param fenetreLivraison
-	 */
-	public void addLivraison(Livraison newLivraison, FenetreLivraison fenetreLivraison) {
-		List<FenetreLivraison> fenetresLivraisonsList = this.demandeLivraisons.getFenetresLivraisons();
-		if (fenetresLivraisonsList.contains(fenetreLivraison)) {
-			FenetreLivraison fenetreLivraisonFounded = fenetresLivraisonsList.get(fenetresLivraisonsList.indexOf(fenetreLivraison));
-			fenetreLivraisonFounded.addLivraison(newLivraison);
-		}
-	}
-	
-	/**
-	 * Remove a Livraison from the specified fenetreLivraison passed in parameters
-	 * @param oldLivraison
-	 * @param fenetreLivraison
-	 */
-	public void removeLivraison(Livraison oldLivraison, FenetreLivraison fenetreLivraison) {
-		List<FenetreLivraison> fenetresLivraisonsList = this.demandeLivraisons.getFenetresLivraisons();
-		if (fenetresLivraisonsList.contains(fenetreLivraison)) {
-			FenetreLivraison fenetreLivraisonFounded = fenetresLivraisonsList.get(fenetresLivraisonsList.indexOf(fenetreLivraison));
-			fenetreLivraisonFounded.removeLivraison(oldLivraison);
-		}
-	}
-	
-	/**
-	 * add a new FenetreLivraison to the list fenetresLivraisons
-	 * @param newFenetreLivraison
-	 */
-	public void addFenetreLivraison(FenetreLivraison newFenetreLivraison) {
-		this.demandeLivraisons.getFenetresLivraisons().add(newFenetreLivraison);
-	}
 
 	public String getNom() {
 		return nom;
@@ -433,6 +399,8 @@ public class Plan extends Observable {
 			tournee.supprimerEtape(indiceEtape, plusCourtsChemins);
 			// Suppression de la livraison dans demandeLivraisons
 			demandeLivraisons.supprimerLivraison(adresseLivraison);
+			setChanged();
+			notifyObservers();
 		}
 		else {
 			System.out.println("La livraison ne fait pas partie de la tournee.");
@@ -476,6 +444,8 @@ public class Plan extends Observable {
 			demandeLivraisons.addLivraison(livAAjouter, fenetre);
 			testAjout(precLivraisonAdresse, nouvellelivraisonAdresse);
 			tournee.ajouterEtape(livAAjouter, precLivraisonAdresse, plusCourtsChemins);
+			setChanged();
+			notifyObservers();
 		}
 	}
 	

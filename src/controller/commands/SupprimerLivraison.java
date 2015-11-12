@@ -29,7 +29,7 @@ public class SupprimerLivraison implements Commande
 	@Override
 	public void execute() 
 	{
-		plan.removeLivraison(livraison, fenetre);
+		//plan.supprimerLivraison(nouvellelivraisonAdresse);
 	}
 
 	/**
@@ -38,7 +38,7 @@ public class SupprimerLivraison implements Commande
 	@Override
 	public void unExecute() 
 	{
-		plan.addLivraison(livraison, fenetre);
+		//plan.ajouterLivraisonAvecFenetre(client, precLivraisonAdresse, nouvellelivraisonAdresse, fenetreLivraison);
 	}
 	
 }

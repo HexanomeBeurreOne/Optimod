@@ -58,13 +58,13 @@ public class ControleurApplication
 	
 	public void undo()
 	{
-		//undoRedo.undo();
+		undoRedo.undo();
 		System.out.println("undo");
 	}
 	
 	public void redo()
 	{
-		//undoRedo.redo();
+		undoRedo.redo();
 		System.out.println("redo");
 	}
 	
