@@ -3,11 +3,14 @@ package model.tsp;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 public class IteratorSeq2 implements Iterator<Integer> {
 
 	private Integer[] candidats;
-	private int nbCandidats;
+	private int indice;
 
 	/**
 	 * Cree un iterateur pour iterer sur l'ensemble des sommets de nonVus qui sont successeurs de sommetCrt dans le graphe g,
@@ -17,25 +20,25 @@ public class IteratorSeq2 implements Iterator<Integer> {
 	 * @param g
 	 */
 	public IteratorSeq2(Collection<Integer> nonVus, int sommetCrt, Graphe g){
-		this.candidats = new Integer[nonVus.size()];
+		TreeMap<Integer, Integer> treeMapCandidats = new TreeMap<Integer, Integer>();
 		Iterator<Integer> it = nonVus.iterator();
 		while (it.hasNext()){
 			Integer s = it.next();
 			if (g.estArc(sommetCrt, s))
-				candidats[nbCandidats++] = s;
+				treeMapCandidats.put(g.getCout(sommetCrt, s), s);
 		}
-                Arrays.sort(candidats);
+		Collection<Integer> collectionCandidats = treeMapCandidats.values();
+		this.candidats = collectionCandidats.toArray(new Integer[collectionCandidats.size()]);
 	}
 	
 	@Override
 	public boolean hasNext() {
-		return nbCandidats > 0;
+		return indice < candidats.length;
 	}
 
 	@Override
 	public Integer next() {
-		nbCandidats--;
-		return candidats[nbCandidats];
+		return candidats[indice++];
 	}
 
 	@Override

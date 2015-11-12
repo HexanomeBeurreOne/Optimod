@@ -18,6 +18,7 @@ import model.tsp.Graphe;
 import model.tsp.GrapheOptimod;
 import model.tsp.TSP;
 import model.tsp.TSP1;
+import model.tsp.TSP2;
 
 /**
  * @author Adrien Menella
@@ -146,7 +147,7 @@ public class Plan extends Observable {
 	}
 	
 	private Integer[] calculOrdreLivraisons() {
-		TSP tsp = new TSP1();
+		TSP tsp = new TSP2();
 		Graphe g = new GrapheOptimod(demandeLivraisons, plusCourtsChemins);
 		long tempsDebut = System.currentTimeMillis();
 		tsp.chercheSolution(60000, g);
