@@ -420,7 +420,7 @@ public class Plan extends Observable {
 			}
 		}
 		return indiceEtape;
-	}	
+	}
 	
 	public void supprimerLivraison(Adresse adresseLivraison) {
 		int indiceEtape = testSuppression(adresseLivraison);

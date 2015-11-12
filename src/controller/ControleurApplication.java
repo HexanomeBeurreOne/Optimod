@@ -58,12 +58,14 @@ public class ControleurApplication
 	
 	public void undo()
 	{
-		undoRedo.undo();
+		//undoRedo.undo();
+		System.out.println("undo");
 	}
 	
 	public void redo()
 	{
-		undoRedo.redo();
+		//undoRedo.redo();
+		System.out.println("redo");
 	}
 	
 	public void chargerPlan() {
@@ -267,6 +269,21 @@ public class ControleurApplication
 		//TODO
 //		SupprimerLivraison suppression = new SupprimerLivraison(plan, livraison, fenetre);
 //		undoRedo.addCommand(suppression);
+	}
+	
+	/**
+	 * Gestion des touches saisies avec le clavier
+	 */
+	public void caractereSaisi(String codeCar)
+	{
+		switch(codeCar){
+		case "undo" : 
+			undo();
+			break;
+		case "redo" :
+			redo();
+			break;
+		}
 	}
 
 	/**
