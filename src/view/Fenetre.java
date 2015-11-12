@@ -3,6 +3,7 @@ package view;
 import model.*;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 
 import controller.ControleurApplication;
 
@@ -40,7 +41,7 @@ public class Fenetre extends JFrame{
 	private EcouteurSouris ecouteurSouris;
 	
 	private JLabel zoneMessage;
-	private final int hauteurMessage = 50;
+	private final int hauteurMessage = 27;
 	
 	private ArrayList<Color> couleurs;
 	private ArrayList<Integer> epaisseursLignes;
@@ -77,10 +78,15 @@ public class Fenetre extends JFrame{
         
         //ZoneMessage
         zoneMessage = new JLabel();
-        zoneMessage.setBorder(BorderFactory.createTitledBorder("Message"));
-        zoneMessage.setSize(largeurVuePlan,hauteurMessage);
+        
+        Border paddingBorder = BorderFactory.createEmptyBorder(10,10,10,10);
+        Border border = BorderFactory.createLineBorder(Color.LIGHT_GRAY);
+        zoneMessage.setBorder(BorderFactory.createCompoundBorder(border,paddingBorder));
+        
+        zoneMessage.setSize(largeurFenetre,hauteurMessage);
 		zoneMessage.setLocation(0,hauteurBouton);
 		zoneMessage.setText("Vous pouvez charger un plan");
+		
 		getContentPane().add(zoneMessage);
 		
 		//Souris
