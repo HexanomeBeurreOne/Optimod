@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<Reseau>
+	<Noeud id="0" x="51" y="37">
+		<LeTronconSortant nomRue="v0" vitesse="4,400000" longueur="300,200000" idNoeudDestination="1"/>
+		<LeTronconSortant nomRue="h0" vitesse="4,300000" longueur="116,400000" idNoeudDestination="20"/>
+	</Noeud>
+	<Noeud id="1" x="26" y="65">
+		<LeTronconSortant nomRue="v0" vitesse="4,500000" longueur="300,200000" idNoeudDestination="0"/>
+		<LeTronconSortant nomRue="v0" vitesse="4,200000" longueur="408,700000" idNoeudDestination="2"/>
+	</Noeud>
+	<Noeud id="2" x="23" y="116">
+		<LeTronconSortant nomRue="v0" vitesse="4,700000" longueur="408,700000" idNoeudDestination="1"/>
+		<LeTronconSortant nomRue="v0" vitesse="3,800000" longueur="291,200000" idNoeudDestination="3"/>
+		<LeTronconSortant nomRue="h2" vitesse="4,000000" longueur="364,300000" idNoeudDestination="22"/>
+	</Noeud>
+	<Noeud id="3" x="33" y="151">
+		<LeTronconSortant nomRue="v0" vitesse="3,800000" longueur="291,200000" idNoeudDestination="2"/>
+		<LeTronconSortant nomRue="v0" vitesse="4,100000" longueur="338,300000" idNoeudDestination="4"/>
+		<LeTronconSortant nomRue="h3" vitesse="4,000000" longueur="376,000000" idNoeudDestination="23"/>
+	</Noeud>
+	<Noeud id="4" x="28" y="193">
+		<LeTronconSortant nomRue="v0" vitesse="4,000000" longueur="338,300000" idNoeudDestination="3"/>
+		<LeTronconSortant nomRue="v0" vitesse="4,400000" longueur="240,600000" idNoeudDestination="5"/>
+		<LeTronconSortant nomRue="h4" vitesse="4,700000" longueur="343,600000" idNoeudDestination="24"/>
+	</Noeud>
+	<Noeud id="5" x="39" y="221">
+		<LeTronconSortant nomRue="v0" vitesse="4,100000" longueur="240,600000" idNoeudDestination="4"/>
+		<LeTronconSortant nomRue="v0" vitesse="4,000000" longueur="469,500000" idNoeudDestination="6"/>
+		<LeTronconSortant nomRue="h5" vitesse="4,200000" longueur="400,000000" idNoeudDestination="25"/>
+	</Noeud>
+	<Noeud id="6" x="30" y="279">
+		<LeTronconSortant nomRue="v0" vitesse="3,800000" longueur="469,500000" idNoeudDestination="5"/>
+		<LeTronconSortant nomRue="v0" vitesse="4,200000" longueur="137,600000" idNoeudDestination="7"/>
+		<LeTronconSortant nomRue="h6" vitesse="4,600000" longueur="302,800000" idNoeudDestination="26"/>
+	</Noeud>
+</Reseau>
