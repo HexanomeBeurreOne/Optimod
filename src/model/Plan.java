@@ -18,6 +18,7 @@ import model.tsp.Graphe;
 import model.tsp.GrapheOptimod;
 import model.tsp.TSP;
 import model.tsp.TSP1;
+import model.tsp.TSP2;
 
 /**
  * @author Adrien Menella
@@ -146,7 +147,7 @@ public class Plan extends Observable {
 	}
 	
 	private Integer[] calculOrdreLivraisons() {
-		TSP tsp = new TSP1();
+		TSP tsp = new TSP2();
 		Graphe g = new GrapheOptimod(demandeLivraisons, plusCourtsChemins);
 		long tempsDebut = System.currentTimeMillis();
 		tsp.chercheSolution(60000, g);
@@ -505,37 +506,46 @@ public class Plan extends Observable {
 	 * @param nouvellelivraisonAdresse
 	 * @param fenetre
 	 */
-	public void ajouterLivraisonAvecFenetre(int client, Adresse precLivraisonAdresse, Adresse nouvellelivraisonAdresse, FenetreLivraison fenetre) {
-		Livraison livAAjouter = new Livraison(client,nouvellelivraisonAdresse, fenetre);
+	public void ajouterLivraisonAvecFenetre(int client, Adresse adresseLivraisonPrec, Adresse adresseNouvelleLivraison, FenetreLivraison fenetre) {
+		Livraison nouvelleLivraison = new Livraison(client, adresseNouvelleLivraison, fenetre);
 		
-		if(demandeLivraisons.getAllLivraisons().contains(livAAjouter) == false)	{
-			demandeLivraisons.addLivraison(livAAjouter, fenetre);
-			testAjout(precLivraisonAdresse, nouvellelivraisonAdresse);
-			tournee.ajouterEtape(livAAjouter, precLivraisonAdresse, plusCourtsChemins);
+		demandeLivraisons.addLivraison(nouvelleLivraison, fenetre);
+		int resTest = testAjout(adresseLivraisonPrec, adresseNouvelleLivraison);
+		if(resTest != -2) {
+			tournee.ajouterEtape(nouvelleLivraison, adresseLivraisonPrec, plusCourtsChemins);
 			setChanged();
 			notifyObservers();
 		}
 	}
 	
-	public int testAjout(Adresse precLivraisonAdresse, Adresse livraisonAdresse)	{
-		int indiceEtapePrec = tournee.trouverIndiceEtape(precLivraisonAdresse);
-		// On verifie si on a suffisamment de plus courts chemins uniquement si la livraison fait partie et n'est pas la seule livraison de la tournee
-		if(indiceEtapePrec != -1 && tournee.getEtapes().size() != 1) {
-			Adresse arrivee;
-			if(indiceEtapePrec == tournee.getEtapes().size()-1) {
-				// On souhaite ajouter après la derniere etape, le chemin retourEntrepot va etre mis a jour
-				arrivee = tournee.getEntrepot();
-			}
-			else {
-				arrivee = tournee.getEtapes().get(indiceEtapePrec+1).getLivraison().getAdresse();
-			}
-			// Calcul de nouveaux plus courts chemins a l'aide de dijkstra si celui dont on a besoin n'a pas ete precedemment
-			if(plusCourtsChemins.get(precLivraisonAdresse.getId()).get(livraisonAdresse.getId()) == null) {
-				nouveauxPlusCourtsChemins(precLivraisonAdresse, livraisonAdresse);
-			}
-			if(plusCourtsChemins.get(livraisonAdresse.getId()) == null || plusCourtsChemins.get(livraisonAdresse.getId()).get(arrivee.getId()) == null) {
-				nouveauxPlusCourtsChemins(livraisonAdresse, arrivee);
-			}
+	public int testAjout(Adresse adresseLivraisonPrec, Adresse adresseLivraison)	{
+		Adresse arrivee;
+		int indiceEtapePrec;
+		// Gestion du cas ou la livraison precedente est en fait l'entrepot 
+		if(adresseLivraisonPrec == demandeLivraisons.getEntrepot()){
+			indiceEtapePrec = -1;
+		}
+		// Il y a une etape precedente
+		else {
+			indiceEtapePrec = tournee.trouverIndiceEtape(adresseLivraisonPrec);
+			//Si on ne trouve pas l'etape
+			if(indiceEtapePrec == -1) return -2;
+		}
+		// Si il n'y a pas d'etape suivante
+		if(indiceEtapePrec + 1 == tournee.getEtapes().size()) {
+			// On souhaite ajouter après la derniere etape, le chemin retourEntrepot va etre mis a jour
+			arrivee = tournee.getEntrepot();
+		}
+		else {
+			arrivee = tournee.getEtapes().get(indiceEtapePrec+1).getLivraison().getAdresse();
+		}
+
+		// Calcul de nouveaux plus courts chemins a l'aide de dijkstra si celui dont on a besoin n'a pas ete precedemment
+		if(plusCourtsChemins.get(adresseLivraisonPrec.getId()).get(adresseLivraison.getId()) == null) {
+			nouveauxPlusCourtsChemins(adresseLivraisonPrec, adresseLivraison);
+		}
+		if(plusCourtsChemins.get(adresseLivraison.getId()) == null || plusCourtsChemins.get(adresseLivraison.getId()).get(arrivee.getId()) == null) {
+			nouveauxPlusCourtsChemins(adresseLivraison, arrivee);
 		}
 		return indiceEtapePrec;
 	}
