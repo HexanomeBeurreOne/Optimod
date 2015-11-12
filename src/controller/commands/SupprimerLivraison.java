@@ -1,5 +1,6 @@
 package controller.commands;
 
+import model.Adresse;
 import model.Plan;
 import model.FenetreLivraison;
 import model.Livraison;
@@ -9,17 +10,21 @@ public class SupprimerLivraison implements Commande
 {
 //------------------------------------------------- ATTRIBUTES	
 
-	protected Livraison livraison;
-	protected FenetreLivraison fenetre;
 	protected Plan plan;
+	protected int client;
+	protected Adresse precLivraisonAdresse;
+	protected Adresse livraisonAdresseSelectionnee;
+	protected FenetreLivraison fenetreLivraison;
 	
 //------------------------------------------------- CONSTRUCTORS
 	
-	public SupprimerLivraison(Plan p, Livraison l, FenetreLivraison f)
+	public SupprimerLivraison(Plan unPlan, int unClient, Adresse precAdresse, Adresse adSelectionne, FenetreLivraison fenetre)
 	{
-		plan = p;
-		livraison = l;
-		fenetre = f;
+		plan = unPlan;
+		client = unClient;
+		precLivraisonAdresse = precAdresse;
+		livraisonAdresseSelectionnee = adSelectionne;
+		fenetreLivraison = fenetre;
 	}
 	
 //------------------------------------------------- METHODS
@@ -29,7 +34,7 @@ public class SupprimerLivraison implements Commande
 	@Override
 	public void execute() 
 	{
-		//plan.supprimerLivraison(nouvellelivraisonAdresse);
+		plan.supprimerLivraison(livraisonAdresseSelectionnee);
 	}
 
 	/**
@@ -38,7 +43,7 @@ public class SupprimerLivraison implements Commande
 	@Override
 	public void unExecute() 
 	{
-		//plan.ajouterLivraisonAvecFenetre(client, precLivraisonAdresse, nouvellelivraisonAdresse, fenetreLivraison);
+		plan.ajouterLivraisonAvecFenetre(client, precLivraisonAdresse, livraisonAdresseSelectionnee, fenetreLivraison);
 	}
 	
 }
