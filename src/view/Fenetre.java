@@ -3,6 +3,7 @@ package view;
 import model.*;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 
 import controller.ControleurApplication;
 
@@ -40,7 +41,7 @@ public class Fenetre extends JFrame{
 	private EcouteurSouris ecouteurSouris;
 	
 	private JLabel zoneMessage;
-	private final int hauteurMessage = 50;
+	private final int hauteurMessage = 27;
 	
 	private ArrayList<Color> couleurs;
 	private ArrayList<Integer> epaisseursLignes;
@@ -77,10 +78,15 @@ public class Fenetre extends JFrame{
         
         //ZoneMessage
         zoneMessage = new JLabel();
-        zoneMessage.setBorder(BorderFactory.createTitledBorder("Message"));
-        zoneMessage.setSize(largeurVuePlan,hauteurMessage);
+        
+        Border paddingBorder = BorderFactory.createEmptyBorder(10,10,10,10);
+        Border border = BorderFactory.createLineBorder(Color.LIGHT_GRAY);
+        zoneMessage.setBorder(BorderFactory.createCompoundBorder(border,paddingBorder));
+        
+        zoneMessage.setSize(largeurFenetre,hauteurMessage);
 		zoneMessage.setLocation(0,hauteurBouton);
 		zoneMessage.setText("Vous pouvez charger un plan");
+		
 		getContentPane().add(zoneMessage);
 		
 		//Souris
@@ -115,19 +121,26 @@ public class Fenetre extends JFrame{
 		boutons.get(4).setEnabled(false);
     }
     
-    public void genererCouleurs(ArrayList<Integer> infosTroncons) {
+    public void genererCouleurs(int infosTroncons) {
     	float R = 0.0f, G = 0.0f, B = 0.0f;
     	
-    	for (int i = 0; i < infosTroncons.size(); i++) {
+//    	for (int i = 0; i < infosTroncons.size(); i++) {
+//    		
+//    		
+//    		for (int j = 0; j < infosTroncons.get(i); j++) {
+//    			couleurs.add(new Color(R, G, B));
+//    			epaisseursLignes.add((infosTroncons.size()-i)*3);
+//    		}
+//    	}
+    	for (int i = 0; i < infosTroncons; i++) {
     		R=(float)Math.random();
     		G=(float)Math.random();
     		B=(float)Math.random();
-    		
-    		for (int j = 0; j < infosTroncons.get(i); j++) {
-    			couleurs.add(new Color(R, G, B));
-    			epaisseursLignes.add((infosTroncons.size()-i)*3);
-    		}
+    		couleurs.add(new Color(R, G, B));
+    		epaisseursLignes.add((infosTroncons-i)*3);
     	}
+    	System.out.println(couleurs.size());
+    	System.out.println(epaisseursLignes.size());
     }
 
 	public int getHauteurFenetre() {
