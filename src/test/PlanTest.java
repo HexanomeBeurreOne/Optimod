@@ -5,6 +5,8 @@ package test;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 
@@ -15,6 +17,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import model.Adresse;
+import model.Chemin;
 import model.DemandeLivraisons;
 import model.Livraison;
 import model.Plan;
@@ -60,7 +63,19 @@ public class PlanTest {
 	 */
 	@Test
 	public void testCalculTournee() {
-		fail("Not yet implemented");
+		FactoryPlan factoryPlan = new FactoryPlan();
+		Plan plan = factoryPlan.getPlan("data/plan20x20.xml");
+		FactoryDemandeLivraisons factoryDemandeLivraisons = new FactoryDemandeLivraisons();
+		DemandeLivraisons demandeLivraisons = factoryDemandeLivraisons.getDemandeLivraisons("data/livraison20x20-1.xml", plan);
+		plan.setDemandeLivraisons(demandeLivraisons);
+		
+		assertNull("FAIL 2 : Tournee not null, but it should be null before calcul", plan.getTournee());
+		
+		plan.calculTournee();
+		
+		assertNotNull("FAIL 3 : Tournee null, but it should not be null after calcul", plan.getTournee());
+		
+		assertEquals("FAIL 4 : Tournee's Entrepot not equal to DemandeLivraisons's Entrepot", plan.getTournee().getEntrepot(), plan.getDemandeLivraisons().getEntrepot());
 	}
 
 	/**
@@ -68,7 +83,17 @@ public class PlanTest {
 	 */
 	@Test
 	public void testDijkstra() {
-		fail("Not yet implemented");
+		FactoryPlan factoryPlan = new FactoryPlan();
+		Plan plan = factoryPlan.getPlan("data/plan20x20.xml");
+		FactoryDemandeLivraisons factoryDemandeLivraisons = new FactoryDemandeLivraisons();
+		DemandeLivraisons demandeLivraisons = factoryDemandeLivraisons.getDemandeLivraisons("data/livraison20x20-1.xml", plan);
+		plan.setDemandeLivraisons(demandeLivraisons);
+		
+		List<Adresse> cibles = new ArrayList<Adresse>();
+		cibles.add(plan.getAdresses().get(1));
+		Hashtable<Integer, Chemin> dij = plan.dijkstra(plan.getAdresses().get(0), cibles);
+		assertEquals("FAIL 5 : dijsktra(), size result is not right", dij.size(), 1);
+		assertEquals("FAIL 6 : dijsktra(), chemin is misformed", dij.get(plan.getAdresses().get(1).getId()).getDebut(), plan.getAdresses().get(0));
 	}
 
 	/**
@@ -132,7 +157,7 @@ public class PlanTest {
 		
 		plan.ajouterLivraison(0, adressePrec, nouvelleLivraisonAdresse);
 		
-		assertEquals("FAIL 2 : ajouterLivrasionAvecFenetre(), new Livraison not added", plan.getTournee().getEtapes().get(1).getLivraison().getAdresse(), nouvelleLivraisonAdresse);
+		assertEquals("FAIL 3 : ajouterLivrasionAvecFenetre(), new Livraison not added", plan.getTournee().getEtapes().get(1).getLivraison().getAdresse(), nouvelleLivraisonAdresse);
 	}
 
 	/**
@@ -164,8 +189,8 @@ public class PlanTest {
 		
 		plan.ajouterLivraisonAvecFenetre(0, livPrec.getAdresse(), nouvelleLivraisonAdresse, livPrec.getFenetreLivraison());
 		
-		assertEquals("FAIL 3 : ajouterLivrasionAvecFenetre(), new Livraison not added", plan.getTournee().getEtapes().get(1).getLivraison().getAdresse(), nouvelleLivraisonAdresse);
-		assertEquals("FAIL 4 : ajouterLivrasionAvecFenetre(), new Livraison not added in right FenetreLivraison", plan.getTournee().getEtapes().get(1).getLivraison().getFenetreLivraison(), livPrec.getFenetreLivraison());
+		assertEquals("FAIL 4 : ajouterLivrasionAvecFenetre(), new Livraison not added", plan.getTournee().getEtapes().get(1).getLivraison().getAdresse(), nouvelleLivraisonAdresse);
+		assertEquals("FAIL 5 : ajouterLivrasionAvecFenetre(), new Livraison not added in right FenetreLivraison", plan.getTournee().getEtapes().get(1).getLivraison().getFenetreLivraison(), livPrec.getFenetreLivraison());
 	}
 
 	/**

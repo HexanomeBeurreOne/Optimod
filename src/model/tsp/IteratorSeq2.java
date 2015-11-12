@@ -24,7 +24,7 @@ public class IteratorSeq2 implements Iterator<Integer> {
 			if (g.estArc(sommetCrt, s))
 				candidats[nbCandidats++] = s;
 		}
-                Arrays.sort(candidats);
+        Arrays.sort(candidats);
 	}
 	
 	@Override

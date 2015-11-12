@@ -211,6 +211,14 @@ public class Plan extends Observable {
 	private HashMap<Adresse, Double> distance;
 	private HashMap<Adresse, Adresse> predecessors;
 	
+	/**
+	 * Dijkstra() trouve les plus courts chemins de depart jusqu'aux adresses cibles et retourne le résultat
+	 * dans une HashTable composée d'entités clé-valeur où la clé est l'id de l'adresse et la valeur le chemin de
+	 * depart à cette adresse.
+	 * @param depart
+	 * @param cibles
+	 * @return
+	 */
 	public Hashtable<Integer, Chemin> dijkstra(Adresse depart, List<Adresse> cibles) {
 		settledNodes = new HashSet<Adresse>();
 		unSettledNodes = new HashSet<Adresse>();
