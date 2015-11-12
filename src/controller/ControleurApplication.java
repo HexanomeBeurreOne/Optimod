@@ -238,7 +238,7 @@ public class ControleurApplication
 	{
 		System.out.println(client+" "+adressePrecedente+" "+adresseSelectionnee);
 		//TODO
-		AjouterLivraison ajout = new AjouterLivraison(plan,client, adresseSelectionnee, adressePrecedente);
+		AjouterLivraison ajout = new AjouterLivraison(plan, client, adresseSelectionnee, adressePrecedente);
 		undoRedo.addCommand(ajout);
 	}
 	
