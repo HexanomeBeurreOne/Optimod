@@ -254,6 +254,7 @@ public class Fenetre extends JFrame{
 	}
 	
 	public String secondeToHeure (int heureEnSeconde) {
+		if (heureEnSeconde < 0) return "0";
 		return (int)heureEnSeconde/3600 + ":"+ ((int)heureEnSeconde%3600)/60 + ":"+ (int)heureEnSeconde%60;
 	}
 }

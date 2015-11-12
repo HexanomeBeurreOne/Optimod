@@ -17,9 +17,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.border.CompoundBorder;
 
-import model.FenetreLivraison;
-import model.Livraison;
-import model.Plan;
+import model.*;
 
 public class VueLivraison extends JPanel implements Observer {
 
@@ -40,12 +38,14 @@ public class VueLivraison extends JPanel implements Observer {
 		
 		this.livraisons = new JList();
 		this.livraisons.setCellRenderer(new ColorierItemRenderer());
+		
 		this.add(livraisons);
 		fenetre.getContentPane().add(this);
 		plan.addObserver(this);
 	}
 	
 	private void afficherLivraisons() {
+
 		int indice = 0;
 		FenetreLivraison fenetreLivraisonCourante;
 		Iterator<FenetreLivraison> itFL = plan.getDemandeLivraisons().getFenetresLivraisons().iterator();
@@ -67,8 +67,20 @@ public class VueLivraison extends JPanel implements Observer {
 			
 			while (itL.hasNext()) {
 				Livraison livraisonActuelle = itL.next();
+				String resultat = 	"Client : "+livraisonActuelle.getClient();
 				
-				model[indice] = livraisonActuelle.getClient();
+				if (plan.getTournee().getEtapes() != null) {
+					for (int i = 0; i < plan.getTournee().getEtapes().size(); i++) {
+						Etape etapeATester = plan.getTournee().getEtapes().get(i);
+						Livraison livraisonATester = etapeATester.getLivraison();
+						if (livraisonATester.getAdresse() == livraisonActuelle.getAdresse()) {
+							resultat += " Heure prevue : "+fenetre.secondeToHeure((int)etapeATester.getHeureLivraison())+
+										" Retard : "+fenetre.secondeToHeure((int)etapeATester.getHeureRetard());
+						}
+					}
+				}
+				
+				model[indice] = resultat;
 				indice++;
 			}
 		}
@@ -80,7 +92,7 @@ public class VueLivraison extends JPanel implements Observer {
 	private static class ColorierItemRenderer extends DefaultListCellRenderer {
         public Component getListCellRendererComponent( JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
         	Component c = super.getListCellRendererComponent( list, value, index, isSelected, cellHasFocus );
-        	System.out.println(value.getClass().getName());
+
         	if(value.getClass().getName() == "java.lang.String") {
         		String fenetreL = (String)value;
         		
