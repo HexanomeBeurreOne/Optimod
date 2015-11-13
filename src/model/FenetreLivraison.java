@@ -74,7 +74,7 @@ public class FenetreLivraison {
 	}
 
 	/**
-	 * ajoute un objet Livraison à la liste livraisons
+	 * ajoute un objet Livraison ï¿½ la liste livraisons
 	 * @param newLivraison
 	 */
 	public void addLivraison(Livraison newLivraison) {
@@ -82,7 +82,7 @@ public class FenetreLivraison {
 	}
 	
 	/**
-	 * enlève l'objet Livraison de la liste livraisons
+	 * enlï¿½ve l'objet Livraison de la liste livraisons
 	 * @param oldLivraison
 	 */
 	public void removeLivraison(Livraison oldLivraison) {
@@ -101,7 +101,7 @@ public class FenetreLivraison {
 	
 	
 	/**
-	 * définie l'attribut selectionnee de l'objet Livraison livraison à la valeur du booleen selectionnee passé en paramètre
+	 * dï¿½finie l'attribut selectionnee de l'objet Livraison livraison ï¿½ la valeur du booleen selectionnee passï¿½ en paramï¿½tre
 	 * @param livraison est la livraison que l'on doit modifier
 	 * @param selectionnee est la nouvelle valeur de l'attribut de la livraison
 	 */
@@ -112,7 +112,7 @@ public class FenetreLivraison {
 	}
 	
 	/**
-	 * retourne la Livraison dont les coordonnées sont les plus proche des points x0 et y0 dans un cercle de rayon pixels
+	 * retourne la Livraison dont les coordonnï¿½es sont les plus proche des points x0 et y0 dans un cercle de rayon pixels
 	 * @param x0
 	 * @param y0
 	 * @param rayon
@@ -133,7 +133,7 @@ public class FenetreLivraison {
 		}
 		
 		Enumeration<Double> listeDistances = livraisonsTrouvees.keys();
-		double minDist = 9999;
+		Double minDist = Double.MAX_VALUE;
 		while(listeDistances.hasMoreElements()) {
 			double nextDist = listeDistances.nextElement();
 			minDist = nextDist<minDist ? nextDist : minDist;

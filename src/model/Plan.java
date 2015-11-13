@@ -683,7 +683,7 @@ public class Plan extends Observable {
 //		}
 //	}
 
-	public Adresse chercheAdresse(int x0, int y0) {
+	public Adresse chercheAdresse(int x0, int y0, int rayon) {
 		Iterator<Adresse> itA = this.adresses.iterator();
 		Adresse adresseCourante;
 		int x, y;
@@ -698,20 +698,20 @@ public class Plan extends Observable {
 		}
 		
 		Enumeration<Double> listeDistances = adressesTrouvees.keys();
-		double minDist = 9999;
+		Double minDist = Double.MAX_VALUE;
 		while(listeDistances.hasMoreElements()) {
 			double nextDist = listeDistances.nextElement();
 			minDist = nextDist<minDist ? nextDist : minDist;
 		}
 		
-		if(minDist<=15) return adressesTrouvees.get(minDist);
+		if(minDist<=rayon) return adressesTrouvees.get(minDist);
 		
 		return null;
 	}
 	
 	public Object cherche(int x0, int y0, int rayon) {
 		Livraison livraisonTrouvee = this.demandeLivraisons.chercheLivraison(x0, y0, rayon);
-		Adresse adresseTrouvee = this.chercheAdresse(x0, y0);
+		Adresse adresseTrouvee = this.chercheAdresse(x0, y0, rayon);
 		
 		if(livraisonTrouvee != null) return livraisonTrouvee;
 		
