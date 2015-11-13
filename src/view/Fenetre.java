@@ -15,8 +15,8 @@ import java.util.Iterator;
  * Created by cyrilcanete on 03/11/15.
  */
 public class Fenetre extends JFrame{
-	private final int hauteurFenetre = 700;
-	private final int largeurFenetre = 1250;
+	private final int hauteurFenetre = (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight()*0.9);
+	private final int largeurFenetre = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth()*0.9);
 	
 	private VuePlan vuePlan;
 	private int largeurVuePlan;
@@ -35,8 +35,8 @@ public class Fenetre extends JFrame{
 	protected static final String CHANGER = "Calculer tournée";
 	protected static final String AJOUTER_LIVRAISON = "Ajouter livraison";
 	protected static final String SUPPRIMER_LIVRAISON = "Supprimer livraison";
-	protected static final String UNDO = "Undo";
-	protected static final String REDO = "Redo";
+	protected static final String UNDO = "Annuler";
+	protected static final String REDO = "Rétablir";
 	protected static final String ENREGISTRER_FEUILLE_ROUTE = "Feuille de Route";
 	private final String[] intitulesBoutons = new String[]{CHARGER_PLAN, CHARGER_LIVRAISONS, CALCULER_TOURNEE, AJOUTER_LIVRAISON, SUPPRIMER_LIVRAISON, UNDO, REDO, ENREGISTRER_FEUILLE_ROUTE};
 	private EcouteurBoutons ecouteurDeBoutons;
