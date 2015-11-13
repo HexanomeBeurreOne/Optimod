@@ -68,7 +68,7 @@ public class PlanTest {
 		FactoryDemandeLivraisons factoryDemandeLivraisons = new FactoryDemandeLivraisons();
 		DemandeLivraisons demandeLivraisons = factoryDemandeLivraisons.getDemandeLivraisons("data/livraison20x20-1.xml", plan);
 		plan.setDemandeLivraisons(demandeLivraisons);
-		
+
 		plan.calculTournee();
 		
 		assertNotNull("FAIL 3 : Tournee null, but it should not be null after calcul", plan.getTournee());
