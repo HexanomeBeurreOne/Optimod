@@ -27,6 +27,7 @@ public class IteratorSeq2 implements Iterator<Integer> {
 			if (g.estArc(sommetCrt, s))
 				treeMapCandidats.put(g.getCout(sommetCrt, s), s);
 		}
+
 		Collection<Integer> collectionCandidats = treeMapCandidats.values();
 		this.candidats = collectionCandidats.toArray(new Integer[collectionCandidats.size()]);
 	}

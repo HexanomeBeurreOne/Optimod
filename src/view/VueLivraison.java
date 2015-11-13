@@ -75,7 +75,7 @@ public class VueLivraison extends JPanel implements Observer {
 						Livraison livraisonATester = etapeATester.getLivraison();
 						if (livraisonATester.getAdresse() == livraisonActuelle.getAdresse()) {
 							resultat += " Heure prevue : "+fenetre.secondeToHeure((int)etapeATester.getHeureLivraison())+
-										" Retard : "+fenetre.secondeToHeure((int)etapeATester.getHeureRetard());
+										" Retard : "+fenetre.secondeToHeure((int)etapeATester.getRetard());
 						}
 					}
 				}

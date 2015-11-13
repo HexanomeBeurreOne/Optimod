@@ -27,7 +27,7 @@ import model.tsp.TSP2;
 public class Plan extends Observable {
 
 	/**
-	 * Attributes
+	 * Attributs
 	 */
 	private String nom;
 	private List<Adresse> adresses;
@@ -40,7 +40,7 @@ public class Plan extends Observable {
 	private Tournee tournee;
 	
 	/**
-	 * Constructor
+	 * Constructeur
 	 */
 	public Plan() {
 		this.nom = "";
@@ -51,6 +51,83 @@ public class Plan extends Observable {
 		this.tournee = new Tournee();
 	}
 	
+	/**
+	 * @return the plusCourtsChemins
+	 */
+	public Hashtable<Integer, Hashtable<Integer, Chemin>> getPlusCourtsChemins() {
+		return plusCourtsChemins;
+	}
+
+	/**
+	 * @param plusCourtsChemins the plusCourtsChemins to set
+	 */
+	public void setPlusCourtsChemins(Hashtable<Integer, Hashtable<Integer, Chemin>> plusCourtsChemins) {
+		this.plusCourtsChemins = plusCourtsChemins;
+	}
+
+	/**
+	 * @return the settledNodes
+	 */
+	public HashSet<Adresse> getSettledNodes() {
+		return settledNodes;
+	}
+
+	/**
+	 * @param settledNodes the settledNodes to set
+	 */
+	public void setSettledNodes(HashSet<Adresse> settledNodes) {
+		this.settledNodes = settledNodes;
+	}
+
+	/**
+	 * @return the unSettledNodes
+	 */
+	public HashSet<Adresse> getUnSettledNodes() {
+		return unSettledNodes;
+	}
+
+	/**
+	 * @param unSettledNodes the unSettledNodes to set
+	 */
+	public void setUnSettledNodes(HashSet<Adresse> unSettledNodes) {
+		this.unSettledNodes = unSettledNodes;
+	}
+
+	/**
+	 * @return the distance
+	 */
+	public HashMap<Adresse, Double> getDistance() {
+		return distance;
+	}
+
+	/**
+	 * @param distance the distance to set
+	 */
+	public void setDistance(HashMap<Adresse, Double> distance) {
+		this.distance = distance;
+	}
+
+	/**
+	 * @return the predecessors
+	 */
+	public HashMap<Adresse, Adresse> getPredecessors() {
+		return predecessors;
+	}
+
+	/**
+	 * @param predecessors the predecessors to set
+	 */
+	public void setPredecessors(HashMap<Adresse, Adresse> predecessors) {
+		this.predecessors = predecessors;
+	}
+
+	/**
+	 * @return the tournee
+	 */
+	public Tournee getTournee() {
+		return tournee;
+	}
+
 	public DemandeLivraisons getDemandeLivraisons() {
 		return demandeLivraisons;
 	}
@@ -92,33 +169,30 @@ public class Plan extends Observable {
 	}
 
 	/**
-	 * Add an Adresse to the ArrayList adresses
-	 * @param newAdresse
+	 * Ajoute un objet Adresse � la liste adresses
+	 * @param newAdresse est l'adresse � ajouter
 	 */
 	public void addAdresse(Adresse newAdresse) {
 		this.adresses.add(newAdresse);
 	}
 	
 	/**
-	 * Remove an Adresse to the ArrayList adresses
-	 * @param adresseToRemove
+	 * Enl�ve un objet Adresse � la liste adresses
+	 * @param adresseToRemove est l'adresse � enlever
 	 */
 	public void removeAdresse(Adresse adresseToRemove) {
 		if(this.adresses.contains(adresseToRemove)) this.adresses.remove(adresseToRemove);
 	}
 	
 	 /**
-	  * Add a Troncon to the ArrayList troncons
-	  * @param newTroncon
+	  * Ajoute un objet Troncon � la liste troncons
+	  * @param newTroncon est le troncon � ajouter
 	  */
 	public void addTroncon(Troncon newTroncon) {
 		this.troncons.add(newTroncon);
 	}
 
 	
-	public Tournee getTournee() {
-		return tournee;
-	}
 	
 	public void setTournee(Tournee tournee) {
 		this.tournee = tournee;
@@ -126,6 +200,11 @@ public class Plan extends Observable {
 		notifyObservers();
 	}
 	
+	/**
+	 * d�finie l'attribut selectionnee de l'objet objet � la valeur du booleen selectionnee pass� en param�tre
+	 * @param objet
+	 * @param selectionne
+	 */
 	public void setObjetSelectionne(Object objet, boolean selectionne) {
 		if (objet.getClass().getName() == "model.Adresse") {
 			Adresse adresse = (Adresse)objet;
@@ -138,31 +217,38 @@ public class Plan extends Observable {
 		notifyObservers();
 	}
 	
+	/**
+	 * Calcule une nouvelle tourn�e pour la demande de livraisons 
+	 */
 	public void calculTournee()	{
 		calculPlusCourtsChemins();
 		Integer[] ordreLivraisons = calculOrdreLivraisons();
 		tournee = new Tournee(demandeLivraisons, ordreLivraisons, plusCourtsChemins);
 		this.setTournee(tournee);
-		System.out.println(tournee);
+		//System.out.println(tournee);
 	}
 	
+	/**
+	 * algorithme TSP
+	 * @return
+	 */
 	private Integer[] calculOrdreLivraisons() {
 		TSP tsp = new TSP2();
 		Graphe g = new GrapheOptimod(demandeLivraisons, plusCourtsChemins);
 		long tempsDebut = System.currentTimeMillis();
 		tsp.chercheSolution(60000, g);
-		System.out.print("Solution de longueur "+tsp.getCoutSolution()+" trouvee en "
-				+(System.currentTimeMillis() - tempsDebut)+"ms : ");
+//		System.out.print("Solution de longueur "+tsp.getCoutSolution()+" trouvee en "
+//				+(System.currentTimeMillis() - tempsDebut)+"ms : ");
 		Integer[] solution = tsp.getSolution();
-		for (Integer i : solution){
-			System.out.print(i + " ");
-		}
-		System.out.println();
+//		for (Integer i : solution){
+//			System.out.print(i + " ");
+//		}
+//		System.out.println();
 		return tsp.getSolution();
 	}
 
 	/**
-	 * Calculate the shortest paths between the delivery points
+	 * Calcul le plus court chemin entre les points de livraisons
 	 */
 	private void calculPlusCourtsChemins()	{
 		//The list is ordered
@@ -212,6 +298,14 @@ public class Plan extends Observable {
 	private HashMap<Adresse, Double> distance;
 	private HashMap<Adresse, Adresse> predecessors;
 	
+	/**
+	 * Dijkstra() trouve les plus courts chemins de depart jusqu'aux adresses cibles et retourne le résultat
+	 * dans une HashTable composée d'entités clé-valeur où la clé est l'id de l'adresse et la valeur le chemin de
+	 * depart à cette adresse.
+	 * @param depart
+	 * @param cibles
+	 * @return
+	 */
 	public Hashtable<Integer, Chemin> dijkstra(Adresse depart, List<Adresse> cibles) {
 		settledNodes = new HashSet<Adresse>();
 		unSettledNodes = new HashSet<Adresse>();
@@ -236,7 +330,7 @@ public class Plan extends Observable {
 		    	//Iterate to get each troncon from cibles[i] to depart
 		    	while(precede.getId() != depart.getId())	{
 		    		Adresse adressePrec = predecessors.get(precede);
-		    		List<Troncon> tronconsSortants = adressePrec.getTroncons();
+		    		List<Troncon> tronconsSortants = adressePrec.getTronconsSortants();
 		    		for(int j=0; j < tronconsSortants.size(); j++)	{
 		    			if(tronconsSortants.get(j).getDestination().getId() == precede.getId()) {
 		    				chemin.addTroncon(tronconsSortants.get(j));
@@ -255,6 +349,10 @@ public class Plan extends Observable {
 		}
 	  }
 	
+	/**
+	 * trouve les distances minimales
+	 * @param node
+	 */
 	private void findMinimalDistances(Adresse node) {
 	    List<Adresse> adjacentNodes = getNeighbors(node);
 	    for (Adresse target : adjacentNodes) {
@@ -269,6 +367,12 @@ public class Plan extends Observable {
 
 	  }
 
+	/**
+	 * on retourne la valeur des arcs du graphe en temps
+	 * @param node
+	 * @param target
+	 * @return
+	 */
 	  private double getTime(Adresse node, Adresse target) {
 	    for (Troncon edge : troncons) {
 	      if (edge.getOrigine().equals(node)
@@ -279,6 +383,11 @@ public class Plan extends Observable {
 	    throw new RuntimeException("Should not happen");
 	  }
 	  
+	  /**
+	   * 
+	   * @param node
+	   * @return
+	   */
 	  private List<Adresse> getNeighbors(Adresse node) {
 		    List<Adresse> neighbors = new ArrayList<Adresse>();
 		    for (Troncon edge : troncons) {
@@ -542,16 +651,16 @@ public class Plan extends Observable {
 		return indiceEtapePrec;
 	}
 	
-	public void affichePlan() {
-		System.out.println("Plan : "+this.nom);
-		System.out.println("Liste adresses : ");
-		Iterator<Adresse> adressesIterator = this.adresses.iterator();
-		while(adressesIterator.hasNext()) {
-			Adresse currentAdresse = (Adresse) adressesIterator.next();
-			System.out.print("   ");
-			currentAdresse.afficheAdresse();
-		}
-	}
+//	public void affichePlan() {
+//		System.out.println("Plan : "+this.nom);
+//		System.out.println("Liste adresses : ");
+//		Iterator<Adresse> adressesIterator = this.adresses.iterator();
+//		while(adressesIterator.hasNext()) {
+//			Adresse currentAdresse = (Adresse) adressesIterator.next();
+//			System.out.print("   ");
+//			currentAdresse.afficheAdresse();
+//		}
+//	}
 
 	public Adresse chercheAdresse(int x0, int y0) {
 		Iterator<Adresse> itA = this.adresses.iterator();
@@ -579,8 +688,8 @@ public class Plan extends Observable {
 		return null;
 	}
 	
-	public Object cherche(int x0, int y0) {
-		Livraison livraisonTrouvee = this.demandeLivraisons.chercheLivraison(x0, y0);
+	public Object cherche(int x0, int y0, int rayon) {
+		Livraison livraisonTrouvee = this.demandeLivraisons.chercheLivraison(x0, y0, rayon);
 		Adresse adresseTrouvee = this.chercheAdresse(x0, y0);
 		
 		if(livraisonTrouvee != null) return livraisonTrouvee;
