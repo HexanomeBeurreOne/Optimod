@@ -18,7 +18,7 @@ public class EcouteurBoutons implements ActionListener {
 //------------------------------------------------- METHODS
 	@Override
 	/**
-	 * déclenche la fonction correpondante au clique d'un bouton
+	 * declenche la fonction correpondante au clique d'un bouton
 	 */
 	public void actionPerformed(ActionEvent e) { 
 		// Methode appelee par l'ecouteur de boutons a chaque fois qu'un bouton est clique

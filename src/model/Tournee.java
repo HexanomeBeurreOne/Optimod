@@ -2,7 +2,6 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.List;
 
 public class Tournee {
@@ -126,11 +125,11 @@ public class Tournee {
 			heureDepartEtape = etape.getHeureLivraison() + 10*60;
 		}
 		heureFin = heureDepartEtape + retourEntrepot.getTempsDeParcours();
-		if(heureFin > 24*3600) System.out.println("La tournee se termine aprï¿½s minuit.");
+		if(heureFin > 24*3600) System.out.println("La tournee se termine apres minuit.");
 	}
 
 	/**
-	 * renvoie l'indice de l'ï¿½tape correspondante ï¿½ l'adresse
+	 * renvoie l'indice de l'etape correspondante a l'adresse
 	 * retourne -1 en cas d'erreur
 	 * @param adresse
 	 * @return
@@ -146,7 +145,7 @@ public class Tournee {
 	
 	//TODO : besoin de deux plus courts chemins si on remet une livraison dans une tournee vide
 	/**
-	 * supprime une ï¿½tape de la tournï¿½e
+	 * supprime une etape de la tournee
 	 * @param indiceEtape
 	 * @param plusCourtsChemins
 	 */
@@ -184,7 +183,7 @@ public class Tournee {
 	// Ou alors mettre les heures de debut et fin en attribut
 	
 	/**
-	 * ajoute une ï¿½tape ï¿½ la tournï¿½e
+	 * ajoute une etape a la tournee
 	 * @param livraison
 	 * @param adresseLivraisonPrec
 	 * @param plusCourtsChemins
@@ -208,15 +207,15 @@ public class Tournee {
 	}
 	
 	public String toString(){
-		String str = "Tournée de " + etapes.size() + " étapes, " + 
-				"debut à " + (int)heureDebut/3600 + ":"+ ((int)heureDebut%3600)/60 + ":"+ (int)heureDebut%60
-				+ ", fin à " + (int)heureFin/3600 + ":"+ ((int)heureFin%3600)/60 + ":"+ (int)heureFin%60;
+		String str = "Tournee de " + etapes.size() + " etapes, " + 
+				"debut a " + (int)heureDebut/3600 + ":"+ ((int)heureDebut%3600)/60 + ":"+ (int)heureDebut%60
+				+ ", fin a " + (int)heureFin/3600 + ":"+ ((int)heureFin%3600)/60 + ":"+ (int)heureFin%60;
 		for(int i = 0; i < etapes.size(); i++)
 		{
 			str += "\n-Etape " + i + " : \n" + etapes.get(i);
 		}
 		
-		str += "\n-Retour à l'entrepot : \n\t Heure d'arrivée prévue à  " + secondeToHeure(this.heureFin);
+		str += "\n-Retour a l'entrepot : \n\t Heure d'arrivee prevue a " + secondeToHeure(this.heureFin);
 		return str;
 	}
 	

@@ -38,11 +38,11 @@ public class FactoryPlan implements FactoryBase {
 	}
 	
 	/**
-	 * Retourne un objet Adresse avec les paramètres correspondants si cette nouvelle adresse n'a pas déjà été ajoutée à la liste d'adresses du plan
+	 * Retourne un objet Adresse avec les parametres correspondants si cette nouvelle adresse n'a pas deja ete ajoutee a la liste d'adresses du plan
 	 * retourne null en cas d'erreur
 	 * @param id est l'id de l'adresse que l'on veut ajouter
-	 * @param coordX est la coordonnée X de l'adresse que l'on veut ajouter
-	 * @param coordY est la coordonnée Y de l'adresse que l'on veut ajouter
+	 * @param coordX est la coordonnee X de l'adresse que l'on veut ajouter
+	 * @param coordY est la coordonnee Y de l'adresse que l'on veut ajouter
 	 * @return
 	 */
 	public Adresse getAdresse(int id, int coordX, int coordY){
@@ -54,7 +54,7 @@ public class FactoryPlan implements FactoryBase {
 	}
 	
 	/**
-	 * Retourne un nouvel objet Troncon avec les paramètres correspondants si son adresse de destination a été ajoutée à la liste d'adresses du plan
+	 * Retourne un nouvel objet Troncon avec les parametres correspondants si son adresse de destination a ete ajoutee a la liste d'adresses du plan
 	 * retourne null en cas d'erreur
 	 * @param nomRue est le nom de la rue correspondante au nouveau troncon
 	 * @param vitesseMoyenne est la vitesse moyenne de la rue correspondante au nouveau troncon
@@ -79,9 +79,9 @@ public class FactoryPlan implements FactoryBase {
 	}
 	
 	/**
-	 * vérifie si l'element considéré est valide syntaxiquement, par rapport à notre définition
+	 * verifie si l'element considere est valide syntaxiquement, par rapport a notre definition
 	 * instancie un nouvel objet Adresse
-	 * insère cet objet au sein de l'objet Plan
+	 * insere cet objet au sein de l'objet Plan
 	 * 
 	 * @param adresse
 	 * @return
@@ -104,15 +104,15 @@ public class FactoryPlan implements FactoryBase {
             }
         } catch (Exception e) {
         	
-        	// s'il manque des paramï¿½tres pour créer une adresse dans le fichier xml on stoppe l'instanciation du plan
+        	// s'il manque des parametres pour creer une adresse dans le fichier xml on stoppe l'instanciation du plan
         	return false;
         }
 	}
 	
 	/**
-	 * vérifie si l'element considéré est valide syntaxiquement, par rapport à notre définition
+	 * verifie si l'element considere est valide syntaxiquement, par rapport a notre definition
 	 * instancie un nouvel object Troncon
-	 * insère cet objet au sein de l'objet Plan et l'ajoute en tant que Troncon sortant à adresseCourante
+	 * insere cet objet au sein de l'objet Plan et l'ajoute en tant que Troncon sortant a adresseCourante
 	 * 
 	 * @param tronconSortant
 	 * @param adresseCourante
@@ -139,7 +139,7 @@ public class FactoryPlan implements FactoryBase {
 	}
 	
 	/**
-	 * Instancie et retourne un objet Plan à partir du fichier XML passé en paramètre
+	 * Instancie et retourne un objet Plan a partir du fichier XML passe en parametre
 	 * retourne null en cas d'erreur
 	 * @param pathXml
 	 * @return
@@ -210,14 +210,14 @@ public class FactoryPlan implements FactoryBase {
 						        
 					    	}
 					    }
-					    // on enlève l'adresseCourante de la liste des adresses du plan si finalement celle ci ne possède aucun tronconSortant
+					    // on enleve l'adresseCourante de la liste des adresses du plan si finalement celle ci ne possede aucun tronconSortant
 				    	if(adresseCourante.getTronconsSortants().isEmpty()) this.plan.removeAdresse(adresseCourante);
 		            }
 		        }
 		    }
 		}catch(Exception e) {
 				
-		// si le fichier n'est pas bien formï¿½ on ne stoppe l'instanciation de la demande de livraisons
+		// si le fichier n'est pas bien forme on ne stoppe l'instanciation de la demande de livraisons
 		return null;
 	}
 		// if the Adresse list of the Plan is empty return null

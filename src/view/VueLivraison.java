@@ -45,6 +45,9 @@ public class VueLivraison extends JPanel implements Observer {
 		plan.addObserver(this);
 	}
 	
+	/**
+	 * affiche la liste des livraisons dans la vue livraison (droite)
+	 */
 	private void afficherLivraisons() {
 
 		int indice = 0;
@@ -63,7 +66,7 @@ public class VueLivraison extends JPanel implements Observer {
 			
 			String heureDebut = fenetre.secondeToHeure(fenetreLivraisonCourante.getHeureDebut());
 			String heureFin = fenetre.secondeToHeure(fenetreLivraisonCourante.getHeureFin());
-			model[indice] = plan.getDemandeLivraisons().getFenetresLivraisons().indexOf(fenetreLivraisonCourante)+1+") "+heureDebut+" à "+heureFin;
+			model[indice] = plan.getDemandeLivraisons().getFenetresLivraisons().indexOf(fenetreLivraisonCourante)+1+") "+heureDebut+" a "+heureFin;
 			indice++;
 			TreeMap<Integer, List<String>> mapEtapesFen = new TreeMap<Integer, List<String>>();
 			while (itL.hasNext()) {
@@ -104,7 +107,9 @@ public class VueLivraison extends JPanel implements Observer {
 		this.livraisons.setListData(model);
 	}
 	
-	//Cette classe privee sert a la coloration des item de la liste des livraisons
+	/**
+	 * Cette classe privee sert a la coloration des item de la liste des livraisons
+	 */
 	private static class ColorierItemRenderer extends DefaultListCellRenderer {
 		
 		private Fenetre fenetre;

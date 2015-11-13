@@ -3,11 +3,7 @@ package view;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import javax.swing.SwingUtilities;
-
 import controller.ControleurApplication;
-import model.Adresse;
-import model.factory.FactoryPlan;
 
 public class EcouteurSouris extends MouseAdapter {
 
@@ -34,21 +30,4 @@ public class EcouteurSouris extends MouseAdapter {
 	    
 	    controleur.getObjetSelectionne(x, y);
 	}
-
-	public void mouseMoved(MouseEvent evt) {
-		// Methode appelee a chaque fois que la souris est bougee
-		// Envoie au controleur les coordonnees de la souris.
-		// Point p = coordonnees(evt);
-		//if (p != null)
-			// controleur.sourisBougee(p); 
-	}
-	/*
-	private Adresse coordonnees(MouseEvent evt){
-		MouseEvent e = SwingUtilities.convertMouseEvent(fenetre, evt, vueGraphique);
-		int x = Math.round((float)e.getX()/(float)vueGraphique.getEchelle());
-		int y = Math.round((float)e.getY()/(float)vueGraphique.getEchelle());
-		return FactoryPlan.creePoint(x, y);
-	}*/
-
-
 }

@@ -47,7 +47,7 @@ public class ControleurApplication
 	
 //------------------------------------------------- CONSTRUCTORS
 	/**
-	 * Constructeur de ControleurApplication avec un plan et une ecchelle
+	 * Constructeur de ControleurApplication avec un plan et une echelle
 	 * @param p Plan 
 	 * @param e Echelle 
 	 */
@@ -98,7 +98,7 @@ public class ControleurApplication
 			
 			//Affiche un message avertissant de l'enregistrement de la feuille de route
 			
-			String msg = "La feuille de route a été enregistrée dans votre répertoire local :" + path;
+			String msg = "La feuille de route a ete enregistree dans votre repertoire local :" + path;
 			JOptionPane.showMessageDialog(fenetre,
 					msg,
 				    "Feuille de Route",
@@ -177,7 +177,7 @@ public class ControleurApplication
 				fenetre.getZoneMessage().setText("Vous pouvez charger une demande de livraisons");
 	    	} else {
 	    		JOptionPane.showMessageDialog(fenetre,
-	    			    "Le fichier de plan est mal formé",
+	    			    "Le fichier de plan est mal forme",
 	    			    "Erreur",
 	    			    JOptionPane.ERROR_MESSAGE);
 	    	}
@@ -194,12 +194,7 @@ public class ControleurApplication
 			DemandeLivraisons dLTemp = factoryDemandeLivraisons.getDemandeLivraisons(fichier, this.plan);
 			
 			if(dLTemp != null) {
-				
-//				ArrayList<Integer> infosCouleurs = new ArrayList<Integer>();
-//				List<FenetreLivraison> fenetreLivraisons = dLTemp.getFenetresLivraisons();
-//				for (int i = 0; i < fenetreLivraisons.size(); i++) {
-//					infosCouleurs.add(fenetreLivraisons.get(i).getLivraisons().size());
-//				}
+
 				int infosCouleurs = dLTemp.getFenetresLivraisons().size();
 				
 				fenetre.genererCouleurs(infosCouleurs);
@@ -223,16 +218,21 @@ public class ControleurApplication
 				livraisonSelectionnee = new Livraison();
 				etatAjouterLivraison = false;
 				
-				fenetre.getZoneMessage().setText("Vous pouvez calculer une tournée");
+				fenetre.getZoneMessage().setText("Vous pouvez calculer une tournee");
 			} else {
 				JOptionPane.showMessageDialog(fenetre,
-					    "Le fichier de demande de livraisons est mal formé",
+					    "Le fichier de demande de livraisons est mal forme",
 					    "Erreur",
 					    JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}
 	
+	/**
+	 * ouvre un explorateur de fichiers et renvoie le chemin d'acces du fichier selectionne
+	 * @param path
+	 * @return
+	 */
 	private String chargerFichier(String path) {
 		JFileChooser chooser = new JFileChooser(path);
 	    int returnVal = chooser.showOpenDialog(new JFrame());
@@ -242,6 +242,9 @@ public class ControleurApplication
 	    return null;
 	}
 	
+	/**
+	 * calcule la tournee
+	 */
 	public void calculerTournee () {
 		undoRedo.clear();
 		plan.calculTournee();
@@ -249,6 +252,11 @@ public class ControleurApplication
 		tourneeCalculee = true;
 	}
 	
+	/**
+	 * change l'etat de l'objet selectionne sur le plan, que ce soit une adresse ou une livraison
+	 * @param x
+	 * @param y
+	 */
 	public void getObjetSelectionne(int x, int y) {
 		
 		if (tourneeCalculee) {
@@ -357,6 +365,10 @@ public class ControleurApplication
 		}
 	}
 	
+	/**
+	 * change l'attribut correpondant a l'objet selectionne
+	 * @param objet
+	 */
 	private void miseAJourObjetSelectionnee(Object objet) {
 		
 		if (objet!=null) {
@@ -364,29 +376,35 @@ public class ControleurApplication
 				plan.setObjetSelectionne(adresseSelectionnee, false);
 				adresseSelectionnee = (Adresse) objet;
 				plan.setObjetSelectionne(adresseSelectionnee, true);
-				// on deselectionne la livraison selectionnï¿½e
+				// on deselectionne la livraison selectionnee
 				plan.setObjetSelectionne(livraisonSelectionnee, false);
 				
 			} else if (objet.getClass().getName() == "model.Livraison") {
 				plan.setObjetSelectionne(livraisonSelectionnee, false);
 				livraisonSelectionnee = (Livraison) objet;
 				plan.setObjetSelectionne(livraisonSelectionnee, true);
-				// on deselectionne l'adresse selectionnï¿½e
+				// on deselectionne l'adresse selectionnee
 				plan.setObjetSelectionne(adresseSelectionnee, false);
 			}
 		} else {
-			// on deselectionne la livraison selectionnï¿½e
+			// on deselectionne la livraison selectionnee
 			plan.setObjetSelectionne(livraisonSelectionnee, false);
 			// on deselectionne l'adresse selectionnï¿½e
 			plan.setObjetSelectionne(adresseSelectionnee, false);
 		}
 	}
 	
+	/**
+	 * change l'etat de l'application a ajouterLivraison comme etant vrai
+	 */
 	public void actionAjouterLivraison () {
 		etatAjouterLivraison = true;
-		fenetre.getZoneMessage().setText("Veuillez sélectionner la livraison existante après laquelle placer votre nouvelle livraison");
+		fenetre.getZoneMessage().setText("Veuillez selectionner la livraison existante apres laquelle placer votre nouvelle livraison");
 	}
 	
+	/**
+	 * permet de supprimer la derniere livraison selectionnee
+	 */
 	public void actionSupprimerLivraison () {
 		FenetreLivraison fenetreL = livraisonSelectionnee.getFenetreLivraison();
 		Adresse adresseLivraison = livraisonSelectionnee.getAdresse();
@@ -411,9 +429,9 @@ public class ControleurApplication
 	
 	
 	/**
-	 * CrÃ©Ã© une livraison Ã  une adresse
+	 * Cree une livraison e une adresse
 	 */
-	//PassÃ© en parametre Adresse, Adresse, client, fenetre 
+	//Passe en parametre Adresse, Adresse, client, fenetre 
 	public void ajouterLivraison(int client, Adresse adresseSelectionnee, Adresse adressePrecedente, FenetreLivraison fenetre)
 	{
 		System.out.println(client+" "+adressePrecedente+" "+adresseSelectionnee);

@@ -53,10 +53,6 @@ public class Troncon {
 		return this.tempsTroncon;
 	}
 
-//	public void afficheTroncon() {
-//		System.out.println("TronconSortant : nomRue : "+this.nomRue+" vitesseMoyenne="+this.vitesseMoyenne+" longueur="+this.longueur+" idOrigine : "+this.origine.getId()+" idDestination : "+this.destination.getId());
-//	}
-
 	@Override
 	public String toString() {
 		return "Troncon [nomRue=" + nomRue + ", vitesseMoyenne="

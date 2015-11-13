@@ -110,26 +110,16 @@ public class Adresse extends Observable {
 	}
 
 	/**
-	 * Ajoute un nouveau Troncon ï¿½ la liste tronconSortant de l'Adresse courante
+	 * Ajoute un nouveau Troncon a la liste tronconSortant de l'Adresse courante
 	 * @param newTronconSortant
 	 */
 	public void addTroncon(Troncon newTronconSortant) {
 		this.tronconsSortants.add(newTronconSortant);
 	}
 	
-//	public void afficheAdresse() {
-//		System.out.println("Adresse "+this.id+" | x="+this.coordX+" y="+this.coordY+" selectionnee="+selectionnee);
-//		Iterator<Troncon> tronconsSortantsIterator = this.tronconsSortants.iterator();
-//		while(tronconsSortantsIterator.hasNext()) {
-//			Troncon currentTroncon = (Troncon) tronconsSortantsIterator.next();
-//			System.out.print("      ");
-//			currentTroncon.afficheTroncon();
-//		}
-//	}
-
 	@Override
 	public String toString() {
-		return "n°" + id + " aux coordonnées (" + coordX + ";" + coordY + ")";
+		return id + " aux coordonnees (" + coordX + ";" + coordY + ")";
 	}
 	
 	
