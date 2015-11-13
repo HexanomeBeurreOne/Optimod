@@ -2,10 +2,15 @@ package view;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Set;
+import java.util.TreeMap;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListCellRenderer;
@@ -60,24 +65,39 @@ public class VueLivraison extends JPanel implements Observer {
 			String heureFin = fenetre.secondeToHeure(fenetreLivraisonCourante.getHeureFin());
 			model[indice] = plan.getDemandeLivraisons().getFenetresLivraisons().indexOf(fenetreLivraisonCourante)+1+") "+heureDebut+" à "+heureFin;
 			indice++;
-			
+			TreeMap<Integer, List<String>> mapEtapesFen = new TreeMap<Integer, List<String>>();
 			while (itL.hasNext()) {
 				Livraison livraisonActuelle = itL.next();
 				String resultat = 	"Client : "+livraisonActuelle.getClient();
-				
+				Integer key = 0;
 				if (plan.getTournee().getEtapes() != null) {
 					for (int i = 0; i < plan.getTournee().getEtapes().size(); i++) {
 						Etape etapeATester = plan.getTournee().getEtapes().get(i);
 						Livraison livraisonATester = etapeATester.getLivraison();
 						if (livraisonATester.getAdresse() == livraisonActuelle.getAdresse()) {
-							resultat += " Heure prevue : "+fenetre.secondeToHeure((int)etapeATester.getHeureLivraison())+
-										" Retard : "+fenetre.secondeToHeure((int)etapeATester.getRetard());
+							resultat += " Heure prevue : "+fenetre.secondeToHeure((int)etapeATester.getHeureLivraison());
+									
+							if((int)etapeATester.getRetard() > 0) {
+								resultat += " Retard : "+fenetre.secondeToHeure((int)etapeATester.getRetard());
+							}
+							key = (int)etapeATester.getHeureLivraison();
 						}
 					}
 				}
-				
-				model[indice] = resultat;
-				indice++;
+				if(!mapEtapesFen.containsKey(key)){
+					List<String> liste = new ArrayList<String>();
+					mapEtapesFen.put(key, liste);
+				}
+				mapEtapesFen.get(key).add(resultat);
+			}
+			Set<Entry<Integer,List<String>>> entrySet = mapEtapesFen.entrySet();
+			Iterator<Map.Entry<Integer,List<String>>> it = entrySet.iterator();
+			while(it.hasNext()) {
+				List<String> liste = it.next().getValue();
+				for(String res : liste) {
+					model[indice] = res;
+					indice++;	
+				}
 			}
 		}
 		
