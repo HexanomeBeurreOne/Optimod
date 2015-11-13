@@ -16,7 +16,7 @@ import java.util.Iterator;
  */
 public class Fenetre extends JFrame{
 	private final int hauteurFenetre = 500;
-	private final int largeurFenetre = 950;
+	private final int largeurFenetre = 1050;
 	
 	private VuePlan vuePlan;
 	private int largeurVuePlan;
