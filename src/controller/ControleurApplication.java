@@ -177,7 +177,7 @@ public class ControleurApplication
 				fenetre.getZoneMessage().setText("Vous pouvez charger une demande de livraisons");
 	    	} else {
 	    		JOptionPane.showMessageDialog(fenetre,
-	    			    "Le fichier de plan est mal form�",
+	    			    "Le fichier de plan est mal forme",
 	    			    "Erreur",
 	    			    JOptionPane.ERROR_MESSAGE);
 	    	}
