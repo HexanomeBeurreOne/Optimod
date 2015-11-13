@@ -129,7 +129,7 @@ public class Adresse extends Observable {
 
 	@Override
 	public String toString() {
-		return "nÂ°" + id + " aux coordonnÃ©es (" + coordX + ";" + coordY + ")";
+		return "n°" + id + " aux coordonnées (" + coordX + ";" + coordY + ")";
 	}
 	
 	

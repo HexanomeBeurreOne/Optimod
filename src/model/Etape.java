@@ -105,11 +105,11 @@ public class Etape {
 
 	@Override
 	public String toString() {
-		String str = "\tLivraison du client nÂ°" + livraison.getClient() + " Ã  l'adresse " + livraison.getAdresse() + "\n\tHeure d'arrivÃ©e Ã  " + secondeToHeure(this.heureLivraison);
+		String str = "\tLivraison du client n°" + livraison.getClient() + " à  l'adresse " + livraison.getAdresse() + "\n\tHeure d'arrivée à  " + secondeToHeure(this.heureLivraison);
 		
 		if(retard!=-1.)
 		{
-			str += " avec un retard prÃ©vu de " + secondeToHeure(this.retard);
+			str += " avec un retard prévu de " + secondeToHeure(this.retard);
 		}
 		
 		str += "\n";
