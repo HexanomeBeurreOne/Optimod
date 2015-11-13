@@ -208,15 +208,15 @@ public class Tournee {
 	}
 	
 	public String toString(){
-		String str = "Tournee de " + etapes.size() + " etapes, " + 
-				"debut a " + (int)heureDebut/3600 + ":"+ ((int)heureDebut%3600)/60 + ":"+ (int)heureDebut%60
-				+ ", fin a " + (int)heureFin/3600 + ":"+ ((int)heureFin%3600)/60 + ":"+ (int)heureFin%60;
+		String str = "Tournée de " + etapes.size() + " étapes, " + 
+				"debut à " + (int)heureDebut/3600 + ":"+ ((int)heureDebut%3600)/60 + ":"+ (int)heureDebut%60
+				+ ", fin à " + (int)heureFin/3600 + ":"+ ((int)heureFin%3600)/60 + ":"+ (int)heureFin%60;
 		for(int i = 0; i < etapes.size(); i++)
 		{
 			str += "\n-Etape " + i + " : \n" + etapes.get(i);
 		}
 		
-		str += "\n-Retour Ã  l'entrepot : \n\t Heure d'arrivÃ©e prÃ©vue Ã  " + secondeToHeure(this.heureFin);
+		str += "\n-Retour à l'entrepot : \n\t Heure d'arrivée prévue à  " + secondeToHeure(this.heureFin);
 		return str;
 	}
 	

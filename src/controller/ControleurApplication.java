@@ -132,16 +132,10 @@ public class ControleurApplication
 		double largeurPlan = (double) this.fenetre.getLargeurVuePlan();
 		double hauteurPlan = (double) this.fenetre.getHauteurVuePlan();
 		
-		double minX = (double) this.plan.getMinX();
 		double maxX = (double) this.plan.getMaxX();
-		double minY = (double) this.plan.getMinY();
 		double maxY = (double) this.plan.getMaxY();
 		
-		double echX = largeurPlan/(maxY-minY);
-		double echY = hauteurPlan/(maxX-minX);
-		
-		double newEchelle = echX<=echY ? echX : echY;
-		newEchelle = newEchelle>1 ? newEchelle*0.7 : newEchelle*0.9;
+		double newEchelle = (maxX/largeurPlan)>=(maxY/hauteurPlan) ? (0.9*largeurPlan/maxX) : (0.9*hauteurPlan/maxY);
 		
 		this.fenetre.getVuePlan().setEchelle(newEchelle);
 		this.echelle = newEchelle;
