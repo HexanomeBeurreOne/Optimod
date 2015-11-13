@@ -196,13 +196,16 @@ public class ControleurApplication
 				this.plan.setDemandeLivraisons(dLTemp);
 				this.plan.setTournee(new Tournee());
 				
+				//On efface les piles undo/redo
+				undoRedo.clear();
+				
 				//On active le bouton "calculer tournee
 				fenetre.getBoutons().get(2).setEnabled(true);
 				//On desactive les autres boutons
 				fenetre.getBoutons().get(3).setEnabled(false);
 				fenetre.getBoutons().get(4).setEnabled(false);
 				
-				// on passe tous les anciens attributs d'�tat � leurs valeurs initiales
+				//on passe tous les anciens attributs d'�tat � leurs valeurs initiales
 				tourneeCalculee = false;
 				objetSelectionne = new Object();
 				adresseSelectionnee = new Adresse();
@@ -243,9 +246,46 @@ public class ControleurApplication
 			//Si l'utilisateur clique sur une Adresse ou une Livraison
 			if (objetSelectionne != null) {
 				
-				//Si l'utilisateur clique sur une Livraison ou l'entrepot
-				if (objetSelectionne.getClass().getName() == "model.Livraison" || 
-						(objetSelectionne.getClass().getName() == "model.Adresse" && ((Adresse)objetSelectionne) == plan.getDemandeLivraisons().getEntrepot())) {
+				//Si l'utilisateur clique sur l'entrepot
+				if(objetSelectionne.getClass().getName() == "model.Adresse" && ((Adresse)objetSelectionne) == plan.getDemandeLivraisons().getEntrepot()) {
+					//Seul cas : on ajoute une livraison apres l'entrepot					
+					if (etatAjouterLivraison) {
+						int client = fenetre.saisirClient();
+						//Si l'ajout d'une Livraison est un succes
+						if( client != -1) {
+							FenetreLivraison fenetreL;
+							if(plan.getTournee().getEtapes().size() == 0) {
+								fenetreL = plan.getDemandeLivraisons().getFenetresLivraisons().get(0);
+							} else {
+								fenetreL = plan.getTournee().getEtapes().get(0).getLivraison().getFenetreLivraison();
+							}
+							Adresse adressePrecedente = plan.getDemandeLivraisons().getEntrepot();
+	
+							ajouterLivraison(client, adresseSelectionnee, adressePrecedente, fenetreL);
+	
+							plan.setObjetSelectionne(adresseSelectionnee, false);
+							//On desactive le bouton "Ajouter livraison"
+							fenetre.getBoutons().get(3).setEnabled(false);
+							
+							fenetre.getZoneMessage().setText("Vous pouvez cliquer sur une adresse ou une livraison");
+							etatAjouterLivraison = false;
+							return;
+						}
+						//Si l'ajout d'une livraison echoue
+						fenetre.getZoneMessage().setText("Vous pouvez cliquer sur \"Ajouter livraison\"");
+						etatAjouterLivraison = false;
+						return;
+					}
+					//Si on est pas dans ajout de livraison on touche pas a l'entrepot
+					fenetre.getBoutons().get(3).setEnabled(false);
+					fenetre.getBoutons().get(4).setEnabled(false);
+					fenetre.getZoneMessage().setText("Vous pouvez cliquer sur une adresse ou une livraison");
+					etatAjouterLivraison = false;
+					miseAJourObjetSelectionnee(objetSelectionne);		
+					return;
+				}
+				//Si l'utilisateur clique sur une Livraison
+				if (objetSelectionne.getClass().getName() == "model.Livraison") {
 					
 					//Si l'utilisateur est dans une action d'ajouter une Livraison
 					if (etatAjouterLivraison) {
@@ -254,19 +294,10 @@ public class ControleurApplication
 						
 						//Si l'ajout d'une Livraison est un succes
 						if( client != -1) {
-							FenetreLivraison fenetreL;
-							Adresse adressePrecedente;
-							if(objetSelectionne.getClass().getName() == "model.Adresse"){
-								//Si on ajoute apres l'entrepot
-								fenetreL = plan.getTournee().getEtapes().get(0).getLivraison().getFenetreLivraison();
-								// TODO : si y a pas d'etapes !!
-								adressePrecedente = plan.getDemandeLivraisons().getEntrepot();
-							} else {
-								//Si on ajoute apres une livraison
-								Livraison livraison = (Livraison)objetSelectionne;
-								fenetreL = livraison.getFenetreLivraison();
-								adressePrecedente = livraison.getAdresse();
-							}
+							Livraison livraison = (Livraison)objetSelectionne;
+							FenetreLivraison fenetreL = livraison.getFenetreLivraison();
+							Adresse adressePrecedente = livraison.getAdresse();
+							
 							ajouterLivraison(client, adresseSelectionnee, adressePrecedente, fenetreL);
 
 							plan.setObjetSelectionne(adresseSelectionnee, false);
@@ -306,7 +337,6 @@ public class ControleurApplication
 				miseAJourObjetSelectionnee(objetSelectionne);
 				return;
 			}
-			
 			//Si objetSelectionne est null
 			fenetre.getBoutons().get(3).setEnabled(false);
 			fenetre.getBoutons().get(4).setEnabled(false);
