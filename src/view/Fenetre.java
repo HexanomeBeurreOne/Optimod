@@ -31,8 +31,8 @@ public class Fenetre extends JFrame{
 	private final int largeurBouton = 150;
 	protected final static String CHARGER_PLAN = "Charger plan";
 	protected static final String CHARGER_LIVRAISONS = "Charger livraisons";
-	protected static final String CALCULER_TOURNEE = "Calculer tournÃ©e";
-	protected static final String CHANGER = "Calculer tournÃ©e";
+	protected static final String CALCULER_TOURNEE = "Calculer tournée";
+	protected static final String CHANGER = "Calculer tournée";
 	protected static final String AJOUTER_LIVRAISON = "Ajouter livraison";
 	protected static final String SUPPRIMER_LIVRAISON = "Supprimer livraison";
 	protected static final String UNDO = "Undo";
