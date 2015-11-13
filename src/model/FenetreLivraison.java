@@ -74,7 +74,7 @@ public class FenetreLivraison {
 	}
 
 	/**
-	 * ajoute un objet Livraison à la liste livraisons
+	 * ajoute un objet Livraison a la liste livraisons
 	 * @param newLivraison
 	 */
 	public void addLivraison(Livraison newLivraison) {
@@ -82,26 +82,16 @@ public class FenetreLivraison {
 	}
 	
 	/**
-	 * enlàve l'objet Livraison de la liste livraisons
+	 * enleve l'objet Livraison de la liste livraisons
 	 * @param oldLivraison
 	 */
 	public void removeLivraison(Livraison oldLivraison) {
 		if (this.livraisons.contains(oldLivraison) ) this.livraisons.remove(oldLivraison);
 	}
-
-//	public void afficheFenetreLivraison() {
-//		System.out.println("FenetreLivraison : heureDebut="+this.heureDebut+" heureFin="+this.heureFin);
-//		Iterator<Livraison> livraisonsIterator = this.livraisons.iterator();
-//		while(livraisonsIterator.hasNext()) {
-//			Livraison currentLivraison = (Livraison) livraisonsIterator.next();
-//			System.out.print("      ");
-//			currentLivraison.afficheLivraison();
-//		}
-//	}
 	
 	
 	/**
-	 * definie l'attribut selectionnee de l'objet Livraison livraison à la valeur du booleen selectionnee passe en parametre
+	 * definie l'attribut selectionnee de l'objet Livraison livraison a la valeur du booleen selectionnee passe en parametre
 	 * @param livraison est la livraison que l'on doit modifier
 	 * @param selectionnee est la nouvelle valeur de l'attribut de la livraison
 	 */

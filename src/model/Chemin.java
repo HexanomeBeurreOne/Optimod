@@ -56,7 +56,7 @@ public class Chemin {
 	}
 
 	/**
-	 * ajoute un troncon au début de la liste troncons
+	 * ajoute un troncon au debut de la liste troncons
 	 * @param troncon
 	 */
 	public void addTroncon(Troncon troncon)	{
@@ -64,7 +64,7 @@ public class Chemin {
 	}
 	
 	/**
-	 * enlève le troncon de la liste troncons
+	 * enleve le troncon de la liste troncons
 	 * @param troncon
 	 */
 	public void removeTroncon(Troncon troncon)	{
@@ -72,7 +72,7 @@ public class Chemin {
 	}
 	
 	/**
-	 * Retourne la première adresse du chemin courant
+	 * Retourne la premiere adresse du chemin courant
 	 * retourne null en cas d'erreur
 	 * @return
 	 */
@@ -85,7 +85,7 @@ public class Chemin {
 	}
 	
 	/**
-	 * Retourne la dernière adresse du chemin courant
+	 * Retourne la derniere adresse du chemin courant
 	 * retourne null en cas d'erreur
 	 * @return
 	 */

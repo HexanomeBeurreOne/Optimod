@@ -87,9 +87,5 @@ public class Livraison extends Observable {
 	public void setSelectionnee(boolean selectionnee) {
 		this.selectionnee = selectionnee;
 	}
-
-//	public void afficheLivraison() {
-//		System.out.println("Livraison : client : "+this.client);
-//	}
 	
 }

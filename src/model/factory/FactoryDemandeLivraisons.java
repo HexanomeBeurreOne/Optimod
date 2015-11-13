@@ -42,11 +42,11 @@ public class FactoryDemandeLivraisons implements FactoryBase {
 	}
 	
 	/**
-	 * Retourne un objet Livraison instancié avec les paramètres si l'Adresse passée en paramètre n'appartient pas déjà à la liste d'adresses du plan
-	 * et si l'objet FenetreLivraison a été ajouté à la liste de FenetreLivraison de demandeLivraison
+	 * Retourne un objet Livraison instancie avec les parametres si l'Adresse passee en parametre n'appartient pas deja a la liste d'adresses du plan
+	 * et si l'objet FenetreLivraison a ete ajoute a la liste de FenetreLivraison de demandeLivraison
 	 * retourne null en cas d'erreur
 	 * @param client est l'id du client
-	 * @param idAdresse est l'id de l'adresse que l'on veut créée
+	 * @param idAdresse est l'id de l'adresse que l'on veut creee
 	 * @param fenetreLivraison est la fenetreLivraison dans laquelle on veut ajouter cette livraison
 	 * @return
 	 */
@@ -58,9 +58,9 @@ public class FactoryDemandeLivraisons implements FactoryBase {
 	}
 	
 	/**
-	 * Retourne un objet FenetreLivraison instancié avec les paramètres si cette nouvelle FenetreLivraison n'appartient pas déjà à la liste de fentres de livraisons de la demande de livraison.
+	 * Retourne un objet FenetreLivraison instancie avec les parametres si cette nouvelle FenetreLivraison n'appartient pas deja a la liste de fentres de livraisons de la demande de livraison.
 	 * retourne null en cas d'erreur
-	 * @param heureDebut est l'heure de début de la nouvelle FenetreLivraison
+	 * @param heureDebut est l'heure de debut de la nouvelle FenetreLivraison
 	 * @param heureFin est l'heure de fin de la nouvelle FenetreLivraison
 	 * @return
 	 */
@@ -72,10 +72,10 @@ public class FactoryDemandeLivraisons implements FactoryBase {
 	}
 	
 	/**
-	 * Converti un temps au format hh:mm:ss à son nombre équvalent de secondes depuis 00:00:00
-	 * si les heures, minutes et secondes correspondent à des chiffres valides pour un horaire
+	 * Converti un temps au format hh:mm:ss a son nombre equvalent de secondes depuis 00:00:00
+	 * si les heures, minutes et secondes correspondent a des chiffres valides pour un horaire
 	 * retorune -1 en cas d'erreur
-	 * @param time est la chaine de caractère représentant le temps
+	 * @param time est la chaine de caractere representant le temps
 	 * @return
 	 */
 	private int convertTimeToSeconds(String time){
@@ -95,8 +95,8 @@ public class FactoryDemandeLivraisons implements FactoryBase {
 	}
 	
 	/**
-	 * Ajoute l'entrepot à la demande de livraisons si la balise XMl correspondante est bien formée et si l'adresse correspondant à cet entrepot existe dans le plan
-	 * retourne true si l'ajout s'est bien déroulé
+	 * Ajoute l'entrepot a la demande de livraisons si la balise XMl correspondante est bien formee et si l'adresse correspondant a cet entrepot existe dans le plan
+	 * retourne true si l'ajout s'est bien deroule
 	 * retourne false en cas d'erreur
 	 * @param noeudEntrepot est la balise XML correspondante 
 	 * @return
@@ -105,7 +105,7 @@ public class FactoryDemandeLivraisons implements FactoryBase {
 			try {
 				final Element entrepot = (Element) noeudEntrepot;
 				int idEntrepot = Integer.parseInt(((Element) entrepot).getAttribute("adresse"));
-				// on vérifie que l'id de l'entrepot du XML pointe vers une adresse existante
+				// on vï¿½rifie que l'id de l'entrepot du XML pointe vers une adresse existante
 				Adresse adresseEntrepot = this.plan.getAdresseById(idEntrepot);
 				if( adresseEntrepot!= null) {
 					this.demandeLivraisons.setEntrepot(adresseEntrepot);
@@ -119,11 +119,11 @@ public class FactoryDemandeLivraisons implements FactoryBase {
 	}
 	
 	/**
-	 * vérifie qu'il n'existe aucune FenetreLivraison dont la plage horaire ne chevauche la plage horaire correspondante aux paramètres heureDebut - heureFin
+	 * verifie qu'il n'existe aucune FenetreLivraison dont la plage horaire ne chevauche la plage horaire correspondante aux parametres heureDebut - heureFin
 	 * retourne true si ca ne se chevauche pas
 	 * retourne false en cas d'erreur
-	 * @param heureDebut est l'heure de début de la plage horaire à vérifier
-	 * @param heureFin est l'heure de fin de la plage horaire à vérifier
+	 * @param heureDebut est l'heure de debut de la plage horaire a verifier
+	 * @param heureFin est l'heure de fin de la plage horaire a verifier
 	 * @return
 	 */
 	private boolean verifierChevauchementFenetreLivraison(int heureDebut, int heureFin) {
@@ -140,7 +140,7 @@ public class FactoryDemandeLivraisons implements FactoryBase {
 	}
 	
 	/**
-	 * Instantie et retourne un objet DemandeLivraison à partir du fichier XML passé en paramètre
+	 * Instantie et retourne un objet DemandeLivraison a partir du fichier XML passe en parametre
 	 * retourne null en cas d'erreur
 	 * @param pathXml
 	 * @param plan
@@ -148,7 +148,7 @@ public class FactoryDemandeLivraisons implements FactoryBase {
 	 */
 	public DemandeLivraisons getDemandeLivraisons(String pathXml, Plan plan) {
 		
-		// on passe le plan en paramètre pour pouvoir aller récupérer les adresses à partir de leur id
+		// on passe le plan en parametre pour pouvoir aller recuperer les adresses a partir de leur id
 		this.plan = plan;
 		
 		try {
@@ -180,7 +180,7 @@ public class FactoryDemandeLivraisons implements FactoryBase {
 		            	
 		            	// on verifie que les heures obtenues ne sont pas fausses
 			            if(heureDebutEnSec!=(-1) && heureFinEnSec!=(-1)) {
-			            	// on vérifie que la fenetre de livraison ne chevauche pas une autre
+			            	// on verifie que la fenetre de livraison ne chevauche pas une autre
 			            	if(verifierChevauchementFenetreLivraison(heureDebutEnSec, heureFinEnSec)) {
 			            		// instantiate a new FenetreLivraison object with attributes given in the xml tag
 			            		newFenetreLivraison = this.getFenetreLivraison(heureDebutEnSec, heureFinEnSec);
@@ -225,7 +225,7 @@ public class FactoryDemandeLivraisons implements FactoryBase {
 		    }
 		} catch(Exception e) {
 					
-			// si le fichier n'est pas bien formé on ne stoppe l'instanciation de la demande de livraisons
+			// si le fichier n'est pas bien forme on ne stoppe l'instanciation de la demande de livraisons
 			//System.err.println("The file "+uriXml+" is not well formed");
 			return null;
 		}
@@ -235,7 +235,4 @@ public class FactoryDemandeLivraisons implements FactoryBase {
 	    
 		return this.demandeLivraisons;
 	}
-		
-	
-
 }

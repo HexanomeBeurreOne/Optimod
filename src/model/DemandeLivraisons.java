@@ -142,19 +142,9 @@ public class DemandeLivraisons {
 		return null;
 	}
 
-//	public void afficheDemandeLivraisons() {
-//		System.out.println("DemandeLivraison : idEntrepot="+this.entrepot.getId());
-//		System.out.println("Liste livraisons : ");
-//		Iterator<FenetreLivraison> itFenetresLivraisons = this.fenetresLivraisons.iterator();
-//		while(itFenetresLivraisons.hasNext()) {
-//			FenetreLivraison fenetreLivraisonCourante = (FenetreLivraison) itFenetresLivraisons.next();
-//			System.out.print("   ");
-//			fenetreLivraisonCourante.afficheFenetreLivraison();
-//		}
-//	}
 	
 	/**
-	 * retourne la Livraison dont les coordonnées sont les plus proche des points x0 et y0 dans un cercle de rayon pixels
+	 * retourne la Livraison dont les coordonnees sont les plus proche des points x0 et y0 dans un cercle de rayon pixels
 	 * @param x0
 	 * @param y0
 	 * @param rayon
@@ -174,7 +164,7 @@ public class DemandeLivraisons {
 	}
 	
 	/**
-	 * définie l'attribut selectionnee de l'objet Livraison livraison à la valeur du booleen selectionnee passé en paramètre
+	 * definie l'attribut selectionnee de l'objet Livraison livraison a la valeur du booleen selectionnee passe en parametre
 	 * @param livraison est la livraison que l'on doit modifier
 	 * @param selectionnee est la nouvelle valeur de l'attribut de la livraison
 	 */

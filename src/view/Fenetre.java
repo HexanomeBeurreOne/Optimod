@@ -9,11 +9,7 @@ import controller.ControleurApplication;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Iterator;
 
-/**
- * Created by cyrilcanete on 03/11/15.
- */
 public class Fenetre extends JFrame{
 	private final int hauteurFenetre = (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight()*0.9);
 	private final int largeurFenetre = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth()*0.9);
@@ -31,11 +27,11 @@ public class Fenetre extends JFrame{
 	private final int largeurBouton = (int) (largeurFenetre/8)-2;
 	protected final static String CHARGER_PLAN = "Charger plan";
 	protected static final String CHARGER_LIVRAISONS = "Charger livraisons";
-	protected static final String CALCULER_TOURNEE = "Calculer tournée";
+	protected static final String CALCULER_TOURNEE = "Calculer tournee";
 	protected static final String AJOUTER_LIVRAISON = "Ajouter livraison";
 	protected static final String SUPPRIMER_LIVRAISON = "Supprimer livraison";
 	protected static final String UNDO = "Annuler";
-	protected static final String REDO = "Rétablir";
+	protected static final String REDO = "Retablir";
 	protected static final String ENREGISTRER_FEUILLE_ROUTE = "Feuille de Route";
 	private final String[] intitulesBoutons = new String[]{CHARGER_PLAN, CHARGER_LIVRAISONS, CALCULER_TOURNEE, AJOUTER_LIVRAISON, SUPPRIMER_LIVRAISON, UNDO, REDO, ENREGISTRER_FEUILLE_ROUTE};
 	private EcouteurBoutons ecouteurDeBoutons;
@@ -124,11 +120,11 @@ public class Fenetre extends JFrame{
 		
 		//On desactive le bouton "charger livraisons"
 		boutons.get(1).setEnabled(false);
-		//On dà©sactive le bouton "calculer tournà©e"
+		//On desactive le bouton "calculer tournee"
 		boutons.get(2).setEnabled(false);
-		//On dà©sactive le bouton "ajouter livraison"
+		//On desactive le bouton "ajouter livraison"
 		boutons.get(3).setEnabled(false);
-		//On dà©sactive le bouton "supprimer livraison"
+		//On desactive le bouton "supprimer livraison"
 		boutons.get(4).setEnabled(false);
     }
     
@@ -139,14 +135,6 @@ public class Fenetre extends JFrame{
     public void genererCouleurs(int infosTroncons) {
     	float R = 0.0f, G = 0.0f, B = 0.0f;
     	
-//    	for (int i = 0; i < infosTroncons.size(); i++) {
-//    		
-//    		
-//    		for (int j = 0; j < infosTroncons.get(i); j++) {
-//    			couleurs.add(new Color(R, G, B));
-//    			epaisseursLignes.add((infosTroncons.size()-i)*3);
-//    		}
-//    	}
     	for (int i = 0; i < infosTroncons; i++) {
     		R=(float)Math.random();
     		G=(float)Math.random();
@@ -279,7 +267,7 @@ public class Fenetre extends JFrame{
 	}
 	
 	/**
-	 * convertie le nombre de seconde passé en paramètre en temps sous la forme d'une chaine de caractères
+	 * convertie le nombre de seconde passe en parametre en temps sous la forme d'une chaine de caracteres
 	 * @param heureEnSeconde
 	 * @return
 	 */
