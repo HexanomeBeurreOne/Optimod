@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.List;
 
 public class Tournee {
@@ -125,11 +126,11 @@ public class Tournee {
 			heureDepartEtape = etape.getHeureLivraison() + 10*60;
 		}
 		heureFin = heureDepartEtape + retourEntrepot.getTempsDeParcours();
-		if(heureFin > 24*3600) System.out.println("La tournee se termine après minuit.");
+		if(heureFin > 24*3600) System.out.println("La tournee se termine aprï¿½s minuit.");
 	}
 
 	/**
-	 * renvoie l'indice de l'étape correspondante à l'adresse
+	 * renvoie l'indice de l'ï¿½tape correspondante ï¿½ l'adresse
 	 * retourne -1 en cas d'erreur
 	 * @param adresse
 	 * @return
@@ -145,7 +146,7 @@ public class Tournee {
 	
 	//TODO : besoin de deux plus courts chemins si on remet une livraison dans une tournee vide
 	/**
-	 * supprime une étape de la tournée
+	 * supprime une ï¿½tape de la tournï¿½e
 	 * @param indiceEtape
 	 * @param plusCourtsChemins
 	 */
@@ -183,7 +184,7 @@ public class Tournee {
 	// Ou alors mettre les heures de debut et fin en attribut
 	
 	/**
-	 * ajoute une étape à la tournée
+	 * ajoute une ï¿½tape ï¿½ la tournï¿½e
 	 * @param livraison
 	 * @param adresseLivraisonPrec
 	 * @param plusCourtsChemins
@@ -207,10 +208,21 @@ public class Tournee {
 	}
 	
 	public String toString(){
-		return "Tournee de " + etapes.size() + " etapes, " + 
+		String str = "Tournee de " + etapes.size() + " etapes, " + 
 				"debut a " + (int)heureDebut/3600 + ":"+ ((int)heureDebut%3600)/60 + ":"+ (int)heureDebut%60
 				+ ", fin a " + (int)heureFin/3600 + ":"+ ((int)heureFin%3600)/60 + ":"+ (int)heureFin%60;
+		for(int i = 0; i < etapes.size(); i++)
+		{
+			str += "\n-Etape " + i + " : \n" + etapes.get(i);
+		}
+		
+		str += "\n-Retour Ã  l'entrepot : \n\t Heure d'arrivÃ©e prÃ©vue Ã  " + secondeToHeure(this.heureFin);
+		return str;
+	}
 	
+	public String secondeToHeure (double heureEnSeconde) {
+		if (heureEnSeconde < 0) return "0";
+		return (int)heureEnSeconde/3600 + ":"+ ((int)heureEnSeconde%3600)/60 + ":"+ (int)heureEnSeconde%60;
 	}
 	
 }

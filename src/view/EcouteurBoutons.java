@@ -28,6 +28,7 @@ public class EcouteurBoutons implements ActionListener {
 			case Fenetre.SUPPRIMER_LIVRAISON: controleur.actionSupprimerLivraison(); break;
 			case Fenetre.UNDO: controleur.undo(); break;
 			case Fenetre.REDO: controleur.redo(); break;
+			case Fenetre.ENREGISTRER_FEUILLE_ROUTE: controleur.enregistrerFeuilleRoute(); break;
 		}
 	}
 }

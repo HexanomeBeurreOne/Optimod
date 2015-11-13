@@ -110,7 +110,7 @@ public class Adresse extends Observable {
 	}
 
 	/**
-	 * Ajoute un nouveau Troncon � la liste tronconSortant de l'Adresse courante
+	 * Ajoute un nouveau Troncon � la liste tronconSortant de l'Adresse courante
 	 * @param newTronconSortant
 	 */
 	public void addTroncon(Troncon newTronconSortant) {
@@ -129,7 +129,7 @@ public class Adresse extends Observable {
 
 	@Override
 	public String toString() {
-		return "Adresse [id=" + id + "]";
+		return "n°" + id + " aux coordonnées (" + coordX + ";" + coordY + ")";
 	}
 	
 	

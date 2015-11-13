@@ -86,7 +86,7 @@ public class Etape {
 	}
 
 	/**
-	 * calcule l'heure de livraison de la livraison à partir de l'heure de départ de la fenêtre de livraison
+	 * calcule l'heure de livraison de la livraison ï¿½ partir de l'heure de dï¿½part de la fenï¿½tre de livraison
 	 * @param heureDepart
 	 */
 	public void calculerHeureLivraison(double heureDepart){
@@ -102,6 +102,23 @@ public class Etape {
 			retard = heureLivraison - livraison.getFenetreLivraison().getHeureFin();
 		}
 	}
+
+	@Override
+	public String toString() {
+		String str = "\tLivraison du client nÂ°" + livraison.getClient() + " Ã  l'adresse " + livraison.getAdresse() + "\n\tHeure d'arrivÃ©e Ã  " + secondeToHeure(this.heureLivraison);
+		
+		if(retard!=-1.)
+		{
+			str += " avec un retard prÃ©vu de " + secondeToHeure(this.retard);
+		}
+		
+		str += "\n";
+		
+		return str;
+	}
 	
-	
+	public String secondeToHeure (double heureEnSeconde) {
+		if (heureEnSeconde < 0) return "0";
+		return (int)heureEnSeconde/3600 + ":"+ ((int)heureEnSeconde%3600)/60 + ":"+ (int)heureEnSeconde%60;
+	}
 }
