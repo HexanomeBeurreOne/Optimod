@@ -3,7 +3,7 @@ package model.tsp;
 import java.util.Collection;
 import java.util.Iterator;
 
-public class TSP2 extends TemplateTSP {
+public class TSP2 extends TSP1 {
 
 	@Override
 	protected int bound(Integer sommetCourant, Collection<Integer> nonVus) {

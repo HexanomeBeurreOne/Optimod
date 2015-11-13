@@ -249,9 +249,7 @@ public class Plan extends Observable {
 	 * Calcul le plus court chemin entre les points de livraisons d'une même fenetre et ceux de la suivante
 	 */
 	private void calculPlusCourtsChemins()	{
-		//The list is ordered
 		List<FenetreLivraison> fenetres = demandeLivraisons.getFenetresLivraisons();
-		//Get entrepot
 		Adresse entrepot = demandeLivraisons.getEntrepot();
 		//Liste contenant l'entrepot, qui est le depart et l'arrivee
 		List<Adresse> entrepotList = new ArrayList<Adresse>(); 
@@ -262,7 +260,7 @@ public class Plan extends Observable {
 		for(FenetreLivraison fen : fenetres)
 		{
 			List<Adresse> adressesFen = new ArrayList<Adresse>();
-			for(Livraison liv:fen.getLivraisons()){
+			for(Livraison liv : fen.getLivraisons()){
 				adressesFen.add(liv.getAdresse());
 			}
 			adressesFenList.add(adressesFen);
@@ -271,9 +269,10 @@ public class Plan extends Observable {
 		
 		Adresse departDijkstra;
 		List<Adresse> ciblesDijkstra;
-
+		// Pour toutes les "fenetres"
 		for(int i = 1; i < adressesFenList.size(); i++)
 		{
+			// Pour toutes les adresses de la fenetre
 			for(int j = 0; j < adressesFenList.get(i-1).size(); j++)
 			{
 				//On recupere une adresse d'une premiere fenetre de livraison
@@ -284,8 +283,23 @@ public class Plan extends Observable {
 				ciblesDijkstra.addAll(adressesFenList.get(i-1));
 				//On retire de ciblesDijkstra le departDijkstra
 				ciblesDijkstra.remove(departDijkstra);
-				Hashtable<Integer, Chemin> resDijkstra = dijkstra(departDijkstra, ciblesDijkstra);
-				plusCourtsChemins.put(departId, resDijkstra);
+				//On ne va passer a dijkstra que les cibles dont le plus court chemin depuis departDijkstra n'a pas ete precedemment calcule
+				List<Adresse> ciblesDijkstraNonCalculees;
+				if(plusCourtsChemins.contains(departId)) {
+					ciblesDijkstraNonCalculees = new ArrayList<Adresse>();
+					for(Adresse cible : ciblesDijkstra) {
+						//On ajoute la cible a ciblesDijkstraNonCalculees si on a pas encore calcule le plus court chemin depuis departDijkstra
+						if(plusCourtsChemins.get(departId).get(cible.getId()) == null) {
+							ciblesDijkstraNonCalculees.add(cible);
+						}
+					}
+				}
+				else {
+					ciblesDijkstraNonCalculees = ciblesDijkstra;
+					plusCourtsChemins.put(departId, new Hashtable<Integer, Chemin>());
+				}
+				Hashtable<Integer, Chemin> resDijkstra = dijkstra(departDijkstra, ciblesDijkstraNonCalculees);
+				plusCourtsChemins.get(departId).putAll(resDijkstra);
 			}
 		}
 		//System.out.println(plusCourtsChemins);

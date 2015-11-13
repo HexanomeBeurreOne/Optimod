@@ -70,7 +70,10 @@ public abstract class TemplateTSP implements TSP {
 	 * @param coutVus la somme des couts des arcs du chemin passant par tous les sommets de vus dans l'ordre ou ils ont ete visites
 	 */	
 	private void branchAndBound(int sommetCrt, Collection<Integer> nonVus, Collection<Integer> vus, int coutVus){
-		if (System.currentTimeMillis() - tpsDebut > tpsLimite) return;
+		if (System.currentTimeMillis() - tpsDebut > tpsLimite) {
+			System.out.println("Arret de TSP, temps limite atteint.");
+			return;
+		}
 	    if (nonVus.size() == 0){ // tous les sommets ont ete visites
 	    	if (g.estArc(sommetCrt,0)){ // on peut retourner au sommet de depart (0)
 	    		if (coutVus+g.getCout(sommetCrt,0) < coutMeilleureSolution){ // on a trouve une solution meilleure que meilleureSolution
