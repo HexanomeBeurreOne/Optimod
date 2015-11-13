@@ -195,7 +195,7 @@ public class ControleurApplication
 	public void getObjetSelectionne(int x, int y) {
 		
 		if (tourneeCalculee) {
-			objetSelectionne = plan.cherche(x, y);
+			objetSelectionne = plan.cherche(x, y, 15);
 			
 			//Si l'utilisateur clique sur une Adresse ou une Livraison
 			if (objetSelectionne != null) {

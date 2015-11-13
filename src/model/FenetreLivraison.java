@@ -32,7 +32,49 @@ public class FenetreLivraison {
 	}
 	
 	/**
-	 * add a Livraison object to the arrayList livraisons
+	 * @return the heureDebut
+	 */
+	public int getHeureDebut() {
+		return heureDebut;
+	}
+
+	/**
+	 * @param heureDebut the heureDebut to set
+	 */
+	public void setHeureDebut(int heureDebut) {
+		this.heureDebut = heureDebut;
+	}
+
+	/**
+	 * @return the heureFin
+	 */
+	public int getHeureFin() {
+		return heureFin;
+	}
+
+	/**
+	 * @param heureFin the heureFin to set
+	 */
+	public void setHeureFin(int heureFin) {
+		this.heureFin = heureFin;
+	}
+
+	/**
+	 * @return the livraisons
+	 */
+	public List<Livraison> getLivraisons() {
+		return livraisons;
+	}
+
+	/**
+	 * @param livraisons the livraisons to set
+	 */
+	public void setLivraisons(List<Livraison> livraisons) {
+		this.livraisons = livraisons;
+	}
+
+	/**
+	 * ajoute un objet Livraison à la liste livraisons
 	 * @param newLivraison
 	 */
 	public void addLivraison(Livraison newLivraison) {
@@ -40,54 +82,43 @@ public class FenetreLivraison {
 	}
 	
 	/**
-	 * remove a Livraison object from the arrayList livraisons
+	 * enlève l'objet Livraison de la liste livraisons
 	 * @param oldLivraison
 	 */
 	public void removeLivraison(Livraison oldLivraison) {
 		if (this.livraisons.contains(oldLivraison) ) this.livraisons.remove(oldLivraison);
 	}
 
-	public int getHeureDebut() {
-		return heureDebut;
-	}
-
-	public void setHeureDebut(int heureDebut) {
-		this.heureDebut = heureDebut;
-	}
-
-	public int getHeureFin() {
-		return heureFin;
-	}
-
-	public void setHeureFin(int heureFin) {
-		this.heureFin = heureFin;
-	}
-
-	public List<Livraison> getLivraisons() {
-		return livraisons;
-	}
-
-	public void setLivraisons(List<Livraison> livraisons) {
-		this.livraisons = livraisons;
-	}
-
-	public void afficheFenetreLivraison() {
-		System.out.println("FenetreLivraison : heureDebut="+this.heureDebut+" heureFin="+this.heureFin);
-		Iterator<Livraison> livraisonsIterator = this.livraisons.iterator();
-		while(livraisonsIterator.hasNext()) {
-			Livraison currentLivraison = (Livraison) livraisonsIterator.next();
-			System.out.print("      ");
-			currentLivraison.afficheLivraison();
-		}
-	}
+//	public void afficheFenetreLivraison() {
+//		System.out.println("FenetreLivraison : heureDebut="+this.heureDebut+" heureFin="+this.heureFin);
+//		Iterator<Livraison> livraisonsIterator = this.livraisons.iterator();
+//		while(livraisonsIterator.hasNext()) {
+//			Livraison currentLivraison = (Livraison) livraisonsIterator.next();
+//			System.out.print("      ");
+//			currentLivraison.afficheLivraison();
+//		}
+//	}
 	
+	
+	/**
+	 * définie l'attribut selectionnee de l'objet Livraison livraison à la valeur du booleen selectionnee passé en paramètre
+	 * @param livraison est la livraison que l'on doit modifier
+	 * @param selectionnee est la nouvelle valeur de l'attribut de la livraison
+	 */
 	public void setLivraisonSelectionnee(Livraison livraison, boolean selectionnee) {
 		if(this.livraisons.contains(livraison)) {
 			this.livraisons.get(this.livraisons.indexOf(livraison)).setSelectionnee(selectionnee);
 		}
 	}
 	
-	public Livraison chercheLivraison(int x0, int y0) {
+	/**
+	 * retourne la Livraison dont les coordonnées sont les plus proche des points x0 et y0 dans un cercle de rayon pixels
+	 * @param x0
+	 * @param y0
+	 * @param rayon
+	 * @return
+	 */
+	public Livraison chercheLivraison(int x0, int y0, int rayon) {
 		Iterator<Livraison> itL = this.livraisons.iterator();
 		Livraison livraisonCourante;
 		int x, y;
@@ -108,7 +139,7 @@ public class FenetreLivraison {
 			minDist = nextDist<minDist ? nextDist : minDist;
 		}
 		
-		if(minDist<=15) return livraisonsTrouvees.get(minDist);
+		if(minDist<=rayon) return livraisonsTrouvees.get(minDist);
 		
 		return null;
 	}

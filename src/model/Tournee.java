@@ -44,26 +44,79 @@ public class Tournee {
 		calculerHoraires();
 	}
 	
+	/**
+	 * @return the etapes
+	 */
 	public List<Etape> getEtapes() {
 		return etapes;
 	}
-	
+
+	/**
+	 * @param etapes the etapes to set
+	 */
+	public void setEtapes(List<Etape> etapes) {
+		this.etapes = etapes;
+	}
+
+	/**
+	 * @return the retourEntrepot
+	 */
 	public Chemin getRetourEntrepot() {
 		return retourEntrepot;
 	}
-	
-	public double getHeureDebut() {
-		return heureDebut;
+
+	/**
+	 * @param retourEntrepot the retourEntrepot to set
+	 */
+	public void setRetourEntrepot(Chemin retourEntrepot) {
+		this.retourEntrepot = retourEntrepot;
 	}
-	
+
+	/**
+	 * @return the entrepot
+	 */
 	public Adresse getEntrepot() {
 		return entrepot;
 	}
-	
+
+	/**
+	 * @param entrepot the entrepot to set
+	 */
+	public void setEntrepot(Adresse entrepot) {
+		this.entrepot = entrepot;
+	}
+
+	/**
+	 * @return the heureDebut
+	 */
+	public double getHeureDebut() {
+		return heureDebut;
+	}
+
+	/**
+	 * @param heureDebut the heureDebut to set
+	 */
+	public void setHeureDebut(double heureDebut) {
+		this.heureDebut = heureDebut;
+	}
+
+	/**
+	 * @return the heureFin
+	 */
 	public double getHeureFin() {
 		return heureFin;
 	}
-	
+
+	/**
+	 * @param heureFin the heureFin to set
+	 */
+	public void setHeureFin(double heureFin) {
+		this.heureFin = heureFin;
+	}
+
+	/**
+	 * 
+	 */
 	public void calculerHoraires() {
 		double heureDepartEtape = heureDebut;
 		for(Etape etape : etapes) {
@@ -72,9 +125,15 @@ public class Tournee {
 			heureDepartEtape = etape.getHeureLivraison() + 10*60;
 		}
 		heureFin = heureDepartEtape + retourEntrepot.getTempsDeParcours();
-		if(heureFin > 24*3600) System.out.println("La tournee se termine aprï¿½s minuit.");
+		if(heureFin > 24*3600) System.out.println("La tournee se termine après minuit.");
 	}
 
+	/**
+	 * renvoie l'indice de l'étape correspondante à l'adresse
+	 * retourne -1 en cas d'erreur
+	 * @param adresse
+	 * @return
+	 */
 	public int trouverIndiceEtape(Adresse adresse) {
 		for(int i = 0; i < etapes.size() ; i++)	{
 			if(etapes.get(i).getLivraison().getAdresse() == adresse) {
@@ -85,7 +144,11 @@ public class Tournee {
 	}
 	
 	//TODO : besoin de deux plus courts chemins si on remet une livraison dans une tournee vide
-		
+	/**
+	 * supprime une étape de la tournée
+	 * @param indiceEtape
+	 * @param plusCourtsChemins
+	 */
 	public void supprimerEtape(int indiceEtape, Hashtable<Integer,Hashtable<Integer,Chemin>> plusCourtsChemins) {
 		etapes.remove(indiceEtape);
 		if(etapes.size() == 0) {
@@ -119,6 +182,12 @@ public class Tournee {
 	// Donc faut aussi metre a jour les fenetres
 	// Ou alors mettre les heures de debut et fin en attribut
 	
+	/**
+	 * ajoute une étape à la tournée
+	 * @param livraison
+	 * @param adresseLivraisonPrec
+	 * @param plusCourtsChemins
+	 */
 	public void ajouterEtape(Livraison livraison, Adresse adresseLivraisonPrec, Hashtable<Integer,Hashtable<Integer,Chemin>> plusCourtsChemins) {
 		Chemin aller = plusCourtsChemins.get(adresseLivraisonPrec.getId()).get(livraison.getAdresse().getId());
 		int indiceEtapePrec = trouverIndiceEtape(adresseLivraisonPrec);

@@ -10,7 +10,7 @@ package model;
 public class Troncon {
 
 	/**
-	 * Attributes
+	 * Attributs
 	 */
 	private String nomRue;
 	private double vitesseMoyenne;
@@ -20,7 +20,7 @@ public class Troncon {
 	private Double tempsTroncon;
 	
 	/**
-	 * Constructor
+	 * Constructeur
 	 */
 	public Troncon(String nomRue, double vitesseMoyenne, double longueur, Adresse origine, Adresse destination) {
 		this.nomRue = nomRue;
@@ -31,22 +31,31 @@ public class Troncon {
 		this.tempsTroncon = 0.;
 	}
 
+	/**
+	 * @return the origine
+	 */
 	public Adresse getOrigine() {
 		return origine;
 	}
 
+	/**
+	 * @return the destination
+	 */
 	public Adresse getDestination() {
 		return destination;
 	}
 
-	public double getTempsTroncon() {
+	/**
+	 * @return the tempsTroncon
+	 */
+	public Double getTempsTroncon() {
 		if(this.tempsTroncon == 0.) this.tempsTroncon = this.longueur /this.vitesseMoyenne;
 		return this.tempsTroncon;
 	}
 
-	public void afficheTroncon() {
-		System.out.println("TronconSortant : nomRue : "+this.nomRue+" vitesseMoyenne="+this.vitesseMoyenne+" longueur="+this.longueur+" idOrigine : "+this.origine.getId()+" idDestination : "+this.destination.getId());
-	}
+//	public void afficheTroncon() {
+//		System.out.println("TronconSortant : nomRue : "+this.nomRue+" vitesseMoyenne="+this.vitesseMoyenne+" longueur="+this.longueur+" idOrigine : "+this.origine.getId()+" idDestination : "+this.destination.getId());
+//	}
 
 	@Override
 	public String toString() {
