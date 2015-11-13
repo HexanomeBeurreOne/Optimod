@@ -66,31 +66,31 @@ public class Plan extends Observable {
 	}
 
 	/**
-	 * @return the settledNodes
+	 * @return the noeudsNoirs
 	 */
-	public HashSet<Adresse> getSettledNodes() {
-		return settledNodes;
+	public HashSet<Adresse> getnoeudsNoirs() {
+		return noeudsNoirs;
 	}
 
 	/**
-	 * @param settledNodes the settledNodes to set
+	 * @param noeudsNoirs the noeudsNoirs to set
 	 */
-	public void setSettledNodes(HashSet<Adresse> settledNodes) {
-		this.settledNodes = settledNodes;
+	public void setnoeudsNoirs(HashSet<Adresse> noeudsNoirs) {
+		this.noeudsNoirs = noeudsNoirs;
 	}
 
 	/**
-	 * @return the unSettledNodes
+	 * @return the unnoeudsNoirs
 	 */
-	public HashSet<Adresse> getUnSettledNodes() {
-		return unSettledNodes;
+	public HashSet<Adresse> getUnnoeudsNoirs() {
+		return unnoeudsNoirs;
 	}
 
 	/**
-	 * @param unSettledNodes the unSettledNodes to set
+	 * @param unnoeudsNoirs the unnoeudsNoirs to set
 	 */
-	public void setUnSettledNodes(HashSet<Adresse> unSettledNodes) {
-		this.unSettledNodes = unSettledNodes;
+	public void setUnnoeudsNoirs(HashSet<Adresse> unnoeudsNoirs) {
+		this.unnoeudsNoirs = unnoeudsNoirs;
 	}
 
 	/**
@@ -185,14 +185,12 @@ public class Plan extends Observable {
 	}
 	
 	 /**
-	  * Ajoute un objet Troncon � la liste troncons
-	  * @param newTroncon est le troncon � ajouter
+	  * Ajoute un objet Troncon a la liste troncons
+	  * @param newTroncon est le troncon a ajouter
 	  */
 	public void addTroncon(Troncon newTroncon) {
 		this.troncons.add(newTroncon);
 	}
-
-	
 	
 	public void setTournee(Tournee tournee) {
 		this.tournee = tournee;
@@ -201,7 +199,7 @@ public class Plan extends Observable {
 	}
 	
 	/**
-	 * d�finie l'attribut selectionnee de l'objet objet � la valeur du booleen selectionnee pass� en param�tre
+	 * definie l'attribut selectionnee de l'objet objet a la valeur du booleen selectionnee passe en parametre
 	 * @param objet
 	 * @param selectionne
 	 */
@@ -218,7 +216,7 @@ public class Plan extends Observable {
 	}
 	
 	/**
-	 * Calcule une nouvelle tourn�e pour la demande de livraisons 
+	 * Calcule une nouvelle tournee pour la demande de livraisons 
 	 */
 	public void calculTournee()	{
 		calculPlusCourtsChemins();
@@ -230,7 +228,8 @@ public class Plan extends Observable {
 	
 	/**
 	 * algorithme TSP
-	 * @return
+	 * @return indices des livraisons dans demandeLivraisons dans l'ordre trouve par l'algorithme
+	 * du voyageur de commerce 
 	 */
 	private Integer[] calculOrdreLivraisons() {
 		TSP tsp = new TSP2();
@@ -248,7 +247,7 @@ public class Plan extends Observable {
 	}
 
 	/**
-	 * Calcul le plus court chemin entre les points de livraisons
+	 * Calcul le plus court chemin entre les points de livraisons d'une même fenetre et ceux de la suivante
 	 */
 	private void calculPlusCourtsChemins()	{
 		//The list is ordered
@@ -273,7 +272,7 @@ public class Plan extends Observable {
 		
 		Adresse departDijkstra;
 		List<Adresse> ciblesDijkstra;
-		//TODO : put it in dispatcher #multithread
+
 		for(int i = 1; i < adressesFenList.size(); i++)
 		{
 			for(int j = 0; j < adressesFenList.get(i-1).size(); j++)
@@ -293,8 +292,8 @@ public class Plan extends Observable {
 		//System.out.println(plusCourtsChemins);
 	}
 	
-	private HashSet<Adresse> settledNodes;
-	private HashSet<Adresse> unSettledNodes;
+	private HashSet<Adresse> noeudsNoirs;
+	private HashSet<Adresse> unnoeudsNoirs;
 	private HashMap<Adresse, Double> distance;
 	private HashMap<Adresse, Adresse> predecessors;
 	
@@ -307,21 +306,21 @@ public class Plan extends Observable {
 	 * @return
 	 */
 	public Hashtable<Integer, Chemin> dijkstra(Adresse depart, List<Adresse> cibles) {
-		settledNodes = new HashSet<Adresse>();
-		unSettledNodes = new HashSet<Adresse>();
+		noeudsNoirs = new HashSet<Adresse>();
+		unnoeudsNoirs = new HashSet<Adresse>();
 		distance = new HashMap<Adresse, Double>();
 		predecessors = new HashMap<Adresse, Adresse>();
 	    distance.put(depart, 0.);
-	    unSettledNodes.add(depart);
-	    while (unSettledNodes.size() > 0) {
-	      Adresse node = getMinimum(unSettledNodes);
-	      settledNodes.add(node);
-	      unSettledNodes.remove(node);
-	      findMinimalDistances(node);
+	    unnoeudsNoirs.add(depart);
+	    while (unnoeudsNoirs.size() > 0) {
+	      Adresse node = getMinimum(unnoeudsNoirs);
+	      noeudsNoirs.add(node);
+	      unnoeudsNoirs.remove(node);
+	      trouveTempsMinimal(node);
 	    }
 	    
 	    Hashtable<Integer, Chemin> result = new Hashtable<Integer, Chemin>();
-	    if(settledNodes.containsAll(cibles))	{
+	    if(noeudsNoirs.containsAll(cibles))	{
 		    for(int i=0; i < cibles.size(); i++)	{
 		    	Adresse precede = cibles.get(i);
 		    	Integer id = precede.getId();
@@ -350,34 +349,34 @@ public class Plan extends Observable {
 	  }
 	
 	/**
-	 * trouve les distances minimales
+	 * trouveTempsMinimal() trouve les temps minimaux
 	 * @param node
 	 */
-	private void findMinimalDistances(Adresse node) {
-	    List<Adresse> adjacentNodes = getNeighbors(node);
-	    for (Adresse target : adjacentNodes) {
-	      if (getShortestTime(target) > getShortestTime(node)
-	          + getTime(node, target)) {
-	        distance.put(target, getShortestTime(node)
-	            + getTime(node, target));
-	        predecessors.put(target, node);
-	        unSettledNodes.add(target);
+	private void trouveTempsMinimal(Adresse noeud) {
+	    List<Adresse> adjacentNodes = trouveSuivants(noeud);
+	    for (Adresse cible : adjacentNodes) {
+	      if (trouverPlusPetitTemps(cible) > trouverPlusPetitTemps(noeud)
+	          + getTemps(noeud, cible)) {
+	        distance.put(cible, trouverPlusPetitTemps(noeud)
+	            + getTemps(noeud, cible));
+	        predecessors.put(cible, noeud);
+	        unnoeudsNoirs.add(cible);
 	      }
 	    }
 
 	  }
 
 	/**
-	 * on retourne la valeur des arcs du graphe en temps
+	 * getTemps() retourne la valeur des arcs du graphe en temps
 	 * @param node
 	 * @param target
 	 * @return
 	 */
-	  private double getTime(Adresse node, Adresse target) {
-	    for (Troncon edge : troncons) {
-	      if (edge.getOrigine().equals(node)
-	          && edge.getDestination().equals(target)) {
-	        return edge.getTempsTroncon();
+	  private double getTemps(Adresse noeud, Adresse cible) {
+	    for (Troncon arrete : troncons) {
+	      if (arrete.getOrigine().equals(noeud)
+	          && arrete.getDestination().equals(cible)) {
+	        return arrete.getTempsTroncon();
 	      }
 	    }
 	    throw new RuntimeException("Should not happen");
@@ -388,19 +387,19 @@ public class Plan extends Observable {
 	   * @param node
 	   * @return
 	   */
-	  private List<Adresse> getNeighbors(Adresse node) {
-		    List<Adresse> neighbors = new ArrayList<Adresse>();
+	  private List<Adresse> trouveSuivants(Adresse noeud) {
+		    List<Adresse> suivants = new ArrayList<Adresse>();
 		    for (Troncon edge : troncons) {
-		      if (edge.getOrigine().equals(node)
-		          && !isSettled(edge.getDestination())) {
-		        neighbors.add(edge.getDestination());
+		      if (edge.getOrigine().equals(noeud)
+		          && !estNoir(edge.getDestination())) {
+		    	  suivants.add(edge.getDestination());
 		      }
 		    }
-		    return neighbors;
+		    return suivants;
 		  }
 	  
-	  private boolean isSettled(Adresse node) {
-		    return settledNodes.contains(node);
+	  private boolean estNoir(Adresse node) {
+		    return noeudsNoirs.contains(node);
 	  }
 	  
 	  private Adresse getMinimum(Set<Adresse> adresseSet) {
@@ -409,15 +408,20 @@ public class Plan extends Observable {
 	      if (minimum == null) {
 	        minimum = ad;
 	      } else {
-	        if (getShortestTime(ad) < getShortestTime(minimum)) {
+	        if (trouverPlusPetitTemps(ad) < trouverPlusPetitTemps(minimum)) {
 	          minimum = ad;
 	        }
 	      }
 	    }
 	    return minimum;
 	  }
-
-	  private Double getShortestTime(Adresse destination) {
+	  
+	  /**
+	   * trouverPlusPetitTemps() trouve le plus petit cout d'un noeud
+	   * @param destination
+	   * @return
+	   */
+	  private Double trouverPlusPetitTemps(Adresse destination) {
 	    Double d = (Double) distance.get(destination);
 	    if (d == null) {
 	      return Double.MAX_VALUE;
@@ -441,7 +445,7 @@ public class Plan extends Observable {
 	}
 	
 	/**
-	 * retourne la coordonn�e x minimale du plan
+	 * retourne la coordonnee x minimale du plan
 	 * @return minX
 	 */
 	public int getMinX() {
@@ -456,7 +460,7 @@ public class Plan extends Observable {
 	}
 	
 	/**
-	 * retourne la coordonn�e x maximale du plan
+	 * retourne la coordonnee x maximale du plan
 	 * @return
 	 */
 	public int getMaxX() {
@@ -500,6 +504,12 @@ public class Plan extends Observable {
 		return maxY;
 	}
 	
+	/**
+	 * nouveauxPlusCourtsChemins() trouve les nouveaux plus court chemin entre l'adresse de depart et toutes les adresses
+	 * de la fenetre de l'adresse d'arrivee
+	 * @param depart
+	 * @param arrivee
+	 */
 	public void nouveauxPlusCourtsChemins(Adresse depart, Adresse arrivee) {
 		List<Adresse> cibles = new ArrayList<Adresse>();
 		if(arrivee == tournee.getEntrepot()) {
@@ -562,6 +572,10 @@ public class Plan extends Observable {
 		return indiceEtape;
 	}
 	
+	/**
+	 * supprimerLivraison() supprime une livraison et l'etape associee
+	 * @param adresseLivraison adresse a supprimer
+	 */
 	public void supprimerLivraison(Adresse adresseLivraison) {
 		int indiceEtape = testSuppression(adresseLivraison);
 		if(indiceEtape != -1) {
@@ -619,6 +633,13 @@ public class Plan extends Observable {
 		}
 	}
 	
+	/**
+	 * testAjout() verifie que les chemins necessaire a la modification de la tournee sont deja existant et dans le
+	 * cas contraire les calcule
+	 * @param adresseLivraisonPrec
+	 * @param adresseLivraison
+	 * @return
+	 */
 	public int testAjout(Adresse adresseLivraisonPrec, Adresse adresseLivraison)	{
 		Adresse arrivee;
 		int indiceEtapePrec;
@@ -696,6 +717,19 @@ public class Plan extends Observable {
 		
 		// adresseTrouvee est null si aucune adresse ne correspond 
 		return adresseTrouvee;
+	}
+
+	@Override
+	public String toString() {
+		String str = "Plan : "+this.nom;
+		str += "\nListe adresses : ";
+		Iterator<Adresse> adressesIterator = this.adresses.iterator();
+		while(adressesIterator.hasNext()) {
+			Adresse currentAdresse = (Adresse) adressesIterator.next();
+			str += "\n   ";
+			str += currentAdresse.toString();
+		}
+		return str;
 	}
 
 }
