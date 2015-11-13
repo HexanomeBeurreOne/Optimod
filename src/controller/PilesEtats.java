@@ -46,4 +46,10 @@ public class PilesEtats
 		}
 	}
 	
+	public void clear()
+	{
+		redoStack.clear();
+		undoStack.clear();
+	}
+	
 }

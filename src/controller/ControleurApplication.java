@@ -70,7 +70,7 @@ public class ControleurApplication
 	}
 	
 	/**
-	 * recalcule l'echelle de la vuePlan pour que le plan soit toujours affiché dans son intégralité
+	 * recalcule l'echelle de la vuePlan pour que le plan soit toujours affichï¿½ dans son intï¿½gralitï¿½
 	 */
 	private void changerEchelle() {
 		double largeurPlan = (double) this.fenetre.getLargeurVuePlan();
@@ -106,7 +106,7 @@ public class ControleurApplication
 				this.plan.setDemandeLivraisons(new DemandeLivraisons());
 				this.plan.setTournee(new Tournee());
 				
-				// on adapte l'echelle pour qu'elle corresponde parfaitement à la vue du plan
+				// on adapte l'echelle pour qu'elle corresponde parfaitement ï¿½ la vue du plan
 				this.changerEchelle();
 				
 				fenetre.getBoutons().get(1).setEnabled(true);
@@ -114,7 +114,7 @@ public class ControleurApplication
 				fenetre.getBoutons().get(3).setEnabled(false);
 				fenetre.getBoutons().get(4).setEnabled(false);
 				
-				// on passe tous les anciens attributs d'état à leurs valeurs initiales
+				// on passe tous les anciens attributs d'ï¿½tat ï¿½ leurs valeurs initiales
 				tourneeCalculee = false;
 				objetSelectionne = new Object();
 				adresseSelectionnee = new Adresse();
@@ -135,7 +135,7 @@ public class ControleurApplication
 		FactoryDemandeLivraisons factoryDemandeLivraisons = new FactoryDemandeLivraisons();
 		String fichier = chargerFichier("./data");
 		
-		// on deselectionne tous les objets selectionnés au chargement d'un nouveau fichier de demande livraison
+		// on deselectionne tous les objets selectionnï¿½s au chargement d'un nouveau fichier de demande livraison
 		miseAJourObjetSelectionnee(null);
 		if (fichier != null) {
 			DemandeLivraisons dLTemp = factoryDemandeLivraisons.getDemandeLivraisons(fichier, this.plan);
@@ -160,7 +160,7 @@ public class ControleurApplication
 				fenetre.getBoutons().get(3).setEnabled(false);
 				fenetre.getBoutons().get(4).setEnabled(false);
 				
-				// on passe tous les anciens attributs d'état à leurs valeurs initiales
+				// on passe tous les anciens attributs d'ï¿½tat ï¿½ leurs valeurs initiales
 				tourneeCalculee = false;
 				objetSelectionne = new Object();
 				adresseSelectionnee = new Adresse();
@@ -187,6 +187,7 @@ public class ControleurApplication
 	}
 	
 	public void calculerTournee () {
+		undoRedo.clear();
 		plan.calculTournee();
 		fenetre.getZoneMessage().setText("Vous pouvez cliquer sur une adresse ou une livraison");
 		tourneeCalculee = true;
