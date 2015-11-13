@@ -68,7 +68,7 @@ public class ControleurApplication
 		if(tourneeCalculee)
 		{
 			//TODO: toStrings
-			String feuille = "Feuille de Route :\n";
+			String feuille = "\t\tFeuille de Route :\n\n";
 			feuille += plan.getTournee().toString();
 			
 			//Save in doc
