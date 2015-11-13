@@ -103,6 +103,10 @@ public class Fenetre extends JFrame{
         this.setVisible(true);
     }
 
+    /**
+     * instancie les boutons
+     * @param controller
+     */
     public void creerBoutons(ControleurApplication controller) {
     	ecouteurDeBoutons = new EcouteurBoutons(controller);
 		boutons = new ArrayList<JButton>();
@@ -120,14 +124,18 @@ public class Fenetre extends JFrame{
 		
 		//On desactive le bouton "charger livraisons"
 		boutons.get(1).setEnabled(false);
-		//On d√©sactive le bouton "calculer tourn√©e"
+		//On d‡©sactive le bouton "calculer tourn‡©e"
 		boutons.get(2).setEnabled(false);
-		//On d√©sactive le bouton "ajouter livraison"
+		//On d‡©sactive le bouton "ajouter livraison"
 		boutons.get(3).setEnabled(false);
-		//On d√©sactive le bouton "supprimer livraison"
+		//On d‡©sactive le bouton "supprimer livraison"
 		boutons.get(4).setEnabled(false);
     }
     
+    /**
+     * genere aleatoirement autant de couleurs qu'il existe de fenetre de livraison
+     * @param infosTroncons
+     */
     public void genererCouleurs(int infosTroncons) {
     	float R = 0.0f, G = 0.0f, B = 0.0f;
     	
@@ -149,11 +157,17 @@ public class Fenetre extends JFrame{
     	System.out.println(couleurs.size());
     	System.out.println(epaisseursLignes.size());
     }
-
+    
+    /**
+     * @return hauteurFenetre
+     */
 	public int getHauteurFenetre() {
 		return hauteurFenetre;
 	}
 
+	/**
+	 * @return largeurFenetre
+	 */
 	public int getLargeurFenetre() {
 		return largeurFenetre;
 	}
@@ -228,14 +242,25 @@ public class Fenetre extends JFrame{
 		this.epaisseursLignes = epaisseursLignes;
 	}
 
+	/**
+	 * @return largeurVuePlan
+	 */
 	public int getLargeurVuePlan() {
 		return largeurVuePlan;
 	}
 
+	/**
+	 * @return hauteurVuePlan
+	 */
 	public int getHauteurVuePlan() {
 		return hauteurVuePlan;
 	}
 
+	/**
+	 * ouvre la popup de demande de saisie de l'identifiant du client et renvoie cette identifiant si c'est un entier positif
+	 * renvoie -1 en cas d'erreur
+	 * @return
+	 */
 	public int saisirClient() {
 		String resultat = (String)JOptionPane.showInputDialog(
                 this,
@@ -253,6 +278,11 @@ public class Fenetre extends JFrame{
 		}
 	}
 	
+	/**
+	 * convertie le nombre de seconde passÈ en paramËtre en temps sous la forme d'une chaine de caractËres
+	 * @param heureEnSeconde
+	 * @return
+	 */
 	public String secondeToHeure (int heureEnSeconde) {
 		if (heureEnSeconde < 0) return "0";
 		return (int)heureEnSeconde/3600 + ":"+ ((int)heureEnSeconde%3600)/60 + ":"+ (int)heureEnSeconde%60;

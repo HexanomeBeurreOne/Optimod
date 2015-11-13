@@ -74,7 +74,7 @@ public class FenetreLivraison {
 	}
 
 	/**
-	 * ajoute un objet Livraison ï¿½ la liste livraisons
+	 * ajoute un objet Livraison à la liste livraisons
 	 * @param newLivraison
 	 */
 	public void addLivraison(Livraison newLivraison) {
@@ -82,7 +82,7 @@ public class FenetreLivraison {
 	}
 	
 	/**
-	 * enlï¿½ve l'objet Livraison de la liste livraisons
+	 * enlàve l'objet Livraison de la liste livraisons
 	 * @param oldLivraison
 	 */
 	public void removeLivraison(Livraison oldLivraison) {
@@ -101,7 +101,7 @@ public class FenetreLivraison {
 	
 	
 	/**
-	 * dï¿½finie l'attribut selectionnee de l'objet Livraison livraison ï¿½ la valeur du booleen selectionnee passï¿½ en paramï¿½tre
+	 * definie l'attribut selectionnee de l'objet Livraison livraison à la valeur du booleen selectionnee passe en parametre
 	 * @param livraison est la livraison que l'on doit modifier
 	 * @param selectionnee est la nouvelle valeur de l'attribut de la livraison
 	 */
@@ -112,7 +112,7 @@ public class FenetreLivraison {
 	}
 	
 	/**
-	 * retourne la Livraison dont les coordonnï¿½es sont les plus proche des points x0 et y0 dans un cercle de rayon pixels
+	 * retourne la Livraison dont les coordonnees sont les plus proche des points x0 et y0 dans un cercle de rayon pixels
 	 * @param x0
 	 * @param y0
 	 * @param rayon

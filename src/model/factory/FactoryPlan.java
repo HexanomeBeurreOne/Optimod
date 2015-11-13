@@ -104,7 +104,7 @@ public class FactoryPlan implements FactoryBase {
             }
         } catch (Exception e) {
         	
-        	// s'il manque des paramï¿½tres pour créer une adresse dans le fichier xml on stoppe l'instanciation du plan
+        	// s'il manque des paramàtres pour créer une adresse dans le fichier xml on stoppe l'instanciation du plan
         	return false;
         }
 	}
@@ -217,7 +217,7 @@ public class FactoryPlan implements FactoryBase {
 		    }
 		}catch(Exception e) {
 				
-		// si le fichier n'est pas bien formï¿½ on ne stoppe l'instanciation de la demande de livraisons
+		// si le fichier n'est pas bien formà on ne stoppe l'instanciation de la demande de livraisons
 		return null;
 	}
 		// if the Adresse list of the Plan is empty return null

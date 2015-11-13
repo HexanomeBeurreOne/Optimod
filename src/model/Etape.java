@@ -86,7 +86,7 @@ public class Etape {
 	}
 
 	/**
-	 * calcule l'heure de livraison de la livraison ï¿½ partir de l'heure de dï¿½part de la fenï¿½tre de livraison
+	 * calcule l'heure de livraison de la livraison à partir de l'heure de dàpart de la fenàtre de livraison
 	 * @param heureDepart
 	 */
 	public void calculerHeureLivraison(double heureDepart){

@@ -110,7 +110,7 @@ public class Adresse extends Observable {
 	}
 
 	/**
-	 * Ajoute un nouveau Troncon ï¿½ la liste tronconSortant de l'Adresse courante
+	 * Ajoute un nouveau Troncon à la liste tronconSortant de l'Adresse courante
 	 * @param newTronconSortant
 	 */
 	public void addTroncon(Troncon newTronconSortant) {

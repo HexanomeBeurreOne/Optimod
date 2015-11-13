@@ -38,7 +38,7 @@ public class SupprimerLivraison implements Commande
 	}
 
 	/**
-	 * Ajoute une livraison ├а une fenetre de livraison pour une demande
+	 * Ajoute une livraison ра une fenetre de livraison pour une demande
 	 */
 	@Override
 	public void unExecute() 

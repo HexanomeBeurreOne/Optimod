@@ -75,7 +75,7 @@ public class VuePlan extends JPanel implements Observer {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
         
-        // RÃ©cupÃ©rer troncons du plan
+        // Rà©cupà©rer troncons du plan
         List<Troncon>  tronconsPlan = plan.getTroncons();
         Iterator<Troncon> itTroncons = tronconsPlan.iterator();
         g2.setColor(Color.LIGHT_GRAY);
@@ -86,7 +86,7 @@ public class VuePlan extends JPanel implements Observer {
         // Colorier les chemins
         colorierChemins(g2);
         
-        // RÃ©cupÃ©rer adresses du plan
+        // Rà©cupà©rer adresses du plan
         List<Adresse>  adressesPlan = plan.getAdresses();
         Iterator<Adresse> itAdresses = adressesPlan.iterator();
         g2.setColor(Color.GRAY);
@@ -107,16 +107,32 @@ public class VuePlan extends JPanel implements Observer {
         colorierLivraisons(g2);
     }
 
+	/**
+	 * renvoie la coordonnée passée en paramètre adaptée à la nouvelle échelle de la vue
+	 * @param coordonnee
+	 * @return
+	 */
 	private int scaleIt(int coordonnee) {
         return (int) Math.round(coordonnee*this.echelle);
     }
     
+	/**
+	 * affiche une adresse sous forme de cercle
+	 * @param g2
+	 * @param adresse
+	 * @param rayon
+	 */
 	private void drawAdresse(Graphics2D g2, Adresse adresse, int rayon) {
     	int x = scaleIt(adresse.getCoordX());
         int y = scaleIt(adresse.getCoordY());
         g2.fillOval(x - rayon, y - rayon, 2*rayon, 2*rayon);
     }
 
+	/**
+	 * affiche un troncon sous la forme d'un trait
+	 * @param g2
+	 * @param troncon
+	 */
     private void drawTroncon(Graphics2D g2, Troncon troncon) {
         Adresse origine = troncon.getOrigine();
         Adresse destination = troncon.getDestination();
@@ -127,6 +143,10 @@ public class VuePlan extends JPanel implements Observer {
         g2.drawLine(xOrigine, yOrigine, xDestination, yDestination);
     }
 
+    /**
+     * affiche une livraison sous la forme d'un anneau
+     * @param g2
+     */
 	private void colorierLivraisons(Graphics2D g2) {
 		
 		int indiceCouleur=0;
@@ -159,6 +179,10 @@ public class VuePlan extends JPanel implements Observer {
 		}
 	}
 	
+	/**
+	 * colorie l'entrepot sous la forme d'un cercle rouge
+	 * @param g2
+	 */
 	private void colorierEntrepot(Graphics2D g2) {
 		Adresse entrepot = plan.getDemandeLivraisons().getEntrepot();
 		if (entrepot!=null) {
@@ -168,6 +192,10 @@ public class VuePlan extends JPanel implements Observer {
 		}
 	}
 	
+	/**
+	 * colorie les chemins de l'ensemble des étapes d'une fenetre de livraisons avec sa couleur correspondante
+	 * @param g2
+	 */
     private void colorierChemins(Graphics2D g2) {
     	
     	int indiceFenetre = 0;
@@ -203,31 +231,31 @@ public class VuePlan extends JPanel implements Observer {
 		}
 	}
 	
-    /**
-     * @param fromPoint end of the arrow
-     * @param rotationDeg rotation angle of line
-     * @param length arrow length
-     * @param wingsAngleDeg wingspan of arrow
-     * @return Path2D arrow shape
-     */
-    public static Path2D createArrowForLine(
-            Point2D fromPoint,
-            double rotationDeg,
-            double length,
-            double wingsAngleDeg) {
-
-        double ax = fromPoint.getX();
-        double ay = fromPoint.getY();
-
-        double radB = Math.toRadians(-rotationDeg + wingsAngleDeg);
-        double radC = Math.toRadians(-rotationDeg - wingsAngleDeg);
-
-        Path2D resultPath = new Path2D.Double();
-        resultPath.moveTo(length * Math.cos(radB) + ax, length * Math.sin(radB) + ay);
-        resultPath.lineTo(ax, ay);
-        resultPath.lineTo(length * Math.cos(radC) + ax, length * Math.sin(radC) + ay);
-        return resultPath;
-    }
+//    /**
+//     * @param fromPoint end of the arrow
+//     * @param rotationDeg rotation angle of line
+//     * @param length arrow length
+//     * @param wingsAngleDeg wingspan of arrow
+//     * @return Path2D arrow shape
+//     */
+//    public static Path2D createArrowForLine(
+//            Point2D fromPoint,
+//            double rotationDeg,
+//            double length,
+//            double wingsAngleDeg) {
+//
+//        double ax = fromPoint.getX();
+//        double ay = fromPoint.getY();
+//
+//        double radB = Math.toRadians(-rotationDeg + wingsAngleDeg);
+//        double radC = Math.toRadians(-rotationDeg - wingsAngleDeg);
+//
+//        Path2D resultPath = new Path2D.Double();
+//        resultPath.moveTo(length * Math.cos(radB) + ax, length * Math.sin(radB) + ay);
+//        resultPath.lineTo(ax, ay);
+//        resultPath.lineTo(length * Math.cos(radC) + ax, length * Math.sin(radC) + ay);
+//        return resultPath;
+//    }
 
     @Override
     public void update(Observable o, Object arg) {

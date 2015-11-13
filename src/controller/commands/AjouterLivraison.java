@@ -28,7 +28,7 @@ public class AjouterLivraison implements Commande
 	
 //------------------------------------------------- METHODS
 	/**
-	 * Ajoute une livraison Ã  une fenetre de livraison pour une demande
+	 * Ajoute une livraison à une fenetre de livraison pour une demande
 	 */
 	@Override
 	public void execute() 

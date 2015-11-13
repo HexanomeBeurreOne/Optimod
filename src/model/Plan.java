@@ -168,16 +168,16 @@ public class Plan extends Observable {
 	}
 
 	/**
-	 * Ajoute un objet Adresse ï¿½ la liste adresses
-	 * @param newAdresse est l'adresse ï¿½ ajouter
+	 * Ajoute un objet Adresse à la liste adresses
+	 * @param newAdresse est l'adresse à ajouter
 	 */
 	public void addAdresse(Adresse newAdresse) {
 		this.adresses.add(newAdresse);
 	}
 	
 	/**
-	 * Enlï¿½ve un objet Adresse ï¿½ la liste adresses
-	 * @param adresseToRemove est l'adresse ï¿½ enlever
+	 * Enlàve un objet Adresse à la liste adresses
+	 * @param adresseToRemove est l'adresse à enlever
 	 */
 	public void removeAdresse(Adresse adresseToRemove) {
 		if(this.adresses.contains(adresseToRemove)) this.adresses.remove(adresseToRemove);
@@ -246,7 +246,7 @@ public class Plan extends Observable {
 	}
 
 	/**
-	 * Calcul le plus court chemin entre les points de livraisons d'une mÃªme fenetre et ceux de la suivante
+	 * Calcul le plus court chemin entre les points de livraisons d'une màªme fenetre et ceux de la suivante
 	 */
 	private void calculPlusCourtsChemins()	{
 		//The list is ordered
@@ -297,9 +297,9 @@ public class Plan extends Observable {
 	private HashMap<Adresse, Adresse> predecessors;
 	
 	/**
-	 * Dijkstra() trouve les plus courts chemins de depart jusqu'aux adresses cibles et retourne le rÃ©sultat
-	 * dans une HashTable composÃ©e d'entitÃ©s clÃ©-valeur oÃ¹ la clÃ© est l'id de l'adresse et la valeur le chemin de
-	 * depart Ã  cette adresse.
+	 * Dijkstra() trouve les plus courts chemins de depart jusqu'aux adresses cibles et retourne le rà©sultat
+	 * dans une HashTable composà©e d'entità©s clà©-valeur oà¹ la clà© est l'id de l'adresse et la valeur le chemin de
+	 * depart à  cette adresse.
 	 * @param depart
 	 * @param cibles
 	 * @return
@@ -474,7 +474,7 @@ public class Plan extends Observable {
 	}
 	
 	/**
-	 * retourne la coordonnï¿½e y minimale du plan
+	 * retourne la coordonnàe y minimale du plan
 	 * @return
 	 */
 	public int getMinY() {
@@ -489,7 +489,7 @@ public class Plan extends Observable {
 	}
 	
 	/**
-	 * retourne la coordonnï¿½e y maximale du plan
+	 * retourne la coordonnàe y maximale du plan
 	 * @return
 	 */
 	public int getMaxY() {
@@ -591,8 +591,8 @@ public class Plan extends Observable {
 	}
 	
 	/**
-	 * Ajoute une livraison Ã  la tournÃ©e sans demander la fenetre dans laquelle la livraison doit Ãªtre ajoutÃ©e.
-	 * Seule des objets Adresses sont passÃ©es en paramÃ¨tres en plus du client, et non des objets Livraison
+	 * Ajoute une livraison à  la tournà©e sans demander la fenetre dans laquelle la livraison doit àªtre ajoutà©e.
+	 * Seule des objets Adresses sont passà©es en paramà¨tres en plus du client, et non des objets Livraison
 	 * 
 	 * @param client
 	 * @param precLivraisonAdresse
@@ -613,8 +613,8 @@ public class Plan extends Observable {
 	}
 	
 	/**
-	 * Ajoute une livraison Ã  la tournÃ©e sans demander la fenetre dans laquelle la livraison doit Ãªtre ajoutÃ©e.
-	 * Seule des objets Adresses sont passÃ©es en paramÃ¨tres en plus du client et de la fenÃªtre, et non des objets Livraison
+	 * Ajoute une livraison à  la tournà©e sans demander la fenetre dans laquelle la livraison doit àªtre ajoutà©e.
+	 * Seule des objets Adresses sont passà©es en paramà¨tres en plus du client et de la fenàªtre, et non des objets Livraison
 	 * @param client
 	 * @param precLivraisonAdresse
 	 * @param nouvellelivraisonAdresse
@@ -654,7 +654,7 @@ public class Plan extends Observable {
 		}
 		// Si il n'y a pas d'etape suivante
 		if(indiceEtapePrec + 1 == tournee.getEtapes().size()) {
-			// On souhaite ajouter aprÃ¨s la derniere etape, le chemin retourEntrepot va etre mis a jour
+			// On souhaite ajouter aprà¨s la derniere etape, le chemin retourEntrepot va etre mis a jour
 			arrivee = tournee.getEntrepot();
 		}
 		else {

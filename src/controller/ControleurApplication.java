@@ -47,7 +47,7 @@ public class ControleurApplication
 	
 //------------------------------------------------- CONSTRUCTORS
 	/**
-	 * Constructeur de ControleurApplication avec un plan et une ecchelle
+	 * Constructeur de ControleurApplication avec un plan et une echelle
 	 * @param p Plan 
 	 * @param e Echelle 
 	 */
@@ -159,7 +159,7 @@ public class ControleurApplication
 				this.plan.setDemandeLivraisons(new DemandeLivraisons());
 				this.plan.setTournee(new Tournee());
 				
-				// on adapte l'echelle pour qu'elle corresponde parfaitement ï¿½ la vue du plan
+				// on adapte l'echelle pour qu'elle corresponde parfaitement à la vue du plan
 				this.changerEchelle();
 				
 				fenetre.getBoutons().get(1).setEnabled(true);
@@ -167,7 +167,7 @@ public class ControleurApplication
 				fenetre.getBoutons().get(3).setEnabled(false);
 				fenetre.getBoutons().get(4).setEnabled(false);
 				
-				// on passe tous les anciens attributs d'ï¿½tat ï¿½ leurs valeurs initiales
+				// on passe tous les anciens attributs d'àtat à leurs valeurs initiales
 				tourneeCalculee = false;
 				objetSelectionne = new Object();
 				adresseSelectionnee = new Adresse();
@@ -188,7 +188,7 @@ public class ControleurApplication
 		FactoryDemandeLivraisons factoryDemandeLivraisons = new FactoryDemandeLivraisons();
 		String fichier = chargerFichier("./data");
 		
-		// on deselectionne tous les objets selectionnï¿½s au chargement d'un nouveau fichier de demande livraison
+		// on deselectionne tous les objets selectionnàs au chargement d'un nouveau fichier de demande livraison
 		miseAJourObjetSelectionnee(null);
 		if (fichier != null) {
 			DemandeLivraisons dLTemp = factoryDemandeLivraisons.getDemandeLivraisons(fichier, this.plan);
@@ -216,7 +216,7 @@ public class ControleurApplication
 				fenetre.getBoutons().get(3).setEnabled(false);
 				fenetre.getBoutons().get(4).setEnabled(false);
 				
-				//on passe tous les anciens attributs d'ï¿½tat ï¿½ leurs valeurs initiales
+				//on passe tous les anciens attributs d'àtat à leurs valeurs initiales
 				tourneeCalculee = false;
 				objetSelectionne = new Object();
 				adresseSelectionnee = new Adresse();
@@ -233,6 +233,11 @@ public class ControleurApplication
 		}
 	}
 	
+	/**
+	 * ouvre un explorateur de fichiers et renvoie le chemin d'accès du fichier selectionne
+	 * @param path
+	 * @return
+	 */
 	private String chargerFichier(String path) {
 		JFileChooser chooser = new JFileChooser(path);
 	    int returnVal = chooser.showOpenDialog(new JFrame());
@@ -242,6 +247,9 @@ public class ControleurApplication
 	    return null;
 	}
 	
+	/**
+	 * calcule la tournee
+	 */
 	public void calculerTournee () {
 		undoRedo.clear();
 		plan.calculTournee();
@@ -249,6 +257,11 @@ public class ControleurApplication
 		tourneeCalculee = true;
 	}
 	
+	/**
+	 * change l'etat de l'objet selectionne sur le plan, que ce soit une adresse ou une livraison
+	 * @param x
+	 * @param y
+	 */
 	public void getObjetSelectionne(int x, int y) {
 		
 		if (tourneeCalculee) {
@@ -357,6 +370,10 @@ public class ControleurApplication
 		}
 	}
 	
+	/**
+	 * change l'attribut correpondant a l'objet selectionne
+	 * @param objet
+	 */
 	private void miseAJourObjetSelectionnee(Object objet) {
 		
 		if (objet!=null) {
@@ -364,29 +381,35 @@ public class ControleurApplication
 				plan.setObjetSelectionne(adresseSelectionnee, false);
 				adresseSelectionnee = (Adresse) objet;
 				plan.setObjetSelectionne(adresseSelectionnee, true);
-				// on deselectionne la livraison selectionnï¿½e
+				// on deselectionne la livraison selectionnàe
 				plan.setObjetSelectionne(livraisonSelectionnee, false);
 				
 			} else if (objet.getClass().getName() == "model.Livraison") {
 				plan.setObjetSelectionne(livraisonSelectionnee, false);
 				livraisonSelectionnee = (Livraison) objet;
 				plan.setObjetSelectionne(livraisonSelectionnee, true);
-				// on deselectionne l'adresse selectionnï¿½e
+				// on deselectionne l'adresse selectionnàe
 				plan.setObjetSelectionne(adresseSelectionnee, false);
 			}
 		} else {
-			// on deselectionne la livraison selectionnï¿½e
+			// on deselectionne la livraison selectionnàe
 			plan.setObjetSelectionne(livraisonSelectionnee, false);
-			// on deselectionne l'adresse selectionnï¿½e
+			// on deselectionne l'adresse selectionnàe
 			plan.setObjetSelectionne(adresseSelectionnee, false);
 		}
 	}
 	
+	/**
+	 * change l'etat de l'application a ajouterLivraison comme etant vrai
+	 */
 	public void actionAjouterLivraison () {
 		etatAjouterLivraison = true;
 		fenetre.getZoneMessage().setText("Veuillez sélectionner la livraison existante après laquelle placer votre nouvelle livraison");
 	}
 	
+	/**
+	 * permet de supprimer la derniere livraison selectionnee
+	 */
 	public void actionSupprimerLivraison () {
 		FenetreLivraison fenetreL = livraisonSelectionnee.getFenetreLivraison();
 		Adresse adresseLivraison = livraisonSelectionnee.getAdresse();
@@ -411,9 +434,9 @@ public class ControleurApplication
 	
 	
 	/**
-	 * CrÃ©Ã© une livraison Ã  une adresse
+	 * Créé une livraison à une adresse
 	 */
-	//PassÃ© en parametre Adresse, Adresse, client, fenetre 
+	//Passà© en parametre Adresse, Adresse, client, fenetre 
 	public void ajouterLivraison(int client, Adresse adresseSelectionnee, Adresse adressePrecedente, FenetreLivraison fenetre)
 	{
 		System.out.println(client+" "+adressePrecedente+" "+adresseSelectionnee);
