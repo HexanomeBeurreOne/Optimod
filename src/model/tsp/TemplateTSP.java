@@ -26,7 +26,7 @@ public abstract class TemplateTSP implements TSP {
 		branchAndBound(0, nonVus, vus, 0);
 	}
 	
-	public Integer[] getSolution(){
+	public Integer[] getSolutions(){
 		if (g != null)
 			return meilleureSolution;
 		return null;

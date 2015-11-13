@@ -15,7 +15,7 @@ public interface TSP {
 	 * @return la liste ordonee des indices des sommets visites dans la solution calculee par <code>chercheSolution</code> 
 	 * (-1 si <code>chercheSolution</code> n'a pas encore ete appele, ou si i < 0 ou i >= g.getNbSommets())
 	 */
-	public Integer[] getSolution();
+	public Integer[] getSolutions();
 	
 	/**
 	 * @param i

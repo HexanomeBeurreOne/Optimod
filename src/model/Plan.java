@@ -243,7 +243,7 @@ public class Plan extends Observable {
 //			System.out.print(i + " ");
 //		}
 //		System.out.println();
-		return tsp.getSolution();
+		return tsp.getSolutions();
 	}
 
 	/**
