@@ -2,8 +2,6 @@ package view;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Observable;
@@ -11,8 +9,6 @@ import java.util.Observer;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListCellRenderer;
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.border.CompoundBorder;
@@ -37,7 +33,7 @@ public class VueLivraison extends JPanel implements Observer {
         	    BorderFactory.createMatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY)));
 		
 		this.livraisons = new JList();
-		this.livraisons.setCellRenderer(new ColorierItemRenderer());
+		this.livraisons.setCellRenderer(new ColorierItemRenderer(fenetre, plan));
 		
 		this.add(livraisons);
 		fenetre.getContentPane().add(this);
@@ -62,7 +58,7 @@ public class VueLivraison extends JPanel implements Observer {
 			
 			String heureDebut = fenetre.secondeToHeure(fenetreLivraisonCourante.getHeureDebut());
 			String heureFin = fenetre.secondeToHeure(fenetreLivraisonCourante.getHeureFin());
-			model[indice] = "De "+heureDebut+" à "+heureFin;
+			model[indice] = plan.getDemandeLivraisons().getFenetresLivraisons().indexOf(fenetreLivraisonCourante)+1+") "+heureDebut+" à "+heureFin;
 			indice++;
 			
 			while (itL.hasNext()) {
@@ -90,18 +86,23 @@ public class VueLivraison extends JPanel implements Observer {
 	
 	//Cette classe privee sert a la coloration des item de la liste des livraisons
 	private static class ColorierItemRenderer extends DefaultListCellRenderer {
+		
+		private Fenetre fenetre;
+		private Plan plan;
+		
+		public ColorierItemRenderer(Fenetre fenetre, Plan plan) {
+			this.fenetre = fenetre;
+			this.plan = plan;
+		}
+		
         public Component getListCellRendererComponent( JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
         	Component c = super.getListCellRendererComponent( list, value, index, isSelected, cellHasFocus );
 
-        	if(value.getClass().getName() == "java.lang.String") {
-        		String fenetreL = (String)value;
-        		
-        		//ATTENTION ce test est vraiment pourri mais à 2h du matin j'ai pas trouve mieux
-        		//Si la ligne commence par "D" c'est que c'est une entete de fenetre de livraisons a colorier
-	            if ( fenetreL.charAt(0) == 'D' ) {
-	                c.setBackground( Color.yellow );
-	            }
-        	}
+    		String fenetreL = (String)value;
+    		
+            if ( fenetreL.charAt(0) != 'C' ) {
+                c.setBackground( fenetre.getCouleurs().get(fenetreL.charAt(0)-49));
+            }
         	return c;
         }
     }

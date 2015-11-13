@@ -179,15 +179,13 @@ public class VuePlan extends JPanel implements Observer {
 			if (!etapes.isEmpty()) {
 				FenetreLivraison fenetreL = etapes.get(0).getLivraison().getFenetreLivraison();
 				
-	//			Iterator<Etape> itE = etapes.iterator();
-	//			
-	//			while (itE.hasNext()) {
-				
 				for (int i = 0; i < etapes.size(); i++) {
 					
-					if(etapes.get(i).getLivraison().getFenetreLivraison() != fenetreL) {
+					
+					if (etapes.get(i).getLivraison().getFenetreLivraison() != fenetreL) {
 						indiceFenetre++;
 						fenetreL = etapes.get(i).getLivraison().getFenetreLivraison();
+						
 					}
 					
 					troncons = etapes.get(i).getChemin().getTroncons();
@@ -198,8 +196,6 @@ public class VuePlan extends JPanel implements Observer {
 					while (itT.hasNext()) {
 						drawTroncon(g2, itT.next());
 					}
-					
-					
 				}
 				
 				g2.setStroke(new BasicStroke(1));
