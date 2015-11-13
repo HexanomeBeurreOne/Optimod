@@ -17,7 +17,6 @@ import java.util.Set;
 import model.tsp.Graphe;
 import model.tsp.GrapheOptimod;
 import model.tsp.TSP;
-import model.tsp.TSP1;
 import model.tsp.TSP2;
 
 /**
