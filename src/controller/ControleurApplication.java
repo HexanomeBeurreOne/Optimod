@@ -92,7 +92,7 @@ public class ControleurApplication
 			
 			//Affiche un message avertissant de l'enregistrement de la feuille de route
 			
-			String msg = "La feuille de route Ã  Ã©tÃ© enregistrÃ©e dans votre repertoire local :" + path;
+			String msg = "La feuille de route a été enregistrée dans votre répertoire local :" + path;
 			JOptionPane.showMessageDialog(fenetre,
 					msg,
 				    "Feuille de Route",
@@ -168,7 +168,7 @@ public class ControleurApplication
 				fenetre.getZoneMessage().setText("Vous pouvez charger une demande de livraisons");
 	    	} else {
 	    		JOptionPane.showMessageDialog(fenetre,
-	    			    "Le fichier de plan est mal formÃ©",
+	    			    "Le fichier de plan est mal formé",
 	    			    "Erreur",
 	    			    JOptionPane.ERROR_MESSAGE);
 	    	}
@@ -214,10 +214,10 @@ public class ControleurApplication
 				livraisonSelectionnee = new Livraison();
 				etatAjouterLivraison = false;
 				
-				fenetre.getZoneMessage().setText("Vous pouvez calculer une tournÃ©e");
+				fenetre.getZoneMessage().setText("Vous pouvez calculer une tournée");
 			} else {
 				JOptionPane.showMessageDialog(fenetre,
-					    "Le fichier de demande de livraisons est mal formÃ©",
+					    "Le fichier de demande de livraisons est mal formé",
 					    "Erreur",
 					    JOptionPane.ERROR_MESSAGE);
 			}
@@ -375,7 +375,7 @@ public class ControleurApplication
 	
 	public void actionAjouterLivraison () {
 		etatAjouterLivraison = true;
-		fenetre.getZoneMessage().setText("Veuillez sÃ©lectionner la livraison existante aprÃ¨s laquelle placer votre nouvelle livraison");
+		fenetre.getZoneMessage().setText("Veuillez sélectionner la livraison existante après laquelle placer votre nouvelle livraison");
 	}
 	
 	public void actionSupprimerLivraison () {
