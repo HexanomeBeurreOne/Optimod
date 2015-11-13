@@ -27,12 +27,11 @@ public class Fenetre extends JFrame{
 	private int hauteurLivraison;
 	
 	private ArrayList<JButton> boutons;
-	private final int hauteurBouton = 30;
-	private final int largeurBouton = 150;
+	private final int hauteurBouton = (int) (hauteurFenetre*0.05);
+	private final int largeurBouton = (int) (largeurFenetre/8)-2;
 	protected final static String CHARGER_PLAN = "Charger plan";
 	protected static final String CHARGER_LIVRAISONS = "Charger livraisons";
 	protected static final String CALCULER_TOURNEE = "Calculer tournée";
-	protected static final String CHANGER = "Calculer tournée";
 	protected static final String AJOUTER_LIVRAISON = "Ajouter livraison";
 	protected static final String SUPPRIMER_LIVRAISON = "Supprimer livraison";
 	protected static final String UNDO = "Annuler";
@@ -44,7 +43,7 @@ public class Fenetre extends JFrame{
 	private EcouteurSouris ecouteurSouris;
 	
 	private JLabel zoneMessage;
-	private final int hauteurMessage = 27;
+	private final int hauteurMessage = (int) (hauteurFenetre*0.05);
 	
 	private ArrayList<Color> couleurs;
 	private ArrayList<Integer> epaisseursLignes;
@@ -81,7 +80,7 @@ public class Fenetre extends JFrame{
         
         //ZoneMessage
         zoneMessage = new JLabel();
-        
+        zoneMessage.setFont(new Font("truetype_font", Font.PLAIN, (int) (hauteurMessage*0.4)));
         Border paddingBorder = BorderFactory.createEmptyBorder(10,10,10,10);
         Border border = BorderFactory.createLineBorder(Color.LIGHT_GRAY);
         zoneMessage.setBorder(BorderFactory.createCompoundBorder(border,paddingBorder));
