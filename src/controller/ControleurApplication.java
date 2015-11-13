@@ -46,7 +46,11 @@ public class ControleurApplication
 	private boolean etatAjouterLivraison;
 	
 //------------------------------------------------- CONSTRUCTORS
-	
+	/**
+	 * Constructeur de ControleurApplication avec un plan et une ecchelle
+	 * @param p Plan 
+	 * @param e Echelle 
+	 */
 	public ControleurApplication(Plan p, double e)
 	{
 		undoRedo = new PilesEtats();
@@ -62,7 +66,9 @@ public class ControleurApplication
 	}
 		
 //------------------------------------------------- METHODS
-	
+	/**
+	 * Enregistre la feuille de route dans le fichier FeuilleDeRoute.txt
+	 */
 	public void enregistrerFeuilleRoute()
 	{
 		if(tourneeCalculee)
@@ -101,12 +107,18 @@ public class ControleurApplication
 		}
 	}
 	
+	/**
+	 * Annuler la derniere action
+	 */
 	public void undo()
 	{
 		undoRedo.undo();
 		System.out.println("undo");
 	}
 	
+	/**
+	 * Retablir la derniere action
+	 */
 	public void redo()
 	{
 		undoRedo.redo();
@@ -114,7 +126,7 @@ public class ControleurApplication
 	}
 	
 	/**
-	 * recalcule l'echelle de la vuePlan pour que le plan soit toujours affich� dans son int�gralit�
+	 * Recalcule l'echelle de la vuePlan pour que le plan soit toujours affiche dans son integralite
 	 */
 	private void changerEchelle() {
 		double largeurPlan = (double) this.fenetre.getLargeurVuePlan();
@@ -135,6 +147,9 @@ public class ControleurApplication
 		this.echelle = newEchelle;
 	}
 	
+	/**
+	 * Charge le plan dans la vue graphique
+	 */
 	public void chargerPlan() {
 		FactoryPlan factoryPlan = new FactoryPlan();
 		String fichier = chargerFichier("./data");
