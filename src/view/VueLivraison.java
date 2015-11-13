@@ -63,7 +63,7 @@ public class VueLivraison extends JPanel implements Observer {
 			
 			String heureDebut = fenetre.secondeToHeure(fenetreLivraisonCourante.getHeureDebut());
 			String heureFin = fenetre.secondeToHeure(fenetreLivraisonCourante.getHeureFin());
-			model[indice] = plan.getDemandeLivraisons().getFenetresLivraisons().indexOf(fenetreLivraisonCourante)+1+") "+heureDebut+" Ã  "+heureFin;
+			model[indice] = plan.getDemandeLivraisons().getFenetresLivraisons().indexOf(fenetreLivraisonCourante)+1+") "+heureDebut+" à "+heureFin;
 			indice++;
 			TreeMap<Integer, List<String>> mapEtapesFen = new TreeMap<Integer, List<String>>();
 			while (itL.hasNext()) {
