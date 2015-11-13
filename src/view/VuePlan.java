@@ -176,18 +176,11 @@ public class VuePlan extends JPanel implements Observer {
 		
 		if (etapes != null) {
 			
-			if (!etapes.isEmpty()) {
-				FenetreLivraison fenetreL = etapes.get(0).getLivraison().getFenetreLivraison();
-				
+			if (!etapes.isEmpty()) {				
 				for (int i = 0; i < etapes.size(); i++) {
-					
-					
-					if (etapes.get(i).getLivraison().getFenetreLivraison() != fenetreL) {
-						indiceFenetre++;
-						fenetreL = etapes.get(i).getLivraison().getFenetreLivraison();
-						
-					}
-					
+					FenetreLivraison fenLivraison = etapes.get(i).getLivraison().getFenetreLivraison();
+					indiceFenetre = plan.getDemandeLivraisons().getFenetresLivraisons().indexOf(fenLivraison);
+
 					troncons = etapes.get(i).getChemin().getTroncons();
 					Iterator<Troncon> itT = troncons.iterator();
 					g2.setColor(fenetre.getCouleurs().get(indiceFenetre));
