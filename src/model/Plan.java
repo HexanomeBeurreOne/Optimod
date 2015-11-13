@@ -80,17 +80,17 @@ public class Plan extends Observable {
 	}
 
 	/**
-	 * @return the unnoeudsNoirs
+	 * @return the noeudsGris
 	 */
-	public HashSet<Adresse> getUnnoeudsNoirs() {
-		return unnoeudsNoirs;
+	public HashSet<Adresse> getnoeudsGris() {
+		return noeudsGris;
 	}
 
 	/**
-	 * @param unnoeudsNoirs the unnoeudsNoirs to set
+	 * @param noeudsGris the noeudsGris to set
 	 */
-	public void setUnnoeudsNoirs(HashSet<Adresse> unnoeudsNoirs) {
-		this.unnoeudsNoirs = unnoeudsNoirs;
+	public void setnoeudsGris(HashSet<Adresse> noeudsGris) {
+		this.noeudsGris = noeudsGris;
 	}
 
 	/**
@@ -234,11 +234,11 @@ public class Plan extends Observable {
 	private Integer[] calculOrdreLivraisons() {
 		TSP tsp = new TSP2();
 		Graphe g = new GrapheOptimod(demandeLivraisons, plusCourtsChemins);
-		long tempsDebut = System.currentTimeMillis();
+//		long tempsDebut = System.currentTimeMillis();
 		tsp.chercheSolution(60000, g);
 //		System.out.print("Solution de longueur "+tsp.getCoutSolution()+" trouvee en "
 //				+(System.currentTimeMillis() - tempsDebut)+"ms : ");
-		Integer[] solution = tsp.getSolution();
+//		Integer[] solution = tsp.getSolution();
 //		for (Integer i : solution){
 //			System.out.print(i + " ");
 //		}
@@ -293,7 +293,7 @@ public class Plan extends Observable {
 	}
 	
 	private HashSet<Adresse> noeudsNoirs;
-	private HashSet<Adresse> unnoeudsNoirs;
+	private HashSet<Adresse> noeudsGris;
 	private HashMap<Adresse, Double> distance;
 	private HashMap<Adresse, Adresse> predecessors;
 	
@@ -307,15 +307,15 @@ public class Plan extends Observable {
 	 */
 	public Hashtable<Integer, Chemin> dijkstra(Adresse depart, List<Adresse> cibles) {
 		noeudsNoirs = new HashSet<Adresse>();
-		unnoeudsNoirs = new HashSet<Adresse>();
+		noeudsGris = new HashSet<Adresse>();
 		distance = new HashMap<Adresse, Double>();
 		predecessors = new HashMap<Adresse, Adresse>();
 	    distance.put(depart, 0.);
-	    unnoeudsNoirs.add(depart);
-	    while (unnoeudsNoirs.size() > 0) {
-	      Adresse node = getMinimum(unnoeudsNoirs);
+	    noeudsGris.add(depart);
+	    while (noeudsGris.size() > 0) {
+	      Adresse node = getMinimum(noeudsGris);
 	      noeudsNoirs.add(node);
-	      unnoeudsNoirs.remove(node);
+	      noeudsGris.remove(node);
 	      trouveTempsMinimal(node);
 	    }
 	    
@@ -360,7 +360,7 @@ public class Plan extends Observable {
 	        distance.put(cible, trouverPlusPetitTemps(noeud)
 	            + getTemps(noeud, cible));
 	        predecessors.put(cible, noeud);
-	        unnoeudsNoirs.add(cible);
+	        noeudsGris.add(cible);
 	      }
 	    }
 
@@ -671,18 +671,15 @@ public class Plan extends Observable {
 		}
 		return indiceEtapePrec;
 	}
-	
-//	public void affichePlan() {
-//		System.out.println("Plan : "+this.nom);
-//		System.out.println("Liste adresses : ");
-//		Iterator<Adresse> adressesIterator = this.adresses.iterator();
-//		while(adressesIterator.hasNext()) {
-//			Adresse currentAdresse = (Adresse) adressesIterator.next();
-//			System.out.print("   ");
-//			currentAdresse.afficheAdresse();
-//		}
-//	}
 
+	/**
+	 * chercheAdresse() cherche des adresses dans un disque de centre (x0,y0) et de rayon rayon et retourne
+	 * la distance l'adresse la plus proche du centre ou null si aucune adresse ne se trouve dans ce disque
+	 * @param x0
+	 * @param y0
+	 * @param rayon
+	 * @return
+	 */
 	public Adresse chercheAdresse(int x0, int y0, int rayon) {
 		Iterator<Adresse> itA = this.adresses.iterator();
 		Adresse adresseCourante;
@@ -700,8 +697,8 @@ public class Plan extends Observable {
 		Enumeration<Double> listeDistances = adressesTrouvees.keys();
 		Double minDist = Double.MAX_VALUE;
 		while(listeDistances.hasMoreElements()) {
-			double nextDist = listeDistances.nextElement();
-			minDist = nextDist<minDist ? nextDist : minDist;
+			double distanceSuivante = listeDistances.nextElement();
+			minDist = distanceSuivante<minDist ? distanceSuivante : minDist;
 		}
 		
 		if(minDist<=rayon) return adressesTrouvees.get(minDist);
@@ -709,11 +706,20 @@ public class Plan extends Observable {
 		return null;
 	}
 	
+	/**
+	 * cherche() cherche une adresse ou une livraison du plan dans un disque de centre (x0,y0) et de rayon rayon
+	 *  et la retourne, null si rien.
+	 * @param x0
+	 * @param y0
+	 * @param rayon
+	 * @return Livraison, Adresse or null
+	 */
 	public Object cherche(int x0, int y0, int rayon) {
 		Livraison livraisonTrouvee = this.demandeLivraisons.chercheLivraison(x0, y0, rayon);
-		Adresse adresseTrouvee = this.chercheAdresse(x0, y0, rayon);
 		
 		if(livraisonTrouvee != null) return livraisonTrouvee;
+		
+		Adresse adresseTrouvee = this.chercheAdresse(x0, y0, rayon);
 		
 		// adresseTrouvee est null si aucune adresse ne correspond 
 		return adresseTrouvee;
@@ -725,9 +731,9 @@ public class Plan extends Observable {
 		str += "\nListe adresses : ";
 		Iterator<Adresse> adressesIterator = this.adresses.iterator();
 		while(adressesIterator.hasNext()) {
-			Adresse currentAdresse = (Adresse) adressesIterator.next();
+			Adresse adresseCourante = (Adresse) adressesIterator.next();
 			str += "\n   ";
-			str += currentAdresse.toString();
+			str += adresseCourante.toString();
 		}
 		return str;
 	}
