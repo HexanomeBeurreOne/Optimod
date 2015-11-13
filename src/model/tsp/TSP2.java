@@ -12,7 +12,7 @@ public class TSP2 extends TemplateTSP {
 
 	@Override
 	protected Iterator<Integer> iterator(Integer sommetCrt, Collection<Integer> nonVus, Graphe g) {
-		return new IteratorSeq2(nonVus, sommetCrt, g);
+		return new IteratorMinFirst(nonVus, sommetCrt, g);
 	}
 
 }

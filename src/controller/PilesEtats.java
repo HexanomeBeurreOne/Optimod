@@ -19,6 +19,10 @@ public class PilesEtats
 	}
 	
 //------------------------------------------------- METHODS
+	/**
+	 * Ajoute la commande a la pile Undo
+	 * @param c command
+	 */
 	public void addCommand(Commande c)
 	{
 		c.execute();
@@ -26,6 +30,9 @@ public class PilesEtats
 		redoStack.clear();
 	}
 	
+	/**
+	 * De-execute la derniere commande de la pile Undo
+	 */
 	public void undo()
 	{
 		if(!undoStack.empty())
@@ -36,6 +43,9 @@ public class PilesEtats
 		}
 	}
 	
+	/**
+	 * Execute la derniere commande de la pile Redo
+	 */
 	public void redo()
 	{
 		if(!redoStack.empty())
@@ -46,6 +56,9 @@ public class PilesEtats
 		}
 	}
 	
+	/**
+	 * Vide les piles
+	 */
 	public void clear()
 	{
 		redoStack.clear();

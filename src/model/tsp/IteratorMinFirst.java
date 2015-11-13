@@ -7,7 +7,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-public class IteratorSeq2 implements Iterator<Integer> {
+public class IteratorMinFirst implements Iterator<Integer> {
 
 	private Integer[] candidats;
 	private int indice;
@@ -19,7 +19,7 @@ public class IteratorSeq2 implements Iterator<Integer> {
 	 * @param sommetCrt
 	 * @param g
 	 */
-	public IteratorSeq2(Collection<Integer> nonVus, int sommetCrt, Graphe g){
+	public IteratorMinFirst(Collection<Integer> nonVus, int sommetCrt, Graphe g){
 		TreeMap<Integer, Integer> treeMapCandidats = new TreeMap<Integer, Integer>();
 		Iterator<Integer> it = nonVus.iterator();
 		while (it.hasNext()){
