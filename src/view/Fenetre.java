@@ -15,8 +15,8 @@ import java.util.Iterator;
  * Created by cyrilcanete on 03/11/15.
  */
 public class Fenetre extends JFrame{
-	private final int hauteurFenetre = 500;
-	private final int largeurFenetre = 1050;
+	private final int hauteurFenetre = 700;
+	private final int largeurFenetre = 1250;
 	
 	private VuePlan vuePlan;
 	private int largeurVuePlan;
@@ -37,7 +37,8 @@ public class Fenetre extends JFrame{
 	protected static final String SUPPRIMER_LIVRAISON = "Supprimer livraison";
 	protected static final String UNDO = "Undo";
 	protected static final String REDO = "Redo";
-	private final String[] intitulesBoutons = new String[]{CHARGER_PLAN, CHARGER_LIVRAISONS, CALCULER_TOURNEE, AJOUTER_LIVRAISON, SUPPRIMER_LIVRAISON, UNDO, REDO};
+	protected static final String ENREGISTRER_FEUILLE_ROUTE = "Feuille de Route";
+	private final String[] intitulesBoutons = new String[]{CHARGER_PLAN, CHARGER_LIVRAISONS, CALCULER_TOURNEE, AJOUTER_LIVRAISON, SUPPRIMER_LIVRAISON, UNDO, REDO, ENREGISTRER_FEUILLE_ROUTE};
 	private EcouteurBoutons ecouteurDeBoutons;
 	private EcouteurClavier ecouteurClavier;
 	private EcouteurSouris ecouteurSouris;

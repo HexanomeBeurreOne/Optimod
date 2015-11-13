@@ -12,8 +12,14 @@ import model.Livraison;
 import model.FenetreLivraison;
 
 import java.awt.Desktop;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,6 +62,42 @@ public class ControleurApplication
 	}
 		
 //------------------------------------------------- METHODS
+	
+	public void enregistrerFeuilleRoute()
+	{
+		if(tourneeCalculee)
+		{
+			//TODO: toStrings
+			String feuille = "Hello World";
+			//Save in doc
+			String path = "./FeuilleDeRoute.txt";
+			Writer out = null;
+			try {
+				out = new BufferedWriter(new OutputStreamWriter(
+					    new FileOutputStream(path), "UTF-8"));
+				out.write(feuille);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+			    try {
+					out.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+			//Affiche un message avertissant de l'enregistrement de la feuille de route
+			
+			String msg = "La feuille de route à été enregistrée dans votre repertoire local :" + path;
+			JOptionPane.showMessageDialog(fenetre,
+					msg,
+				    "Feuille de Route",
+				    JOptionPane.INFORMATION_MESSAGE);
+			System.out.println("Enregistrer Feuille de Route");
+		}
+	}
 	
 	public void undo()
 	{
