@@ -31,6 +31,7 @@ public class Plan extends Observable {
 	private String nom;
 	private List<Adresse> adresses;
 	private List<Troncon> troncons;
+	private double vitesseMaximum;
 	private DemandeLivraisons demandeLivraisons;
 	// Hashmap better than Hashtable in single threaded environment.
 	// The key of the outer Hashtable is the id of the starting Adresse, 
@@ -45,6 +46,7 @@ public class Plan extends Observable {
 		this.nom = "";
 		this.adresses = new ArrayList<Adresse>();
 		this.troncons = new ArrayList<Troncon>();
+		this.vitesseMaximum = -1;
 		this.demandeLivraisons = new DemandeLivraisons();
 		this.plusCourtsChemins = new Hashtable<Integer,Hashtable<Integer,Chemin>>();
 		this.tournee = new Tournee();
@@ -232,7 +234,7 @@ public class Plan extends Observable {
 	 */
 	private Integer[] calculOrdreLivraisons() {
 		TSP tsp = new TSP2();
-		Graphe g = new GrapheOptimod(demandeLivraisons, plusCourtsChemins);
+		Graphe g = new GrapheOptimod(demandeLivraisons, plusCourtsChemins, vitesseMaximum);
 //		long tempsDebut = System.currentTimeMillis();
 		tsp.chercheSolution(60000, g);
 //		System.out.print("Solution de longueur "+tsp.getCoutSolution()+" trouvee en "

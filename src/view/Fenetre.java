@@ -245,7 +245,7 @@ public class Fenetre extends JFrame{
 	}
 
 	/**
-	 * ouvre la popup de demande de saisie de l'identifiant du client et renvoie cette identifiant si c'est un entier positif
+	 * ouvre la popup de demande de saisie de l'identifiant du client et renvoie cet identifiant si c'est un entier positif
 	 * renvoie -1 en cas d'erreur
 	 * @return
 	 */

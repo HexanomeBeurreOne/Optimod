@@ -15,23 +15,33 @@ import model.Livraison;
 
 public class GrapheOptimod implements Graphe {
 	
-	int nbSommets;
-	int[][] cout;
+	private int nbSommets;
+	private int[][] cout;
+	private Adresse[] adresses;
+	private double vitesseMaximum;
 	
 	/**
 	 * 
 	 * @param demandeLivraison
 	 * @param plusCourtsChemins
 	 */
-	public GrapheOptimod(DemandeLivraisons demandeLivraison, Hashtable<Integer,Hashtable<Integer,Chemin>> plusCourtsChemins){
+	public GrapheOptimod(DemandeLivraisons demandeLivraison, Hashtable<Integer,Hashtable<Integer,Chemin>> plusCourtsChemins, double vitesseMaximum){
 		Adresse entrepot = demandeLivraison.getEntrepot();
-		List<Integer> idAdressesLivraisons = new ArrayList<Integer>();
-		for(Livraison liv : demandeLivraison.getAllLivraisons())
-		{
-			idAdressesLivraisons.add(liv.getAdresse().getId());
-		}
-		this.nbSommets = idAdressesLivraisons.size() + 1;
+		List<Livraison> livraisons = demandeLivraison.getAllLivraisons();
+		this.nbSommets = livraisons.size() + 1;
 		this.cout = new int[nbSommets][nbSommets];
+		this.adresses = new Adresse[nbSommets];
+		this.adresses[0] = entrepot;
+		List<Integer> idAdressesLivraisons = new ArrayList<Integer>();
+		for(int i = 0 ; i < livraisons.size() ; i++)
+		{
+			Livraison liv = livraisons.get(i);
+			// On recupere les ids des adresses des livraisons
+			idAdressesLivraisons.add(liv.getAdresse().getId());
+			// On recupere les adresses des livraisons
+			this.adresses[i+1] = liv.getAdresse();
+		}		
+		// Initialisation des couts a -1
 		for(int i = 0; i < cout.length; i++)
 		{
 			Arrays.fill(this.cout[i], -1);
@@ -115,5 +125,8 @@ public class GrapheOptimod implements Graphe {
 
 		return cout[i][j] != -1;
 	}
-
+	
+	public Adresse[] getAdresses() {
+		return adresses;
+	}
 }

@@ -122,5 +122,11 @@ public class Adresse extends Observable {
 		return id + " aux coordonnees (" + coordX + ";" + coordY + ")";
 	}
 	
+	public double tempsMinimum(Adresse adresse, double vitesseMaximum) {
+		int deltaX = coordX - adresse.getCoordX();
+		int deltaY = coordY - adresse.getCoordY();
+		double distance = Math.sqrt(deltaX*deltaX + deltaY*deltaY);
+		return distance/vitesseMaximum;
+	}
 	
 }
